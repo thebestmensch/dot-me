@@ -1,2 +1,3 @@
 # Append-only provenance log.
 # Format: <ISO-8601 timestamp>\t<source: jm-retro|me-add|manual>\t<file>\t<one-line summary>
+2026-05-06T14:42:37Z	me-add	preferences.yaml	workflow.commit_messages: Conventional Commits

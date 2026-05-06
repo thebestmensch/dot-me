@@ -41,6 +41,9 @@ media:
     likes:
       - adventure
 
+workflow:
+  commit_messages: Conventional Commits (e.g. `feat:`, `fix(scope):`, `docs:`)
+
 notes: |
   Voice tone (dry, irreverent, direct, warm) lives in voice.md, not here.
   Add cross-cutting preferences that don't fit a category to this notes block.

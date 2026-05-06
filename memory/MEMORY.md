@@ -1,0 +1,2 @@
+- [codex-companion --background bug](codex_companion_background_bug.md) — review/adversarial-review silently ignore --background flag; only `task` honors it; matters for hook stdout-banner detection
+- [verify diff state before acting on Codex findings](feedback_codex_findings_diff_state.md) — Codex sees working-tree at dispatch time; cross-session WIP may already address the finding; read diff before re-implementing

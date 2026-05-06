@@ -1,3 +1,38 @@
 # Personal identity — invariant facts about user-as-subject.
 # Managed by /me-add. Direct edits will trigger the SessionStart integrity hook.
-# Schema: see docs/superpowers/specs/2026-05-05-personal-context-design.md
+# Schema: see home-lab docs/superpowers/specs/2026-05-05-personal-context-design.md
+
+name: James Mensch
+preferred_name: JM
+
+location:
+  timezone: America/Chicago           # IANA tz; the one strictness this file has
+
+knows_about:                          # Schema.org knowsAbout semantics; forward-compat
+  - home automation and home labs
+  - mobile development
+  - AI tooling and agent systems
+  - data infrastructure
+
+work:
+  - role: Founder
+    org: [redacted]
+  - role: Maintainer
+    project: home-lab
+
+pets:
+  - name: Bean
+    species: dog
+    breed: Mini Australian Shepherd / Blue Heeler mix
+  - name: Gia
+    species: dog
+    breed: Husky
+  - name: Ruthie
+    species: dog
+    breed: Alaskan Klee Kai
+
+# Minimal social ring — names + role only, no free-text notes.
+# Free-text relationship notes deferred to v1 with encryption.
+family: []
+
+inner_circle: []

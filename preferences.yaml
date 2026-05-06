@@ -1,3 +1,46 @@
 # Personal preferences — likes / favorites / avoid triads.
 # Lazy-loaded only (not @include'd in CLAUDE.md). Loaded on demand by skills/commands.
 # Managed by /me-add.
+
+tools:
+  editor: Claude Code
+  shell: zsh
+  shell_plugin_manager: zinit (turbo-mode lazy loading)
+  prompt: starship
+  terminal_mac: Ghostty
+  terminal_windows: WezTerm (SSH thin client into Mac)
+  multiplexer: tmux (vanilla — no oh-my-tmux / tpm)
+  dotfiles: chezmoi
+  runtime_manager: mise (replaced nvm + direnv)
+
+aesthetics:
+  formality: casual
+  formality_avoid:
+    - corporate
+    - salesy
+    - try-hard casual
+  color_temperature: warm                  # always — never cool
+  current_theme: SpenschSuite Light        # aged-cream base, paper_lifted active pane, ink-slate / iron-gall accents
+  design_principles:
+    - calm
+    - minimal
+    - cohesive
+    - whisper-quiet UI chrome over loud / busy
+  dislikes:
+    - cool blue or gray backgrounds
+    - "Skittles" multi-pastel palettes
+    - pure white surfaces
+    - saturated reds and yellows
+    - corporate-feeling chrome
+
+media:
+  games:
+    likes:
+      - old RPGs
+  movies:
+    likes:
+      - adventure
+
+notes: |
+  Voice tone (dry, irreverent, direct, warm) lives in voice.md, not here.
+  Add cross-cutting preferences that don't fit a category to this notes block.

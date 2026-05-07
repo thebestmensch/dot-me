@@ -1,5 +1,8 @@
-- [codex-companion --background bug](codex_companion_background_bug.md) — review/adversarial-review silently ignore --background flag; only `task` honors it; matters for hook stdout-banner detection
-- [verify diff state before acting on Codex findings](feedback_codex_findings_diff_state.md) — Codex sees working-tree at dispatch time; cross-session WIP may already address the finding; read diff before re-implementing
+- [codex-companion --background bug](codex_companion_background_bug.md) — review/adversarial-review silently ignore --background; only `task` honors; matters for hook stdout-banner detection
+- [verify diff state before acting on Codex findings](feedback_codex_findings_diff_state.md) — Codex sees working-tree at dispatch time; cross-session WIP may already address finding; read diff before re-implementing
 - [1P item splitting discipline]([redacted]) — split by concern (Stripe, Mixpanel) not project; pragmatic deferral if verification imminent
-- [Monitor background tasks with Bash, not ScheduleWakeup](feedback_monitoring_background_tasks.md) — "watch X until Y" → Bash run_in_background + until-loop; ScheduleWakeup is /loop-only and gate hook will block it
-- [Codex loop signals scope mismatch on new-HIGH-each-pass](feedback_codex_loop_scope_mismatch.md) — when Codex finds new HIGHs in different layers of same root concern, surface area > diff; stop iterating, name framing, propose options
+- [Monitor background tasks with Bash, not ScheduleWakeup](feedback_monitoring_background_tasks.md) — "watch X until Y" → Bash run_in_background + until-loop; ScheduleWakeup /loop-only, gate hook blocks
+- [Codex loop signals scope mismatch on new-HIGH-each-pass](feedback_codex_loop_scope_mismatch.md) — Codex finds new HIGHs in different layers of same root concern → surface area > diff; stop iterating, name framing, propose options
+- [OP_SERVICE_ACCOUNT_TOKEN hijacks --account flag](feedback_op_cli_service_account_hijack.md) — exported token forces op CLI into service-account mode regardless of --account; clone+delete env before subprocess `op read` calls
+- [Verify external secret refs before committing scripts](feedback_verify_external_secret_refs.md) — run actual `op read` (or AWS/GCP/SSM equivalent) with exact ref before committing scripts depending on it; stale refs fail silently
+- [Codex gate skip-file uses hook-provided SID](feedback_codex_gate_skip_path.md) — copy /tmp/cc-gates/<SID>/skip_codex_gate path verbatim from hook message; ls -td races with parallel CC sessions

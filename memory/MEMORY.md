@@ -6,3 +6,4 @@
 - [OP_SERVICE_ACCOUNT_TOKEN hijacks --account flag](feedback_op_cli_service_account_hijack.md) — exported token forces op CLI into service-account mode regardless of --account; clone+delete env before subprocess `op read` calls
 - [Verify external secret refs before committing scripts](feedback_verify_external_secret_refs.md) — run actual `op read` (or AWS/GCP/SSM equivalent) with exact ref before committing scripts depending on it; stale refs fail silently
 - [Codex gate skip-file uses hook-provided SID](feedback_codex_gate_skip_path.md) — copy /tmp/cc-gates/<SID>/skip_codex_gate path verbatim from hook message; ls -td races with parallel CC sessions
+- [claude -p stalls on stdin without TTY](reference_claude_cli_stdin_redirect.md) — Anthropic CLI 2.1.x reads stdin in `-p` mode with 3s grace; non-interactive callers must `< /dev/null`

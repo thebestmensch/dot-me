@@ -1,2 +1,4 @@
 - [codex-companion --background bug](codex_companion_background_bug.md) — review/adversarial-review silently ignore --background flag; only `task` honors it; matters for hook stdout-banner detection
 - [verify diff state before acting on Codex findings](feedback_codex_findings_diff_state.md) — Codex sees working-tree at dispatch time; cross-session WIP may already address the finding; read diff before re-implementing
+- [1P item splitting discipline]([redacted]) — split by concern (Stripe, Mixpanel) not project; pragmatic deferral if verification imminent
+- [Monitor background tasks with Bash, not ScheduleWakeup](feedback_monitoring_background_tasks.md) — "watch X until Y" → Bash run_in_background + until-loop; ScheduleWakeup is /loop-only and gate hook will block it

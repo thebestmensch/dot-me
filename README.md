@@ -11,7 +11,7 @@ This repo is private. Treat its contents as personal data.
 | `identity.yaml` | Invariant facts: name, location, dogs, family, work | Yes — `@~/.me/identity.yaml` in `~/.claude/CLAUDE.md` |
 | `voice.md` | Voice profile (hybrid: dimensions + lexicon + anti-patterns + sample passages) | Lazy — loaded by `/jm-voice` |
 | `preferences.yaml` | likes / favorites / avoid triads (media, food, tools, aesthetics) | Lazy — loaded on demand |
-| `memory/` | Auto-memory writes from every Claude Code project (via `autoMemoryDirectory`) | Selective by project |
+| `memory/` | Auto-memory writes that are **vCard-shaped** — facts about JM as a person (preferences, taste, life-context). Harness-ops content (codex, hooks, CLI footguns) lives in `~/.claude/projects/-Users-jm/memory/` instead, auto-loaded via `@-import` in `~/.claude/CLAUDE.md`. | Yes — via `autoMemoryDirectory: ~/.me/memory` |
 | `.integrity` | SHA-256 hashes of `@include`d files; baseline for tamper detection | — |
 | `.updates.log` | Append-only provenance: timestamp, source, file, summary | — |
 

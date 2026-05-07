@@ -7,3 +7,6 @@
 - [Verify external secret refs before committing scripts](feedback_verify_external_secret_refs.md) — run actual `op read` (or AWS/GCP/SSM equivalent) with exact ref before committing scripts depending on it; stale refs fail silently
 - [Codex gate skip-file uses hook-provided SID](feedback_codex_gate_skip_path.md) — copy /tmp/cc-gates/<SID>/skip_codex_gate path verbatim from hook message; ls -td races with parallel CC sessions
 - [claude -p stalls on stdin without TTY](reference_claude_cli_stdin_redirect.md) — Anthropic CLI 2.1.x reads stdin in `-p` mode with 3s grace; non-interactive callers must `< /dev/null`
+- [Halt code edits on user-reported resource pain](feedback_halt_on_resource_pain.md) — "you're hammering my CPU" → stop edits, diagnose at LaunchAgent/daemon layer not just `ps`
+- [Happy daemon auto-spawns parallel CC sessions](reference_happy_daemon_parallel_cc.md) — `com.happy.daemon` LaunchAgent + tmux pane auto-resume → 4+ parallel CC sessions race-rewrite shared cwd files; disable plist + kill chain
+- [Gate skip files restale on reboot + scratch files](reference_gate_skip_restale.md) — `/tmp/cc-gates/$SID/` wipes on macOS reboot; untracked worktree scratch keeps re-bumping `edited_files` mtime; recovery procedure

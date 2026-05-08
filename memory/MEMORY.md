@@ -1,2 +1,1 @@
-- [Halt code edits on user-reported resource pain](feedback_halt_on_resource_pain.md) — "you're hammering my CPU" → stop edits, diagnose at LaunchAgent/daemon layer not just `ps`
 - [Use voice skill for outgoing communications](feedback_voice_for_outgoing.md) — always invoke `/jm-voice` when drafting emails, Slack, or any text sent as James; first-pass drafts default to corporate tone

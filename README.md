@@ -30,7 +30,8 @@ required: `name` in `identity.yaml`. everything else is optional. unknown keys a
 ### Claude Code (plugin)
 
 ```
-/plugin install dot-me
+/plugin marketplace add thebestmensch/dot-me
+/plugin install dot-me@dot-me
 ```
 
 handles loading the three files into your session context, drops in the `/me` command for adding facts mid-session, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).

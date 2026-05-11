@@ -1,0 +1,59 @@
+# Example preferences.yaml — fictional but realistic. Lazy-loaded by commands that need it.
+# Copy to ~/.me/preferences.yaml via `/me init`, then edit to reflect your own preferences.
+
+tools:
+  editor: VS Code
+  shell: zsh
+  terminal: Terminal.app
+  note_taking: Obsidian
+  font: IBM Plex Mono
+
+aesthetics:
+  formality: business-casual
+  color_temperature: warm
+  contrast: medium
+  whitespace: generous
+
+media:
+  books:
+    likes:
+      - literary fiction
+      - longform essays
+      - design-criticism collections
+    favorites:
+      - John McPhee, "Draft No. 4"
+      - Robin Sloan, "Mr. Penumbra's 24-Hour Bookstore"
+    avoid:
+      - airport-thriller plotting
+      - business books with one idea stretched to 250 pages
+  coffee:
+    likes:
+      - light-roast single-origins
+      - hand-pour V60 method
+    favorites:
+      - Onyx Monarch
+      - Heart Stereo
+      - Stumptown Hair Bender
+    avoid:
+      - dark-roast espresso blends
+      - flavored syrups
+  music:
+    likes:
+      - 1970s folk
+      - ambient piano
+      - jazz quartets
+    avoid:
+      - lyric-heavy genres for focus work
+
+workflow:
+  commit_messages: Conventional Commits
+  pull_requests:
+    title_style: imperative-mood
+    body_style: short summary + bulleted test plan
+  meetings:
+    preference: async-first
+    notes: shared doc with action items at the top
+
+notes: |
+  When in doubt, prefer concrete examples over abstract description.
+  "Show the page" beats "discuss the layout."

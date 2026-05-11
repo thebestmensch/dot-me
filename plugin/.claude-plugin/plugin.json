@@ -9,7 +9,6 @@
   "commands": [
     "./commands/me.md"
   ],
-  "hooks": "./hooks/hooks.json",
   "homepage": "https://github.com/thebestmensch/dot-me",
   "repository": "https://github.com/thebestmensch/dot-me",
   "license": "MIT",

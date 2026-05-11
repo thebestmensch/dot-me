@@ -13,14 +13,11 @@ The reference consumer plugin for [dot-me](https://github.com/thebestmensch/dot-
 ## Install — Claude Code
 
 ```
-/plugin install dot-me
+/plugin marketplace add thebestmensch/dot-me
+/plugin install dot-me@dot-me
 ```
 
-(Or, if the marketplace registration isn't live yet, install via git URL:)
-
-```
-/plugin install thebestmensch/dot-me
-```
+(The marketplace + plugin live in the same repo. Once added, the marketplace is named `dot-me` and ships the `dot-me` plugin — hence the `dot-me@dot-me` syntax.)
 
 After install:
 

@@ -1,5 +1,5 @@
 # Personal identity — invariant facts about user-as-subject.
-# Managed by /me-add. Direct edits will trigger the SessionStart integrity hook.
+# Managed by /me (any subcommand). Direct edits will trigger the SessionStart integrity hook.
 # Schema: see home-lab docs/superpowers/specs/2026-05-05-personal-context-design.md
 
 name: James Mensch

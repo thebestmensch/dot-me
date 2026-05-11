@@ -1,0 +1,68 @@
+# dot-me plugin
+
+The reference consumer plugin for [dot-me](https://github.com/thebestmensch/dot-me) — bundles the `/me` slash command, the `me-integrity.sh` SessionStart hook, and the auto-load wiring needed to read `~/.me/identity.yaml` into every session.
+
+## What it ships
+
+| Component | Path | Surface |
+|---|---|---|
+| `/me` umbrella command (scan / add / show / edit / check / init) | `commands/me.md` | Claude Code + Cowork |
+| `me-integrity.sh` SessionStart hook | `hooks/scripts/me-integrity.sh` | **Claude Code only** (Cowork hook bug, see below) |
+| Plugin manifest | `.claude-plugin/plugin.json` | Both |
+
+## Install — Claude Code
+
+```
+/plugin install dot-me
+```
+
+(Or, if the marketplace registration isn't live yet, install via git URL:)
+
+```
+/plugin install thebestmensch/dot-me
+```
+
+After install:
+
+1. Run `/me init` to seed `~/.me/` from `examples/` (skips if `~/.me/` already exists)
+2. Verify with `/me check` — `integrity baseline intact` means you're set up
+3. Edit the seeded files: `/me edit identity` (or voice / preferences) to replace the Sam Patel templates with your own content
+4. Use `/me add "<fact>"` to record facts mid-session, or bare `/me` to scan the current session for vCard-shape candidates
+
+The `me-integrity.sh` hook fires on SessionStart and warns when `~/.me/` files drift from the `.integrity` baseline — your tamper-detection signal for filesystem-tampering attacks.
+
+## Install — Claude Cowork
+
+Skill / command surface works the same. **The SessionStart hook does NOT fire** because of an open Cowork plugin-hook bug ([`anthropics/claude-code#16288`](https://github.com/anthropics/claude-code/issues/16288), open as of May 2026 — the Cowork VM spawns `claude --setting-sources user` which excludes plugin-scoped hooks).
+
+For Cowork's missing auto-load + missing integrity hook, paste the contents of `~/.me/identity.yaml` into **Settings → Cowork → Global Instructions** after running `/me init`. Re-paste when the file changes. The `/me show identity` command renders the current content for easy copying.
+
+When the upstream bug is fixed, this plugin's hook will start firing automatically with no install changes needed.
+
+## Auto-load contract
+
+On Claude Code, the plugin makes `~/.me/identity.yaml` available at session start via the `me-integrity.sh` hook (which both verifies the baseline AND surfaces the content). It does NOT modify `~/.claude/CLAUDE.md` — that wiring is the `/me init` subcommand's job, and only on first-run.
+
+The plugin is **opt-in**: nothing reads `~/.me/` until you explicitly install it, run `/me init`, and edit the seeded content.
+
+## Uninstall
+
+```
+/plugin uninstall dot-me
+```
+
+Removes the slash command and hook. Does NOT touch `~/.me/` — your personal content is preserved. To reverse the install entirely:
+
+```
+/plugin uninstall dot-me
+rm -rf ~/.me                       # only if you don't want the content
+# manually remove the `@~/.me/identity.yaml` line from ~/.claude/CLAUDE.md
+```
+
+## Spec
+
+This plugin is one implementation of the format. The format itself is the contract — see the [v0.1 spec](https://github.com/thebestmensch/home-lab/blob/main/docs/superpowers/specs/2026-05-05-personal-context-design.md).
+
+## License
+
+[MIT](../LICENSE). Same as the parent dot-me repo.

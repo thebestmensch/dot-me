@@ -4,6 +4,9 @@
 
 name: Sam Patel
 preferred_name: Sam
+pronouns: they/them
+handle: "@sampatel"
+blurb: Senior writer at Acme Corp. Coffee, books, design systems.
 spec_version: "0.1"
 
 location:

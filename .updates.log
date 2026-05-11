@@ -3,3 +3,4 @@
 2026-05-06T14:42:37Z	me-add	preferences.yaml	workflow.commit_messages: Conventional Commits
 2026-05-11T19:00:54Z	me-rename	identity.yaml	header comment: /me-add → /me (umbrella)
 2026-05-11T19:00:54Z	me-rename	preferences.yaml	header comment: /me-add → /me (umbrella)
+2026-05-11T21:10:09Z	me-add	identity.yaml	add pronouns, handle, blurb fields

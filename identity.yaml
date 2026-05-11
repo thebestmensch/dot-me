@@ -4,6 +4,9 @@
 
 name: James Mensch
 preferred_name: JM
+pronouns: he/him
+handle: "@thebestmensch"
+blurb: Building products that make the world a better place.
 
 location:
   timezone: America/Chicago           # IANA tz; the one strictness this file has

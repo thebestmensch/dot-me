@@ -72,6 +72,12 @@ while [ $# -gt 0 ]; do
       shift
       [ $# -gt 0 ] || { printf 'error: --context-file requires a filename argument\n' >&2; exit 2; }
       CONTEXT_FILE="$1"
+      case "$CONTEXT_FILE" in
+        */*|*\\*|*..*|"")
+          printf 'error: --context-file must be a bare filename (no path separators, no ..): %s\n' "$CONTEXT_FILE" >&2
+          exit 2
+          ;;
+      esac
       ;;
     -h|--help)
       sed -n '2,40p' "$0" | sed 's/^# \{0,1\}//'
@@ -229,9 +235,26 @@ build_block() {
 
   if [ "$MODE" = "full" ]; then
     if [ -f "$DOT_ME_DIR/voice.md" ]; then
+      # Wrap voice.md in a dynamically-sized backtick fence. Markdown
+      # writing guides routinely contain ``` triplets (and longer runs)
+      # for inline code examples; a fixed-length fence would be silently
+      # closed by the first matching inner run, leaking the remainder of
+      # voice.md into GEMINI.md raw — where Gemini's import processor
+      # would scan @-tokens (e.g. @here, @./path) as nested imports. Pick
+      # a fence one longer than the longest backtick run in the file,
+      # minimum 3, so the wrapper cannot be escaped.
+      # grep returns 1 (no matches) when voice.md has no backticks at all,
+      # which trips errexit under pipefail. '|| true' lets the pipeline
+      # report an empty max in that case, and the floor below pins fence_len
+      # to a minimum of 3.
+      max_backtick_run=$( { grep -oE '`+' "$DOT_ME_DIR/voice.md" || true; } | awk '{ if (length > max) max = length } END { print max+0 }')
+      fence_len=$((max_backtick_run + 1))
+      [ "$fence_len" -lt 3 ] && fence_len=3
+      fence=$(printf '%*s' "$fence_len" '' | tr ' ' '`')
       printf '### voice.md\n\n'
+      printf '%smarkdown\n' "$fence"
       cat "$DOT_ME_DIR/voice.md"
-      printf '\n'
+      printf '\n%s\n\n' "$fence"
     fi
   fi
 

@@ -26,6 +26,10 @@ AGENTS_FILE="$CODEX_HOME/AGENTS.md"
 
 MARKER_BEGIN="<!-- dot-me:begin -->"
 MARKER_END="<!-- dot-me:end -->"
+# Match the marker line tolerating trailing whitespace and CRLF endings
+# (WSL / Windows-edited files). [[:space:]] covers \r per POSIX.
+MARKER_BEGIN_RE="^<!-- dot-me:begin -->[[:space:]]*\$"
+MARKER_END_RE="^<!-- dot-me:end -->[[:space:]]*\$"
 SUPPORTED_SPEC="0.1"
 
 MODE="standard"   # minimal | standard | full
@@ -61,9 +65,9 @@ info() { printf '%s\n' "$1"; }
 # pasted snippet that included only a begin marker).
 
 strip_block() {
-  awk -v b="$MARKER_BEGIN" -v e="$MARKER_END" '
-    $0 == b { inblock = 1; next }
-    $0 == e { inblock = 0; next }
+  awk -v br="$MARKER_BEGIN_RE" -v er="$MARKER_END_RE" '
+    $0 ~ br { inblock = 1; next }
+    $0 ~ er { inblock = 0; next }
     !inblock { print }
   ' "$AGENTS_FILE"
 }
@@ -74,8 +78,8 @@ strip_block() {
 validate_markers() {
   [ -f "$AGENTS_FILE" ] || return 0
   local begins ends
-  begins=$(grep -cF "$MARKER_BEGIN" "$AGENTS_FILE" || true)
-  ends=$(grep -cF "$MARKER_END" "$AGENTS_FILE" || true)
+  begins=$(grep -cE "$MARKER_BEGIN_RE" "$AGENTS_FILE" || true)
+  ends=$(grep -cE "$MARKER_END_RE" "$AGENTS_FILE" || true)
   if [ "$begins" != "$ends" ]; then
     err "$AGENTS_FILE has $begins '$MARKER_BEGIN' markers but $ends '$MARKER_END' markers. Refusing to mutate (would silently delete content). Hand-edit the file to balance the markers, then re-run."
   fi
@@ -85,8 +89,8 @@ validate_markers() {
   # Verify begin precedes end (awk strips to EOF if begin appears after end).
   if [ "$begins" = 1 ]; then
     local begin_line end_line
-    begin_line=$(grep -nF "$MARKER_BEGIN" "$AGENTS_FILE" | head -1 | cut -d: -f1)
-    end_line=$(grep -nF "$MARKER_END" "$AGENTS_FILE" | head -1 | cut -d: -f1)
+    begin_line=$(grep -nE "$MARKER_BEGIN_RE" "$AGENTS_FILE" | head -1 | cut -d: -f1)
+    end_line=$(grep -nE "$MARKER_END_RE" "$AGENTS_FILE" | head -1 | cut -d: -f1)
     if [ "$begin_line" -ge "$end_line" ]; then
       err "$AGENTS_FILE has '$MARKER_END' before '$MARKER_BEGIN'. Refusing to mutate. Hand-edit to fix marker order."
     fi
@@ -98,7 +102,7 @@ validate_markers
 # --- Uninstall path (no need to read dot-me content) -------------------------
 
 if [ "$UNINSTALL" -eq 1 ]; then
-  if [ ! -f "$AGENTS_FILE" ] || ! grep -qF "$MARKER_BEGIN" "$AGENTS_FILE"; then
+  if [ ! -f "$AGENTS_FILE" ] || ! grep -qE "$MARKER_BEGIN_RE" "$AGENTS_FILE"; then
     info "no dot-me block found in $AGENTS_FILE — nothing to do"
     exit 0
   fi
@@ -141,7 +145,7 @@ esac
 assert_no_marker_collision() {
   local f="$1"
   [ -f "$f" ] || return 0
-  if grep -qFx "$MARKER_BEGIN" "$f" || grep -qFx "$MARKER_END" "$f"; then
+  if grep -qE "$MARKER_BEGIN_RE" "$f" || grep -qE "$MARKER_END_RE" "$f"; then
     err "$f contains reserved dot-me marker lines ('$MARKER_BEGIN' or '$MARKER_END'); remove/alter them before install"
   fi
 }

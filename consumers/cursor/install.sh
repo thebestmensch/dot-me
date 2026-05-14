@@ -253,7 +253,7 @@ if [ -n "$PROJECT_DIR" ]; then
       info "[dry-run] $PROJECT_DIR is a git worktree — would add $target_rel and $target_bak_rel to .git/info/exclude"
     fi
     info "[dry-run] preview (first 20 lines):"
-    printf '%s\n' "$content" | head -20
+    head -20 <<<"$content"
     exit 0
   fi
 
@@ -286,15 +286,15 @@ bytes="$(printf '%s' "$content" | wc -c | tr -d ' ')"
 if [ "$DRY_RUN" -eq 1 ]; then
   info "[dry-run] mode=$MODE  bytes=$bytes  destination=Cursor Settings → Rules → User Rules"
   info "[dry-run] preview (first 20 lines):"
-  printf '%s\n' "$content" | head -20
+  head -20 <<<"$content"
   exit 0
 fi
 
-# pbcopy on macOS (only if stdin is a tty — avoid clobbering clipboard when
-# the script is piped). xclip / wl-copy not auto-detected; users on Linux can
-# pipe themselves.
+# pbcopy on macOS (only if stdout is a tty — avoid clobbering clipboard when
+# the script's output is piped, which is the actual "non-interactive" signal).
+# xclip / wl-copy not auto-detected; users on Linux can pipe themselves.
 copied=0
-if [ -t 0 ] && command -v pbcopy >/dev/null 2>&1; then
+if [ -t 1 ] && command -v pbcopy >/dev/null 2>&1; then
   printf '%s' "$content" | pbcopy
   copied=1
 fi

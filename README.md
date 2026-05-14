@@ -29,7 +29,7 @@ required: `name` in `identity.yaml`. everything else is optional. unknown keys a
 
 v0.1, solo-maintained, RFC-stage. one reference consumer (the Claude Code plugin shipped in this repo). interest from other AI tools is what graduates this from "spec the author uses" to "spec." [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/` — the format will evolve based on what real implementers hit.
 
-native integrations for Codex, Cursor, and Gemini CLI are in scope for v0.2.
+native integrations for Codex and Cursor ship in this repo. Gemini CLI is in scope for v0.2.
 
 ## Install
 
@@ -50,9 +50,17 @@ bash <(curl -fsSL https://raw.githubusercontent.com/thebestmensch/dot-me/main/co
 
 inlines `identity.yaml` (and `preferences.yaml`) into `~/.codex/AGENTS.md` between markers — idempotent re-runs, clean uninstall, preserves any existing global Codex instructions. `--with-voice` opts into the full voice profile; default keeps the global instruction chain under Codex's ~32 KiB cap. full docs: [`consumers/codex/`](consumers/codex/README.md).
 
+### Cursor
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/thebestmensch/dot-me/main/consumers/cursor/install.sh)
+```
+
+renders the dot-me block, pipes it to `pbcopy` on macOS, and prints paste instructions for Cursor Settings → Rules → User Rules. for repos where you'd rather have the rule sync from disk, `--project <dir>` writes `.cursor/rules/dot-me.mdc` instead — re-running refreshes the file with no paste step. Cursor's design forces the tradeoff: User Rules are IDE-stored (no filesystem hook), Project Rules are filesystem-backed but per-repo. full docs and modes: [`consumers/cursor/`](consumers/cursor/README.md).
+
 ### Other tools (manual)
 
-for tools without a native consumer yet — Cursor, Gemini CLI, Cowork, raw OpenAI / Anthropic API calls. the path:
+for tools without a native consumer yet — Gemini CLI, Cowork, raw OpenAI / Anthropic API calls. the path:
 
 1. `git clone git@github.com:thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
 2. paste `identity.yaml`, `voice.md`, and `preferences.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)

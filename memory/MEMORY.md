@@ -1,1 +1,3 @@
 - [Use voice skill for outgoing communications](feedback_voice_for_outgoing.md) — always invoke `/jm-voice` when drafting emails, Slack, or any text sent as James; first-pass drafts default to corporate tone
+- [Voice register routing](feedback_voice_register_routing.md) — auto-pick `/jm-voice` register flag by audience: `--pro` for GitHub/external/strangers, default for internal, `--announcement` composes
+- [Autonomous loop default](feedback_autonomous_loop_default.md) — routine-loop workflows run end-to-end including the irreversible end action; escalate only on named ambiguity triggers

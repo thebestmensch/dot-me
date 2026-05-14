@@ -2,3 +2,5 @@
 - [Voice register routing](feedback_voice_register_routing.md) — auto-pick `/jm-voice` register flag by audience: `--pro` for GitHub/external/strangers, default for internal, `--announcement` composes
 - [Autonomous loop default](feedback_autonomous_loop_default.md) — routine-loop workflows run end-to-end including the irreversible end action; escalate only on named ambiguity triggers
 - [No "X for Y" positioning for OSS projects](feedback_no_uber_for_x_positioning.md) — don't lean on PAM/.editorconfig/etc. as adoption shortcuts; define problem and solution in plain self-contained terms
+- [OSS launch discipline checklist](feedback_oss_launch_checklist.md) — positioning, credibility floor (2+ consumers before "spec" framing), competitor scan including drafts, first-follower seeding, pre-flight validation, venue selection
+- [Consolidate decisions under broad autonomy](feedback_consolidate_decisions.md) — under "continue"/autonomous flag, make routine calls inline; reserve fan-out for irreversible scope or taste calls

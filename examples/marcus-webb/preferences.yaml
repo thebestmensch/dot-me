@@ -1,0 +1,29 @@
+# Example preferences.yaml — non-engineer flavour.
+# Demonstrates `editor`/`shell`/`color_temperature` aren't load-bearing
+# for non-coders; what matters is documents, communication style,
+# research sources. Copy and edit.
+# Schema reference: SPEC.md
+
+likes:
+  - plain text over screenshots
+  - documents that lead with the conclusion
+  - long-form interview notes
+  - structured journaling (one-page weekly review)
+
+avoid:
+  - corporate hedging ("we may want to consider…")
+  - emoji-heavy doc headers
+  - Comic Sans, anywhere, ever
+  - meetings without a written brief
+
+tools:
+  word_processor: Obsidian (for notes), Google Docs (for shared editing)
+  spreadsheet: Google Sheets
+  presentation: Keynote when I can, Google Slides when the team needs it
+  research:
+    - Perplexity for first-pass exploration
+    - Linear for ticket triage
+    - Notion for shared product docs
+
+# No `editor`, no `shell`, no `color_temperature` — none of those apply
+# to my actual day. Consumers ignore absent keys.

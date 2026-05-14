@@ -1,0 +1,12 @@
+# Example preferences.yaml — minimal entries (early-career, light load).
+# Most fields intentionally absent — preferences accrete over time.
+# Schema reference: SPEC.md
+
+likes:
+  - Python
+  - clear error messages
+  - test-driven development
+
+avoid:
+  - "ChatGPT-shaped intros"
+  - one-letter variable names outside loops

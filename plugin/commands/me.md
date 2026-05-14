@@ -324,11 +324,12 @@ Optional flag: `--from <path>` — copy from a local clone instead of fetching f
      cp -R "<path>"/. "$HOME/.me/"
      ```
 
-3. **Seed content from `examples/`.** Copy the three example files into the real slots, overwriting whatever placeholder content shipped in the clone:
+3. **Seed content from a starter persona.** `examples/` ships four fictional personas in subdirs (`sam-patel/`, `maya-okonkwo/`, `marcus-webb/`, `aki-tanaka/`); pick the one whose shape is closest to your situation, then copy its three files into the real slots. Default to `sam-patel/` if unsure — it's the fully-populated reference. See `examples/README.md` for a comparison.
    ```bash
-   cp "$HOME/.me/examples/identity.yaml"    "$HOME/.me/identity.yaml"
-   cp "$HOME/.me/examples/voice.md"         "$HOME/.me/voice.md"
-   cp "$HOME/.me/examples/preferences.yaml" "$HOME/.me/preferences.yaml"
+   STARTER="sam-patel"   # or maya-okonkwo / marcus-webb / aki-tanaka
+   cp "$HOME/.me/examples/$STARTER/identity.yaml"    "$HOME/.me/identity.yaml"
+   cp "$HOME/.me/examples/$STARTER/voice.md"         "$HOME/.me/voice.md"
+   cp "$HOME/.me/examples/$STARTER/preferences.yaml" "$HOME/.me/preferences.yaml"
    ```
 
 4. **Generate fresh `.integrity` baseline.**
@@ -353,7 +354,7 @@ Optional flag: `--from <path>` — copy from a local clone instead of fetching f
    fi
    ```
 
-   If this step fails for any other reason after `~/.me/` has been seeded (permissions, full disk, etc.), the user can recover with `rm -rf ~/.me && /me init` since the seeding work is reproducible from `examples/`. Surface this recovery path in the failure message.
+   If this step fails for any other reason after `~/.me/` has been seeded (permissions, full disk, etc.), the user can recover with `rm -rf ~/.me && /me init` since the seeding work is reproducible from `examples/<persona>/`. Surface this recovery path in the failure message.
 
 6. **Initialize `.updates.log`.** Bootstrap the provenance log so subsequent `/me add` writes have a file to append to:
    ```bash

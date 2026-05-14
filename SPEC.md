@@ -137,11 +137,22 @@ dot-me describes who the user is. The user themselves can't be relied on to asse
 
 ### 6.3. Read-at-startup, not retrievable
 
-dot-me content MUST be loaded into the context at session start. It MUST NOT be exposed as model-callable retrievable content (a tool, an MCP resource, a filesystem path the agent has standing permission to read on demand) after startup.
+dot-me content MUST be loaded into the context at session start. Consumers MUST NOT add a new model-callable surface that re-fetches dot-me content on demand mid-session — no tool, no MCP resource, no skill, no plugin command that returns `~/.me/` content as a tool result.
 
-The threat is exfiltration via prompt injection — a malicious project's `CLAUDE.md` or `AGENTS.md` instructing the agent to read and exfiltrate `~/.me/voice.md`. Read-at-startup-not-retrievable is the single most effective mitigation. See Appendix A.
+**Scope of "retrievable":** This rule concerns *new surfaces a consumer adds* (a `read_user_identity` tool, an `me://` MCP resource, etc.). It does not require the underlying filesystem to be unreachable — `~/.me/identity.yaml` lives on disk, and so does any inlined copy a consumer writes (e.g., `~/.codex/AGENTS.md`). A generic filesystem tool (a `Bash` or `Read` tool with `$HOME` access) can always re-read either path. That exposure is a property of the user's tool-permission setup, not the dot-me consumer.
 
-### 6.4. Prompt-cache guidance (advisory)
+The threat the rule blocks is exfiltration via prompt injection through *dot-me-specific* tools — a malicious project's `CLAUDE.md` or `AGENTS.md` invoking a hypothetical `get_user_voice()` MCP call. Consumers that need to expose user context to the model SHOULD inline it into instructions at session start (per §6.4) rather than wiring an on-demand surface. Generic-filesystem-tool exfiltration is an orthogonal concern that user-level tool sandboxing addresses — see Appendix A.
+
+### 6.4. Consumer implementation patterns
+
+There are two practical ways to wire dot-me into a tool's startup chain:
+
+1. **By reference (`@`-include).** If the host config format supports filesystem includes (e.g., Claude Code's `CLAUDE.md` resolving `@~/.me/identity.yaml`), the consumer SHOULD prefer this — single source of truth, edits in `~/.me/` propagate without re-running the installer.
+2. **By inline copy with idempotent markers.** If the host has no include mechanism (e.g., Codex CLI as of May 2026 — its `AGENTS.md` reader treats `@<path>` as literal text), the consumer SHOULD inline the file contents between named delimiters (e.g., `<!-- dot-me:begin -->` / `<!-- dot-me:end -->`) and provide an installer that replaces the block in place. Consumers MUST preserve content outside the markers and MUST provide a clean uninstall path.
+
+Inline consumers SHOULD also surface the host's instruction-budget cap (e.g., Codex's combined 32 KiB across the AGENTS.md chain) and offer optional modes that omit heavier files like `voice.md` when budget is tight.
+
+### 6.5. Prompt-cache guidance (advisory)
 
 Stable content (identity, voice) belongs before volatile content (preferences) in any cached system-prompt prefix. Mechanics differ across providers — as of May 2026, Anthropic uses explicit `cache_control` breakpoints with provider-specified minimum-token thresholds; OpenAI uses automatic exact-prefix caching with a 1024-token minimum; others vary. Provider mechanics and thresholds change across API versions — verify current behavior before relying on specific numbers. Consumers SHOULD bundle dot-me content with other stable system content to clear provider cache minimums, since the three files alone are usually too small to cache independently.
 

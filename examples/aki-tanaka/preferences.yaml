@@ -1,0 +1,29 @@
+# Example preferences.yaml — polyglot frontend engineer.
+# Demonstrates: editor/shell preferences in English (tool names are
+# English by convention), aesthetic preferences in Japanese where they
+# read more naturally.
+# Schema reference: SPEC.md
+
+editor: Helix
+shell: fish
+color_temperature: warm
+
+likes:
+  - 静かな環境で集中して書くこと   # writing in a quiet environment
+  - design tokens that survive a redesign
+  - typography that doesn't compete with the content
+  - 古い CSS の仕様書を読むこと   # reading old CSS specs
+
+avoid:
+  - JavaScript-heavy "frameworks" that re-implement the cascade
+  - emoji in commit messages
+  - ペアプロを長時間続けること   # extended pair-programming sessions
+
+tools:
+  ide: Helix (primary), VS Code (occasionally for collaborative editing)
+  design: Figma
+  diagrams: Excalidraw
+
+# Whether values are written in Japanese or English is a user choice;
+# the schema only specifies the field names and types, not the value
+# language. Mixing is fine — consumers should not assume English content.

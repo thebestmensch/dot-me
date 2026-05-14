@@ -1,0 +1,45 @@
+# Example identity.yaml — fictional polyglot persona.
+# Native Japanese speaker working primarily in Japanese; voice.md is
+# in Japanese with English knows_about. Demonstrates the schema doesn't
+# assume English content.
+# Copy to ~/.me/identity.yaml and edit.
+# Schema reference: SPEC.md (sibling file in this repo)
+
+name: 田中 朗 (Aki Tanaka)
+preferred_name: Aki
+pronouns: she/her
+handle: "@akitanaka"
+blurb: フロントエンドエンジニア。京都。お茶と古い本と CSS の細部。
+# (Translation for English readers: Frontend engineer. Kyoto. Tea, old books, CSS details.
+# The schema does not require this translation — it's here only because the example needs
+# to be readable by English-speaking strangers landing on the repo. In real use, no comment
+# needed.)
+spec_version: "0.1"
+
+location:
+  timezone: Asia/Tokyo
+
+# knows_about stays English even when voice/blurb are not — it functions
+# as keywords for the agent's mental model, and English keywords map
+# more cleanly to library / framework names that are themselves English.
+# Users writing predominantly in another language can localise this if
+# their tooling speaks the language natively.
+knows_about:
+  - TypeScript
+  - React
+  - CSS architecture and design tokens
+  - accessibility (WCAG 2.2)
+  - typography
+
+work:
+  - role: Senior frontend engineer
+    org: 京都のスタジオ (a Kyoto design studio)
+
+family: []
+
+inner_circle: []
+
+pets:
+  - name: もも (Momo)
+    species: cat
+    breed: scottish fold

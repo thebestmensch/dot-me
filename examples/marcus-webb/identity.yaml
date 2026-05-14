@@ -1,0 +1,33 @@
+# Example identity.yaml — fictional non-engineer persona.
+# Product manager, demonstrates dot-me works for agentic workflows that
+# aren't code (research, planning, writing, customer interviews).
+# Copy to ~/.me/identity.yaml and edit.
+# Schema reference: SPEC.md (sibling file in this repo)
+
+name: Marcus Webb
+preferred_name: Marc
+pronouns: he/him
+handle: "@marcwebbpm"
+blurb: PM at a mid-stage health-tech startup. Tea, distance running, plain-text everything.
+spec_version: "0.1"
+
+location:
+  timezone: Europe/London
+
+knows_about:
+  - product strategy
+  - SQL (intermediate — for cohort queries)
+  - clinical workflows
+  - regulated-environment release management
+
+work:
+  - role: Senior PM
+    org: a mid-stage health-tech company
+
+family:
+  - relationship: partner
+    name: Helen
+
+pets: []
+
+inner_circle: []

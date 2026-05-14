@@ -31,7 +31,7 @@ For security issues: see [SECURITY.md](SECURITY.md) — please email, don't open
 
 ## Local development
 
-There's nothing to build. The "tooling" is `git`, a text editor, and consumer tools that read these files. To test changes to the spec, edit the linked design doc in [`thebestmensch/home-lab`](https://github.com/thebestmensch/home-lab) under `docs/superpowers/specs/`.
+There's nothing to build. The "tooling" is `git`, a text editor, and consumer tools that read these files. To propose spec changes, edit [`SPEC.md`](SPEC.md) in this repo. Design history and adversarial-review thread for v0.1 live in the maintainer's home-lab repo (linked from `SPEC.md`).
 
 ## Code of conduct
 

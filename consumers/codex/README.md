@@ -100,7 +100,7 @@ A future iteration may add a SessionStart-equivalent hook if Codex ships one.
 bash ~/.me/consumers/codex/install.sh --uninstall
 ```
 
-Strips the markered block. Anything outside the markers is preserved. A backup lands at `~/.codex/AGENTS.md.bak`.
+Strips the marked block. Anything outside the markers is preserved. A backup lands at `~/.codex/AGENTS.md.bak`.
 
 To fully reverse:
 

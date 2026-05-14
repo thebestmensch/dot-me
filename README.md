@@ -40,7 +40,7 @@ native integrations for Codex, Cursor, and Gemini CLI are in scope for v0.2.
 /plugin install dot-me@dot-me
 ```
 
-handles loading the three files into your session context, drops in the `/me` command for adding facts mid-session, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
+handles loading `identity.yaml` into session context, drops in the `/me` command for managing all three files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
 
 ### Other tools (manual, until native support lands)
 

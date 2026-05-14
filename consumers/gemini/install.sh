@@ -52,6 +52,10 @@ GEMINI_FILE=""            # resolved after arg parsing
 
 MARKER_BEGIN="<!-- dot-me:begin -->"
 MARKER_END="<!-- dot-me:end -->"
+# Match marker lines tolerating trailing whitespace / CRLF endings
+# (WSL / Windows-edited files). [[:space:]] covers \r per POSIX.
+MARKER_BEGIN_RE="^<!-- dot-me:begin -->[[:space:]]*\$"
+MARKER_END_RE="^<!-- dot-me:end -->[[:space:]]*\$"
 SUPPORTED_SPEC="0.1"
 
 MODE="standard"   # minimal | standard | full
@@ -89,13 +93,10 @@ warn() { printf 'warning: %s\n' "$1" >&2; }
 
 # --- Preflight --------------------------------------------------------------
 
-mkdir -p "$GEMINI_HOME"
-[ -f "$GEMINI_FILE" ] || touch "$GEMINI_FILE"
-
 strip_block() {
-  awk -v b="$MARKER_BEGIN" -v e="$MARKER_END" '
-    $0 == b { inblock = 1; next }
-    $0 == e { inblock = 0; next }
+  awk -v br="$MARKER_BEGIN_RE" -v er="$MARKER_END_RE" '
+    $0 ~ br { inblock = 1; next }
+    $0 ~ er { inblock = 0; next }
     !inblock { print }
   ' "$GEMINI_FILE"
 }
@@ -104,9 +105,10 @@ strip_block() {
 # codex consumer. Without this, an orphan begin marker silently deletes to
 # EOF on the next install.
 validate_markers() {
+  [ -f "$GEMINI_FILE" ] || return 0
   local begins ends
-  begins=$(grep -cF "$MARKER_BEGIN" "$GEMINI_FILE" || true)
-  ends=$(grep -cF "$MARKER_END" "$GEMINI_FILE" || true)
+  begins=$(grep -cE "$MARKER_BEGIN_RE" "$GEMINI_FILE" || true)
+  ends=$(grep -cE "$MARKER_END_RE" "$GEMINI_FILE" || true)
   if [ "$begins" != "$ends" ]; then
     err "$GEMINI_FILE has $begins '$MARKER_BEGIN' markers but $ends '$MARKER_END' markers. Refusing to mutate (would silently delete content). Hand-edit the file to balance the markers, then re-run."
   fi
@@ -115,8 +117,8 @@ validate_markers() {
   fi
   if [ "$begins" = 1 ]; then
     local begin_line end_line
-    begin_line=$(grep -nF "$MARKER_BEGIN" "$GEMINI_FILE" | head -1 | cut -d: -f1)
-    end_line=$(grep -nF "$MARKER_END" "$GEMINI_FILE" | head -1 | cut -d: -f1)
+    begin_line=$(grep -nE "$MARKER_BEGIN_RE" "$GEMINI_FILE" | head -1 | cut -d: -f1)
+    end_line=$(grep -nE "$MARKER_END_RE" "$GEMINI_FILE" | head -1 | cut -d: -f1)
     if [ "$begin_line" -ge "$end_line" ]; then
       err "$GEMINI_FILE has '$MARKER_END' before '$MARKER_BEGIN'. Refusing to mutate. Hand-edit to fix marker order."
     fi
@@ -136,7 +138,7 @@ LEGACY_LINK="$GEMINI_HOME/dot-me"
 if [ "$UNINSTALL" -eq 1 ]; then
   block_present=0
   legacy_present=0
-  grep -qF "$MARKER_BEGIN" "$GEMINI_FILE" && block_present=1
+  [ -f "$GEMINI_FILE" ] && grep -qE "$MARKER_BEGIN_RE" "$GEMINI_FILE" && block_present=1
   [ -L "$LEGACY_LINK" ] && legacy_present=1
   if [ "$block_present" -eq 0 ] && [ "$legacy_present" -eq 0 ]; then
     info "no dot-me block or legacy symlink found — nothing to do"
@@ -176,6 +178,26 @@ case "$spec_version" in
     err "identity.yaml spec_version=$spec_version is unknown to this installer (supports $SUPPORTED_SPEC); upgrade consumers/gemini/install.sh first"
     ;;
 esac
+
+# --- Marker-collision preflight ---------------------------------------------
+# Inlined source files are copied verbatim. If any source contains literal
+# marker lines, the next run sees duplicate/misaligned markers and refuses.
+
+assert_no_marker_collision() {
+  local f="$1"
+  [ -f "$f" ] || return 0
+  if grep -qE "$MARKER_BEGIN_RE" "$f" || grep -qE "$MARKER_END_RE" "$f"; then
+    err "$f contains reserved dot-me marker lines ('$MARKER_BEGIN' or '$MARKER_END'); remove/alter them before install"
+  fi
+}
+
+assert_no_marker_collision "$DOT_ME_DIR/identity.yaml"
+if [ "$MODE" = "standard" ] || [ "$MODE" = "full" ]; then
+  assert_no_marker_collision "$DOT_ME_DIR/preferences.yaml"
+fi
+if [ "$MODE" = "full" ]; then
+  assert_no_marker_collision "$DOT_ME_DIR/voice.md"
+fi
 
 # --- Compose the block ------------------------------------------------------
 #
@@ -230,6 +252,9 @@ if [ "$DRY_RUN" -eq 1 ]; then
 fi
 
 # --- Write ------------------------------------------------------------------
+
+mkdir -p "$GEMINI_HOME"
+[ -f "$GEMINI_FILE" ] || touch "$GEMINI_FILE"
 
 # Migrate any leftover symlink from older dev installs.
 if [ -L "$LEGACY_LINK" ]; then

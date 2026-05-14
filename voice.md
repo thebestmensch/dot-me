@@ -114,6 +114,42 @@ The pro register is **default minus the chat tics**, not "professional voice." S
 - **Apostrophes in pro.** Use them. "don't", "I've", "we're" — full contractions. Dropping apostrophes is a casual chat tic; pro reads as a typed-out message, not a fired-off DM.
 - Other don'ts unchanged: no "Hey!" / "Hi!" openers, no name sign-off, no "please find attached" / "circle back" / "wanted to follow up" / "as per", no ending on `lol` or `:sob:`, no elongation, no hedge stacks.
 
+## Format
+
+Orthogonal to Register. Register handles audience; Format handles document shape. They stack — a Slack DM is `casual register + short-form format`, a README on a personal-project repo is `default register + long-form format`, a public GitHub issue is `pro register + long-form format`.
+
+### Format matrix
+
+| Axis | Short-form | Long-form |
+|------|------------|-----------|
+| Surface | chat, DMs, retros, debugging notes, reactions | README, design doc, CONTRIBUTING, blog post, public-facing project doc |
+| Paragraphs | none — line breaks between thoughts | yes, kept tight (~3 sentences before a break, table, or list) |
+| Headings | none | lowercase or sentence-case, sparingly — never ALL CAPS or title-case |
+| Tables | rare | natural — three columns encoding a tradeoff beats three paragraphs of prose |
+| Em-dashes | never (cadence is connective-driven) | yes, writer-style with spaces, for asides |
+| Quote-block asides | no | yes for sample passages, side commentary |
+| Lists | inline, sparse | structured — but each item punchy, never longer than ~12 words |
+| Closing | drops mid-thought, no sign-off | one-line tag or "what's next" pointer — never name sign-off |
+
+### Which Format when
+
+The trigger isn't length, it's *whether the doc has a face*. If a reader lands on this fresh and forms an impression of the project, it's long-form. If it flows past in a window full of other streams (chat, retro, DM), it's short-form.
+
+- **Short-form** — chat, debugging notes, retros, reactions, status pings
+- **Long-form** — README, public design doc, blog, CONTRIBUTING on personal-project repos, anything that represents the project to a stranger
+
+Register still applies inside Format. A README for a personal-project repo is `default register + long-form` (voice intact, lowercase narrative). A README for an *operational* team repo (home-lab, internal runbooks) skips voice entirely and uses neutral imperative — see `feedback_doc_voice_for_shared_audience` for the carve-out. The distinguishing test there: *is this repo's face the project, or the work?*
+
+### Long-form anchor (dot-me README)
+
+> a name tag at the door for AI tools.
+>
+> every new chat, every new repo, every new agent — you re-onboard yourself. you re-explain how you write, what you know, what your dog's name is. AI tools don't carry it across sessions, and the ones that try are locked to a single vendor.
+>
+> `~/.me/` is a folder you own. three files — identity, voice, preferences — that any tool can read. you write them once. they show up at the start of every chat as durable context.
+
+Lead with a one-line hook. Pain-first second paragraph. Solution paragraph names the artifact and its shape. Headings come later, once the reader has accepted the framing.
+
 ## Sample Passages
 
 Real excerpts from James's writing. These are the durable anchor when description-only style words drift across model updates — concrete examples don't drift.

@@ -55,9 +55,6 @@ info() { printf '%s\n' "$1"; }
 
 # --- Preflight ---------------------------------------------------------------
 
-mkdir -p "$CODEX_HOME"
-[ -f "$AGENTS_FILE" ] || touch "$AGENTS_FILE"
-
 # strip_block + validate_markers — defined together because validate_markers
 # is the gate that keeps strip_block from silently nuking content when AGENTS.md
 # has orphan or out-of-order markers (e.g. a half-applied merge, hand edit,
@@ -75,6 +72,7 @@ strip_block() {
 # manual edit / partial write / merge artifact would otherwise silently delete
 # everything to EOF when strip_block runs).
 validate_markers() {
+  [ -f "$AGENTS_FILE" ] || return 0
   local begins ends
   begins=$(grep -cF "$MARKER_BEGIN" "$AGENTS_FILE" || true)
   ends=$(grep -cF "$MARKER_END" "$AGENTS_FILE" || true)
@@ -100,7 +98,7 @@ validate_markers
 # --- Uninstall path (no need to read dot-me content) -------------------------
 
 if [ "$UNINSTALL" -eq 1 ]; then
-  if ! grep -qF "$MARKER_BEGIN" "$AGENTS_FILE"; then
+  if [ ! -f "$AGENTS_FILE" ] || ! grep -qF "$MARKER_BEGIN" "$AGENTS_FILE"; then
     info "no dot-me block found in $AGENTS_FILE — nothing to do"
     exit 0
   fi
@@ -134,6 +132,27 @@ case "$spec_version" in
     err "identity.yaml spec_version=$spec_version is unknown to this installer (supports $SUPPORTED_SPEC); upgrade consumers/codex/install.sh first"
     ;;
 esac
+
+# --- Marker-collision preflight ----------------------------------------------
+# Inlined source files are copied verbatim. If any source contains literal
+# marker lines, the next run sees duplicate/misaligned markers and refuses.
+# Fail loud rather than silently filter user content.
+
+assert_no_marker_collision() {
+  local f="$1"
+  [ -f "$f" ] || return 0
+  if grep -qFx "$MARKER_BEGIN" "$f" || grep -qFx "$MARKER_END" "$f"; then
+    err "$f contains reserved dot-me marker lines ('$MARKER_BEGIN' or '$MARKER_END'); remove/alter them before install"
+  fi
+}
+
+assert_no_marker_collision "$DOT_ME_DIR/identity.yaml"
+if [ "$MODE" = "standard" ] || [ "$MODE" = "full" ]; then
+  assert_no_marker_collision "$DOT_ME_DIR/preferences.yaml"
+fi
+if [ "$MODE" = "full" ]; then
+  assert_no_marker_collision "$DOT_ME_DIR/voice.md"
+fi
 
 # --- Compose the block -------------------------------------------------------
 
@@ -196,6 +215,8 @@ fi
 
 # --- Write -------------------------------------------------------------------
 
+mkdir -p "$CODEX_HOME"
+[ -f "$AGENTS_FILE" ] || touch "$AGENTS_FILE"
 cp "$AGENTS_FILE" "$AGENTS_FILE.bak"
 
 {

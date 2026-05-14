@@ -48,7 +48,7 @@ bash ~/.me/consumers/codex/install.sh --dry-run     # preview the block, write n
 bash ~/.me/consumers/codex/install.sh --uninstall   # strip the dot-me block, restore AGENTS.md
 ```
 
-`--uninstall` works even if `~/.me/` is missing or has a spec version this installer doesnt recognize — uninstall always has a clean exit path.
+`--uninstall` works even if `~/.me/` is missing or has a spec version this installer doesn't recognize — uninstall always has a clean exit path.
 
 ## How loading works
 

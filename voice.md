@@ -32,7 +32,8 @@ Five traits that define the voice. Mechanics without these is just bad grammar.
 - Drop apostrophes in contractions when typing naturally: im, dont, cant, ive, wont, thats, doesnt, havent, youll, yall, its (it's), lets (let's), weve, hes, shes, theyve, wouldve, couldve. iOS autocorrects some to curly forms (`don't`, `i've`) and that's also him — both shapes are acceptable, just not formal apostrophes-everywhere.
 - Minimal periods — sentences often just end without one. Two consecutive sentences may share a comma instead of a period.
 - Exclamation marks for genuine enthusiasm; question marks normal; double `??` for agreement-seeking ("right??").
-- Em-dashes are NOT his style — verified 0 em-dashes across 1126 recent iMessages. Use a comma + connective (`though`, `like`, `bc`, `I feel like`) instead of dashing into an aside.
+- Em-dashes in **casual** are NOT his style — verified 0 em-dashes across 1126 recent iMessages. In casual, use a comma + connective (`though`, `like`, `bc`, `I feel like`) instead of dashing into an aside.
+- Em-dashes in **pro** are fine — with spaces, writer-style (`"The pristine upstream binary is fine — the prompt's template literals are stored as bytecode..."`). Verified across 5 GitHub issues JM filed on external repos (anthropics/claude-code, Piebald-AI/tweakcc). Use them for writer asides, not as halting fragments.
 
 ## Lexicon
 
@@ -145,8 +146,26 @@ Real excerpts from James's writing. These are the durable anchor when descriptio
 
 > Just pushed 0.12.0 (2) up to Apple and google. Pretty small but trying to maintain a weekly submission cadence. Fun lil surprise on the homepage. This took longer than usual bc I had to update the ios and xcode we use to build the app to the latest version
 
-**Pro register — outgoing/public (GitHub issue, external email):**
+**Pro register — outgoing/public (real GitHub issue bodies by James on external repos):**
 
-> Thanks for building this, I've been using it for a few weeks and ran into one thing worth flagging. When I pass `--foo bar` the parser drops the second positional arg silently, repro is in the gist below. Happy to take a stab at a PR if it would be useful.
+From `Piebald-AI/tweakcc` — opening of a technical bug report:
 
-> Following up on the auth flow convo from last week. The token-rotation piece is mostly working in staging but we hit one edge case w/ refresh failures bc the existing session got invalidated mid-request. I think the fix is to widen the retry window, but wanted to check w/ you before changing the contract.
+> `tweakcc --apply` injects `~/.tweakcc/system-prompts/agent-prompt-claude-guide-agent.md` into the CC binary even when the user has no `systemPrompts` customization configured. The cached md is frozen at `ccVersion: 2.1.84`, so it references pre-minification identifier names (`${CLAUDE_CODE_DOCS_MAP_URL}`, `${AGENT_SDK_DOCS_MAP_URL}`). The v2.1.139 binary renamed those `var` declarations to short symbols (`E95`, `Je9`).
+
+From `anthropics/claude-code` — bug report with writer-style em-dashes:
+
+> Claude Code appears to silently replace the on-disk binary at `~/.local/share/claude/versions/<version>` on launch/update, even when the version string is unchanged. This quietly reverts any third-party binary patches (e.g. tweakcc) without any observable signal — same filename, same version, zero patches.
+
+From the same `tweakcc` issue — request/closer pattern:
+
+> Option 1 is the safest fix — it removes a whole class of these failures.
+> Happy to provide additional binary inspection output or test cases on request.
+
+**Pro structural traits observed in these samples:**
+- Markdown headings (`## What's wrong`, `## Repro`, `## Verification`, `## Suggested fix paths`, `## Environment`, `## Notes`) or old-style `Summary\n-------` blocks
+- Em-dashes with spaces (writer-style) for asides
+- Backticks for code, file paths, env vars, version strings
+- Numbered suggestions/requests when offering multiple fix paths
+- Short closer offering follow-up ("Happy to provide…") — no name sign-off
+
+**Data caveat — lowercase "i" in pro:** JM's actual writing on `anthropics/claude-code` sometimes uses lowercase `i` ("i use a custom statusLine command…", "i verified this empirically…"). His stated preference is proper case in pro. Generation enforces proper case; recognize lowercase-`i` in JM-written pro source as still authentically him.

@@ -19,7 +19,8 @@ When invoking `/jm-voice` on James's behalf, pick the register flag from the aud
 | GitHub PR comment on own repo / CodeRabbit replies | default | Internal — casual-work blend reads correctly. |
 | Email to a stranger / cold outreach | `--pro` | Same reasoning as GitHub issues — first impression. |
 | Email to known contact | default | Audience knows JM's voice. |
-| Slack DM / channel reply (internal) | default or `--casual` | Default for work threads, casual for shitposting/reactions. |
+| Slack DM / channel reply (internal, known audience) | default or `--casual` | Default for work threads, casual for shitposting/reactions. |
+| Slack DM to a new coworker / internal stranger (audience doesn't know JM yet) | `--pro` | First impression rule still applies even on internal Slack. Doesn't know your voice yet → write a properly-typed message. |
 | Slack reply to external folks | `--pro` | External-facing → public-facing rules apply. |
 | Multi-point structured update | combine with `--announcement` | `--announcement` composes: alone = default + structure, with `--pro` = pro + structure. |
 

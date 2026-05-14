@@ -1,12 +1,13 @@
 # Personal identity — invariant facts about user-as-subject.
 # Managed by /me (any subcommand). Direct edits will trigger the SessionStart integrity hook.
-# Schema: see home-lab docs/superpowers/specs/2026-05-05-personal-context-design.md
+# Schema: see SPEC.md (sibling file in this repo)
 
 name: James Mensch
 preferred_name: JM
 pronouns: he/him
 handle: "@thebestmensch"
 blurb: Building products that make the world a better place.
+spec_version: "0.1"
 
 location:
   timezone: America/Chicago           # IANA tz; the one strictness this file has

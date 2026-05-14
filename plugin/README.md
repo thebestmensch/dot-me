@@ -58,7 +58,7 @@ rm -rf ~/.me                       # only if you don't want the content
 
 ## Spec
 
-This plugin is one implementation of the format. The format itself is the contract — see the [v0.1 spec](https://github.com/thebestmensch/home-lab/blob/main/docs/superpowers/specs/2026-05-05-personal-context-design.md).
+This plugin is one implementation of the format. The format itself is the contract — see [`SPEC.md`](../SPEC.md) in the parent dot-me repo.
 
 ## License
 

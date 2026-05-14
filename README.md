@@ -42,9 +42,17 @@ native integrations for Codex, Cursor, and Gemini CLI are in scope for v0.2.
 
 handles loading `identity.yaml` into session context, drops in the `/me` command for managing all three files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
 
-### Other tools (manual, until native support lands)
+### Codex CLI
 
-dot-me has not been integrated natively into other tools yet. for tools with a global-instructions or system-prompt field, the manual path:
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/thebestmensch/dot-me/main/consumers/codex/install.sh)
+```
+
+inlines `identity.yaml` (and `preferences.yaml`) into `~/.codex/AGENTS.md` between markers — idempotent re-runs, clean uninstall, preserves any existing global Codex instructions. `--with-voice` opts into the full voice profile; default keeps the global instruction chain under Codex's ~32 KiB cap. full docs: [`consumers/codex/`](consumers/codex/README.md).
+
+### Other tools (manual)
+
+for tools without a native consumer yet — Cursor, Gemini CLI, Cowork, raw OpenAI / Anthropic API calls. the path:
 
 1. `git clone git@github.com:thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
 2. paste `identity.yaml`, `voice.md`, and `preferences.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)

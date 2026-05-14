@@ -1,0 +1,25 @@
+# Example identity.yaml — fictional persona to demonstrate sparse v0.1 usage.
+# Early-career developer, two months into first job. Hasn't filled out
+# preferences much yet. Copy to ~/.me/identity.yaml and edit.
+# Schema reference: SPEC.md (sibling file in this repo)
+
+name: Maya Okonkwo
+pronouns: she/her
+spec_version: "0.1"
+
+location:
+  timezone: Africa/Lagos
+
+knows_about:
+  - Python
+  - learning Rust
+  - data structures
+
+work:
+  - role: Junior backend engineer
+    org: Lagos fintech (eight months in)
+
+# Note: no `family`, no `inner_circle`, no `pets`, no `preferred_name`,
+# no `handle`, no `blurb`. Everything optional. The schema lets users
+# fill the parts that matter to them and leave the rest empty —
+# consumers ignore what isn't there.

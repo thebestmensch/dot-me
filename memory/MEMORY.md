@@ -5,3 +5,4 @@
 - [OSS launch discipline checklist](feedback_oss_launch_checklist.md) — positioning, credibility floor (2+ consumers before "spec" framing), competitor scan including drafts, first-follower seeding, pre-flight validation, venue selection
 - [Consolidate decisions under broad autonomy](feedback_consolidate_decisions.md) — under "continue"/autonomous flag, make routine calls inline; reserve fan-out for irreversible scope or taste calls
 - [Chezmoi changes use branch + PR](feedback_chezmoi_pr_workflow.md) — never commit + push direct to chezmoi main; feature branch → push → `gh pr create` so CodeRabbit reviews the diff
+- [Workaround before auth ask](feedback_workaround_before_auth_ask.md) — when CC can't trigger interactive auth (Touch ID, browser), build a CC-runnable workaround (direct API call, monkey-patch in $CLAUDE_JOB_DIR) before punting to JM

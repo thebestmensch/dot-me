@@ -12,7 +12,7 @@
       "name": "dot-me",
       "source": "./plugin",
       "description": "Portable user-context for AI tools — read identity, voice, and preferences from ~/.me/ at session start. The /me slash command manages content.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "homepage": "https://github.com/thebestmensch/dot-me",
       "license": "MIT",
       "keywords": ["personal-context", "identity", "voice", "preferences", "dot-me", "portable", "vCard", "session-start"]

@@ -1,7 +1,7 @@
 {
   "name": "dot-me",
   "description": "Portable user-context for AI tools — read identity, voice, and preferences from ~/.me/ at session start. The /me slash command manages content. Reference implementation of the dot-me v0.1 spec.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "James Mensch",
     "url": "https://github.com/thebestmensch"

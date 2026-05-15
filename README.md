@@ -12,6 +12,14 @@ tools that opt in read them when they start. claude code reads them via a plugin
 
 the files are yours. delete them and nothing breaks.
 
+## See it work
+
+![dot-me demo: claude code and codex cli both reading the same identity.yaml](docs/dotme-demo.gif)
+
+one `identity.yaml`. claude code reads it. codex cli reads it. same answer, no copy-paste.
+
+[interactive version on asciinema.org](https://asciinema.org/a/obe7oBGbHzr2LN74) — pausable, scrubable, copy commands straight out of the player.
+
 ## The shape
 
 ```

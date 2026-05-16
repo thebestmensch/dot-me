@@ -15,5 +15,4 @@
 - [Format clarify on visualization](feedback_format_clarify_on_visualization.md) — creative-artifact asks with ambiguous medium → offer one-line format choice up front; don't pick a silent default
 - [Maintenance-mode build chain](feedback_maintenance_mode_build_chain.md) — static-site generator in maintenance mode is NOT adoption-safe; plugins/MD-extensions/search-JS/nav-schema rot even when HTML output doesn't
 - [Flip condition is a tell](feedback_flip_condition_is_a_tell.md) — when a rec says "if X then drop entire rec," X is usually the actual state; promote flip-conditions to primary, invert burden of proof
-- [Linear view sort prefs](reference_linear_view_sort_prefs.md) — Linear customView sort uses `viewOrdering`+`viewOrderingDirection`; `issueSorting` silently succeeds + stores junk (JSONObject = no validation)
 - [gh search user flags](reference_gh_search_user_flags.md) — `gh search issues/prs` returns `[]` on `involves:@me` query token; must use `--involves <user>` / `--review-requested <user>` flags with explicit username

@@ -4,3 +4,4 @@
 2026-05-11T19:00:54Z	me-rename	identity.yaml	header comment: /me-add → /me (umbrella)
 2026-05-11T19:00:54Z	me-rename	preferences.yaml	header comment: /me-add → /me (umbrella)
 2026-05-11T21:10:09Z	me-add	identity.yaml	add pronouns, handle, blurb fields
+2026-05-16T19:01:24Z	me-add	identity.yaml	preferred_name: JM → James

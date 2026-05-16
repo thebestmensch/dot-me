@@ -7,3 +7,4 @@
 - [Chezmoi changes use branch + PR](feedback_chezmoi_pr_workflow.md) — never commit + push direct to chezmoi main; feature branch → push → `gh pr create` so CodeRabbit reviews the diff
 - [Workaround before auth ask](feedback_workaround_before_auth_ask.md) — when CC can't trigger interactive auth (Touch ID, browser), build a CC-runnable workaround (direct API call, monkey-patch in $CLAUDE_JOB_DIR) before punting to JM
 - [Explicit verb over flag](feedback_explicit_verb_over_flag.md) — new variant of `/jm-*` command? Default to dedicated slash command, not flag on parent; "flag is too implicit"
+- [OneOnMe Linear SA path](reference_oom_linear_sa_path.md) — fetch via Keychain `op-token-oneonme-machine` + `op://machine/machine_linear_oneonme/cli_api_key`; not reachable from default SA token

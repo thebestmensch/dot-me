@@ -102,6 +102,8 @@ Freeform Markdown. The five section headers below are a recommended convention, 
 
 Content within sections is intentionally unstructured — voice is artistic, not enumerable. Consumers reading `voice.md` MUST treat it as plain prose to load into context, not as structured data to parse.
 
+**Authoring tip — name the quiet traits, not just the loud ones.** It's tempting to capture only the traits a reader would notice in 30 seconds (humor, bluntness, hedging). But generation defaults strip whatever isn't named, so unnamed traits that *do* show up in your writing — sincerity, vulnerability, restraint, formality, warmth — quietly disappear from output. If a sample passage of yours has a trait the trait list doesn't mention, that's a gap. Name it.
+
 ### 5.3. `preferences.yaml`
 
 ```yaml

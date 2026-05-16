@@ -1,6 +1,6 @@
-# dot-me — Personal Context Spec (v0.1)
+# dot-me — Personal Context Spec (v0.2)
 
-**Date:** 2026-05-05
+**Date:** 2026-05-16
 **Status:** RFC, solo-maintained
 **Scope:** Schema, load contract, update invariants, and precedence vs existing personal-context layers (AGENTS.md, Codex memories, Claude Code global CLAUDE.md, `~/.agents/profile/user.md`) for a lightweight, file-based personal-context standard at `~/.me/`.
 **Driver:** AI tools re-onboard the user in every new project, ticket, subagent, and chat. There is no portable, file-based standard for "who is the human at the keyboard" — AGENTS.md handles project context, vendor memory features handle conversation history, neither covers durable personal identity. dot-me fills that gap as the lowest-effort viable answer.
@@ -53,14 +53,26 @@ Each file has a defined shape. Schemas are intentionally loose — most fields a
 
 ```yaml
 name: <string>                    # required
-preferred_name: <string>          # optional
+preferred_name: <string>          # optional, how to address the user in prose
+nickname: <string>                # optional, informal short label (vCard NICKNAME / FOAF foaf:nick)
 pronouns: <string>                # optional, e.g. "he/him", "she/her", "they/them"
-handle: <@-prefixed string>       # optional, primary social handle (e.g. "@thebestmensch")
+email: <string>                   # optional, primary contact email (vCard EMAIL / Schema.org email)
+website: <URI>                    # optional, canonical homepage (vCard URL / Schema.org url)
+avatar: <URI>                     # optional, profile image URI (vCard PHOTO / Schema.org image / OIDC picture)
+handle: <@-prefixed string>       # optional, legacy single-handle field; producers SHOULD use `social_profiles` instead
+social_profiles:                  # optional, list of social accounts (JSON Resume basics.profiles shape)
+  - network: <string>             #   e.g. "GitHub", "Mastodon", "Bluesky", "LinkedIn"
+    url: <URI>
 blurb: <one-line string>          # optional, short self-description / bio line
-spec_version: "0.1"               # optional but recommended; pins the schema version
+headline: <one-line string>       # optional, professional label (JSON Resume basics.label / Schema.org jobTitle)
+spec_version: "0.2"               # optional but recommended; pins the schema version
 location:
   timezone: <IANA tz string>      # required if location present
-knows_about:                      # optional, schema.org/knowsAbout semantics
+  city: <string>                  # optional, free-text city / locality
+  country: <ISO 3166-1 alpha-2>   # optional, two-letter country code (e.g. "US", "GB")
+languages:                        # optional, BCP 47 language tags (Schema.org knowsLanguage)
+  - <bcp47 tag>                   #   e.g. "en", "en-US", "fr"
+knows_about:                      # optional, Schema.org knowsAbout semantics — domain expertise, NOT spoken languages
   - <free-text topic>
 work:                             # optional
   - role: <string>
@@ -70,7 +82,11 @@ family: []                        # optional, may be deferred to v1
 inner_circle: []                  # optional, may be deferred to v1
 ```
 
-Required: `name`. The single strictness elsewhere is `location.timezone` — when `location` is present, the timezone MUST be a valid IANA identifier (e.g., `America/Chicago`). Everything else is optional.
+Required: `name`. The single strictness elsewhere is `location.timezone` — when `location` is present, the timezone MUST be a valid IANA identifier (e.g., `America/Chicago`). `location.country` SHOULD be ISO 3166-1 alpha-2 when present; `languages` SHOULD be BCP 47 tags when present. Everything else is optional.
+
+**`handle` vs `social_profiles` (v0.2):** v0.1 carried a single opaque `handle` string. v0.2 introduces `social_profiles` as a list of `{network, url}` objects (the shape used by JSON Resume, Schema.org `sameAs`, and vCard `IMPP`/`X-SOCIALPROFILE`). `handle` is retained for backward compatibility — consumers MUST continue to read it — but new producers SHOULD prefer `social_profiles`. When both are present, `social_profiles` is authoritative.
+
+**`languages` vs `knows_about` (v0.2):** Schema.org separates `knowsLanguage` (spoken/written languages) from `knowsAbout` (domain expertise). v0.1 conflated them; v0.2 introduces `languages` as the dedicated field. `knows_about` retains its v0.1 semantics — free-text expertise topics, not languages.
 
 ### 5.2. `voice.md`
 
@@ -245,7 +261,7 @@ These are not part of the format. A consumer MUST work correctly whether or not 
 - MCP-resource architecture (could expose `~/.me/` files as resources; conflicts with §6.3 read-at-startup rule for v0.1).
 - Compatibility profile for `~/.agents/profile/user.md` (see §8.3).
 
-## Open questions for v0.2
+## Open questions for v0.3
 
 - Should `voice.md` allow optional YAML frontmatter for structured metadata (e.g., `voice_version`) without breaking the prose-not-data rule?
 - Does the spec need a "non-conformance" section — what does "this tool doesn't support dot-me" look like, and how does it degrade?
@@ -254,3 +270,5 @@ These are not part of the format. A consumer MUST work correctly whether or not 
 ## Implementation history
 
 Design rationale, adversarial-review thread, and migration design for the v0.1 reference implementation live in the maintainer's home-lab repo: [`personal-context-design.md`](https://github.com/thebestmensch/home-lab/blob/main/docs/superpowers/specs/2026-05-05-personal-context-design.md). That document is the design history; this file is the public spec.
+
+**v0.2 (2026-05-16):** Adds seven optional identity fields to align `identity.yaml` with the baseline shape used by canonical identity specs (vCard RFC 6350, Schema.org Person, OIDC standard claims, FOAF, JSON Resume): `nickname`, `email`, `website`, `avatar`, `headline`, `social_profiles[]` (preferred over the legacy single `handle`), `languages` (split out from `knows_about` per Schema.org's `knowsLanguage`/`knowsAbout` distinction), and `location.city` + `location.country`. All additive — v0.1 files remain valid v0.2 files.

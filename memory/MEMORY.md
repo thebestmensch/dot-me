@@ -9,3 +9,5 @@
 - [Explicit verb over flag](feedback_explicit_verb_over_flag.md) — new variant of `/jm-*` command? Default to dedicated slash command, not flag on parent; "flag is too implicit"
 - [Codex round-cap discipline](feedback_codex_round_cap_discipline.md) — same conceptual issue across 2+ Codex rounds = bypass with documented reasoning, not iterate; trust Edit #N hook checkpoints
 - [User pivot is scope reduction](feedback_user_pivot_is_scope_reduction.md) — "we already have X" mid-implementation = use X with minimal glue, never extend X to accommodate; resist Codex-driven scope expansion of the existing surface
+- [High-stakes triangulation](feedback_high_stakes_triangulation.md) — lock-in decisions: research-agent + devils-advocate + Codex + raw repo metrics in parallel; converge signals before recommending
+- [Two-layer tool evaluation](feedback_two_layer_tool_evaluation.md) — split AI-consumption from human-authoring when evaluating docs/framework tools; different optimal answers per layer

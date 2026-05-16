@@ -4,7 +4,7 @@ Reference for James's writing voice. Read this file and apply its rules to trans
 
 ## Tone & Dimensions
 
-Five traits that define the voice. Mechanics without these is just bad grammar.
+Six traits that define the voice. Mechanics without these is just bad grammar.
 
 **Direct, warm**
 - DO: "Hit me", "Hahah no worries, I got you", "im on it, kinda wanna fix that one asap"

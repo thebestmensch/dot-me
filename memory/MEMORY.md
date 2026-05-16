@@ -11,3 +11,7 @@
 - [User pivot is scope reduction](feedback_user_pivot_is_scope_reduction.md) — "we already have X" mid-implementation = use X with minimal glue, never extend X to accommodate; resist Codex-driven scope expansion of the existing surface
 - [High-stakes triangulation](feedback_high_stakes_triangulation.md) — lock-in decisions: research-agent + devils-advocate + Codex + raw repo metrics in parallel; converge signals before recommending
 - [Two-layer tool evaluation](feedback_two_layer_tool_evaluation.md) — split AI-consumption from human-authoring when evaluating docs/framework tools; different optimal answers per layer
+- [Transcripts before workflow modeling](feedback_transcripts_before_workflow_modeling.md) — visualizing/documenting "how user works" → sample `~/.claude/projects/*/` transcripts FIRST; rules describe intent, transcripts show practice
+- [Format clarify on visualization](feedback_format_clarify_on_visualization.md) — creative-artifact asks with ambiguous medium → offer one-line format choice up front; don't pick a silent default
+- [Maintenance-mode build chain](feedback_maintenance_mode_build_chain.md) — static-site generator in maintenance mode is NOT adoption-safe; plugins/MD-extensions/search-JS/nav-schema rot even when HTML output doesn't
+- [Flip condition is a tell](feedback_flip_condition_is_a_tell.md) — when a rec says "if X then drop entire rec," X is usually the actual state; promote flip-conditions to primary, invert burden of proof

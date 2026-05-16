@@ -35,7 +35,7 @@ required: `name` in `identity.yaml`. everything else is optional. unknown keys a
 
 ## Status
 
-v0.1, solo-maintained, RFC-stage. one reference consumer (the Claude Code plugin shipped in this repo). interest from other AI tools is what graduates this from "spec the author uses" to "spec." [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/` — the format will evolve based on what real implementers hit.
+v0.2, solo-maintained, RFC-stage. one reference consumer (the Claude Code plugin shipped in this repo). interest from other AI tools is what graduates this from "spec the author uses" to "spec." [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/` — the format will evolve based on what real implementers hit.
 
 native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
 

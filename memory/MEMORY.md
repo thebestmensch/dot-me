@@ -16,3 +16,4 @@
 - [Maintenance-mode build chain](feedback_maintenance_mode_build_chain.md) — static-site generator in maintenance mode is NOT adoption-safe; plugins/MD-extensions/search-JS/nav-schema rot even when HTML output doesn't
 - [Flip condition is a tell](feedback_flip_condition_is_a_tell.md) — when a rec says "if X then drop entire rec," X is usually the actual state; promote flip-conditions to primary, invert burden of proof
 - [gh search user flags](reference_gh_search_user_flags.md) — `gh search issues/prs` returns `[]` on `involves:@me` query token; must use `--involves <user>` / `--review-requested <user>` flags with explicit username
+- [Favorite color: purple](user_favorite_color.md) — soft preference for personal/aesthetic choices; warm muted purple in SpenschSuite contexts (`#7A5775`), not Screenroom's saturated `#9775fa`

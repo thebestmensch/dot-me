@@ -1,6 +1,6 @@
-# dot-me — Cursor consumer
+# dot-me: Cursor consumer
 
-Native integration for [Cursor](https://cursor.com). Pipes your `~/.me/` content into Cursor's two rule surfaces — pick whichever fits your workflow.
+Native integration for [Cursor](https://cursor.com). Pipes your `~/.me/` content into Cursor's two rule surfaces; pick whichever fits your workflow.
 
 ## TL;DR
 
@@ -23,9 +23,9 @@ bash <(curl -fsSL https://raw.githubusercontent.com/thebestmensch/dot-me/main/co
 
 ## Two modes, two tradeoffs
 
-Cursor has two rule surfaces. Neither is a clean "files-on-disk syncs to global context" loop the way Codex CLI's `~/.codex/AGENTS.md` is, so this installer ships both — pick which limitation you'd rather live with.
+Cursor has two rule surfaces. Neither is a clean "files-on-disk syncs to global context" loop the way Codex CLI's `~/.codex/AGENTS.md` is, so this installer ships both; pick which limitation you'd rather live with.
 
-### Default — User Rules (paste once)
+### Default: User Rules (paste once)
 
 The installer renders the dot-me block to stdout, pipes it through `pbcopy` on macOS when your terminal is interactive, and prints paste instructions:
 
@@ -37,14 +37,14 @@ bash ~/.me/consumers/cursor/install.sh
 # 3. Save
 ```
 
-User Rules apply globally across every Cursor chat. The catch: Cursor stores User Rules only in Settings — there's no filesystem path it reads. **Editing `~/.me/identity.yaml` requires re-running the installer and re-pasting**, because Cursor has nothing to watch.
+User Rules apply globally across every Cursor chat. The catch: Cursor stores User Rules only in Settings; there's no filesystem path it reads. **Editing `~/.me/identity.yaml` requires re-running the installer and re-pasting**, because Cursor has nothing to watch.
 
 Use this mode when:
 
 - The same context should apply everywhere you use Cursor
 - You're OK re-pasting on the rare occasions you edit `~/.me/`
 
-### `--project <dir>` — Project Rule (file-on-disk)
+### `--project <dir>`: Project Rule (file-on-disk)
 
 ```bash
 bash ~/.me/consumers/cursor/install.sh --project ~/code/my-repo
@@ -55,7 +55,7 @@ Writes `~/code/my-repo/.cursor/rules/dot-me.mdc` with `alwaysApply: true`. Curso
 When the target is a git worktree, the installer:
 
 1. **Refuses to overwrite a tracked `dot-me.mdc`.** If the file is already part of the repo (e.g. shared team rules use the same filename), the install errors out. `--force-tracked` overrides if you know what you're doing.
-2. **Auto-adds the file to `.git/info/exclude`.** Local-only ignore — does not touch the repo's `.gitignore`. Prevents `git add -A` from accidentally staging personal context into a shared repo.
+2. **Auto-adds the file to `.git/info/exclude`.** Local-only ignore (does not touch the repo's `.gitignore`). Prevents `git add -A` from accidentally staging personal context into a shared repo.
 3. **Warns visibly** that the file contains personal identity/preferences and should not be committed.
 
 Use this mode when:
@@ -73,7 +73,7 @@ bash ~/.me/consumers/cursor/install.sh                 # identity + preferences 
 bash ~/.me/consumers/cursor/install.sh --with-voice    # identity + preferences + voice (~17 KB)
 ```
 
-`--with-voice` is heaviest — only worth it if you do significant writing through Cursor. For most cases, the standard default is enough.
+`--with-voice` is heaviest; only worth it if you do significant writing through Cursor. For most cases, the standard default is enough.
 
 ## Other flags
 
@@ -85,15 +85,15 @@ bash ~/.me/consumers/cursor/install.sh --project <dir> --force-tracked # allow o
 bash ~/.me/consumers/cursor/install.sh --uninstall                     # prints Cursor Settings instructions for User Rules
 ```
 
-User Rules can't be removed by a script — Cursor doesn't expose them as a file. The `--uninstall` (no `--project`) flag prints the Settings UI steps so you can clear it manually.
+User Rules can't be removed by a script; Cursor doesn't expose them as a file. The `--uninstall` (no `--project`) flag prints the Settings UI steps so you can clear it manually.
 
-Project-mode uninstall removes both `dot-me.mdc` and any leftover `dot-me.mdc.bak` — leaving the `.bak` behind would defeat the privacy point of uninstalling.
+Project-mode uninstall removes both `dot-me.mdc` and any leftover `dot-me.mdc.bak`; leaving the `.bak` behind would defeat the privacy point of uninstalling.
 
 ## How loading works
 
-Cursor reads User Rules and `.cursor/rules/*.mdc` once per session at startup. Neither surface is retrievable by the model mid-session — they're folded into the system-tier instructions. This matches dot-me [SPEC §6.2](../../SPEC.md) (system-tier) and [§6.3](../../SPEC.md) (read at session start). This consumer adds no new dot-me-scoped tool surface — there's no `read_user_identity` skill or MCP resource the model can call mid-session.
+Cursor reads User Rules and `.cursor/rules/*.mdc` once per session at startup. Neither surface is retrievable by the model mid-session; they're folded into the system-tier instructions. This matches dot-me [SPEC §6.2](../../SPEC.md) (system-tier) and [§6.3](../../SPEC.md) (read at session start). This consumer adds no new dot-me-scoped tool surface; there's no `read_user_identity` skill or MCP resource the model can call mid-session.
 
-**Filesystem reality.** Like the Codex consumer, the inlined content lives on disk somewhere (`~/.me/identity.yaml`, plus a copy in `.cursor/rules/dot-me.mdc` if you use project mode). A generic filesystem tool (a `Read` tool, a shell) could re-read those files mid-session if a malicious project's prompt asks it to. The same exposure exists for `~/.me/` itself. SPEC §6.3 explicitly does not require the filesystem to be unreachable — it bans *new dot-me-scoped* surfaces, which this consumer doesn't add. Generic filesystem-tool exfiltration is a property of the user's tool-permission setup, addressed by sandboxing.
+**Filesystem reality.** Like the Codex consumer, the inlined content lives on disk somewhere (`~/.me/identity.yaml`, plus a copy in `.cursor/rules/dot-me.mdc` if you use project mode). A generic filesystem tool (a `Read` tool, a shell) could re-read those files mid-session if a malicious project's prompt asks it to. The same exposure exists for `~/.me/` itself. SPEC §6.3 explicitly does not require the filesystem to be unreachable; it bans *new dot-me-scoped* surfaces, which this consumer doesn't add. Generic filesystem-tool exfiltration is a property of the user's tool-permission setup, addressed by sandboxing.
 
 ## Environment variables
 
@@ -119,6 +119,6 @@ The installer reads `spec_version` from `identity.yaml` (per [SPEC §5.5](../../
 
 ## Why no `@`-import?
 
-Cursor supports `@filename` *inside* a rule body to pull file context into a specific chat — useful for "include this code file in my next message." It's not the same as Codex's missing chain-level `@<path>` import. Cursor's User Rules surface has no filesystem-aware include directive at all. The only path to land `~/.me/` content in the global chain is to inline the text and re-paste on change. Project Rules have a filesystem path but no cross-file `@` chaining either — one `.mdc` per rule.
+Cursor supports `@filename` *inside* a rule body to pull file context into a specific chat (useful for "include this code file in my next message"). It's not the same as Codex's missing chain-level `@<path>` import. Cursor's User Rules surface has no filesystem-aware include directive at all. The only path to land `~/.me/` content in the global chain is to inline the text and re-paste on change. Project Rules have a filesystem path but no cross-file `@` chaining either, one `.mdc` per rule.
 
 If Cursor ships a user-level filesystem rules directory (`~/.cursor/rules/`) or a chain-level `@`-import in a future release, this installer will switch to that path.

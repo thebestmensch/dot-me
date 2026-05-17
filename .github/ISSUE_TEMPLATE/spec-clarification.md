@@ -25,4 +25,4 @@ If you have a specific phrasing or rule that would resolve it, suggest it here. 
 ---
 
 For consumer-tool integration questions, use the *Consumer tool integration* template instead.
-For security issues, see [SECURITY.md](../../SECURITY.md) — please email, don't open a public issue.
+For security issues, see [SECURITY.md](../../SECURITY.md). Please email, don't open a public issue.

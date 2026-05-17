@@ -12,25 +12,25 @@ What's the tool? AI agent, editor plugin, MCP server, CLI utility, dotfile manag
 
 ## What you tried to load
 
-Which file(s) — `identity.yaml`, `voice.md`, `preferences.yaml`, `memory/`, the integrity sidecars?
+Which file(s): `identity.yaml`, `voice.md`, `preferences.yaml`, `memory/`, the integrity sidecars?
 
 ## Where you got stuck
 
 What does the spec say (or not say)? What did you do as a workaround?
 
 Examples that have come up:
-- "The spec says read-at-startup but my tool is request-scoped — how should this map?"
-- "I want to load only `voice.md`, not `identity.yaml` — is per-file loading supported?"
+- "The spec says read-at-startup but my tool is request-scoped. How should this map?"
+- "I want to load only `voice.md`, not `identity.yaml`. Is per-file loading supported?"
 - "What's the recommended behavior when `~/.me/` doesn't exist?"
-- "I need a field that doesn't exist in v0.1 — should I extend the spec or store it elsewhere?"
+- "I need a field that doesn't exist in v0.1. Should I extend the spec or store it elsewhere?"
 
 ## What would help
 
 - A spec section that addresses your case
 - A reference-implementation pattern you could copy
-- A "no, that's intentionally out of scope" answer (which is a valid outcome — see the v0.1 spec's out-of-scope list)
+- A "no, that's intentionally out of scope" answer (which is a valid outcome; see the v0.1 spec's out-of-scope list)
 
 ---
 
 For ambiguities in already-covered sections, use *Spec clarification* instead.
-For security issues, see [SECURITY.md](../../SECURITY.md) — please email, don't open a public issue.
+For security issues, see [SECURITY.md](../../SECURITY.md). Please email, don't open a public issue.

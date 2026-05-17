@@ -1,4 +1,4 @@
-# working-style.yaml — annotated scaffold.
+# working-style.yaml: annotated scaffold.
 #
 # Behavioral defaults for agentic sessions. The fourth dot-me file, alongside
 # identity.yaml / voice.md / preferences.yaml. Carries imperative rules about
@@ -14,16 +14,16 @@
 #   then act" beats "be thorough".
 # - All top-level keys are optional. All `rules:` lists are optional within
 #   a key. Drop what doesn't matter to you; consumers ignore unknown fields.
-# - The 6 dimensions below are the recommended floor — extend as needed.
+# - The 6 dimensions below are the recommended floor. Extend as needed.
 
 spec_version: "0.2"                  # optional but recommended; pins the schema version
 
 # How much standing license to act without checking in.
 autonomy:
   rules:
-    # Examples — replace with your own:
+    # Examples (replace with your own):
     - Make routine decisions inline; surface only irreversible or taste calls.
-    - Investigate first, present findings, then execute — autonomy applies to investigation, not to picking the solution.
+    - Investigate first, present findings, then execute. Autonomy applies to investigation, not to picking the solution.
 
 # When the agent should pause to ask vs. make a call and keep going.
 clarifying_questions:

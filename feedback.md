@@ -21,7 +21,7 @@ One paragraph per item. Date + source not required.
 
 ## Live entries
 
-_(empty — this file is seeded for v0.1 launch; adopters add below)_
+_(empty; this file is seeded for v0.1 launch, adopters add below)_
 
 ---
 

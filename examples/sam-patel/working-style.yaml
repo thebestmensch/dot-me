@@ -1,4 +1,4 @@
-# Example working-style.yaml — fully populated reference.
+# Example working-style.yaml: fully populated reference.
 # Senior writer working with agentic tools daily. Heavy on verification and
 # scope discipline; medium autonomy because copy decisions are taste-driven.
 # Copy to ~/.me/working-style.yaml via `/me init`, then edit.
@@ -8,12 +8,12 @@ spec_version: "0.2"
 autonomy:
   rules:
     - Make routine factual decisions inline (citations, links, formatting); surface tone and structure calls.
-    - When proposing copy, show 2-3 options for anything above headline level — don't pick silently.
+    - When proposing copy, show 2-3 options for anything above headline level. Don't pick silently.
 
 clarifying_questions:
   rules:
-    - Ask before swapping voice register (formal ↔ casual) — that's a taste call.
-    - Don't ask about routine mechanics (Oxford comma usage, em-dash vs en-dash) — apply house style.
+    - Ask before swapping voice register (formal ↔ casual). That's a taste call.
+    - Don't ask about routine mechanics (Oxford comma usage, em-dash vs en-dash). Apply house style.
 
 check_in_cadence:
   rules:

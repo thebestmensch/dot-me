@@ -1,6 +1,6 @@
-# dot-me — Codex CLI consumer
+# dot-me: Codex CLI consumer
 
-Native integration for [Codex CLI](https://github.com/openai/codex). Inlines your `~/.me/` content into `~/.codex/AGENTS.md` so every Codex session starts with the right user context — no copy-paste, no drift.
+Native integration for [Codex CLI](https://github.com/openai/codex). Inlines your `~/.me/` content into `~/.codex/AGENTS.md` so every Codex session starts with the right user context (no copy-paste, no drift).
 
 ## Install
 
@@ -24,7 +24,7 @@ The installer:
 
 1. Reads `~/.me/identity.yaml` (and `preferences.yaml` by default)
 2. Writes the content between `<!-- dot-me:begin -->` / `<!-- dot-me:end -->` markers in `~/.codex/AGENTS.md`
-3. Preserves anything outside the markers — your existing global Codex instructions are untouched
+3. Preserves anything outside the markers; your existing global Codex instructions are untouched
 4. Backs up the previous file to `~/.codex/AGENTS.md.bak`
 
 Re-running the installer replaces the block in place. Idempotent.
@@ -48,19 +48,19 @@ bash ~/.me/consumers/codex/install.sh --dry-run     # preview the block, write n
 bash ~/.me/consumers/codex/install.sh --uninstall   # strip the dot-me block, restore AGENTS.md
 ```
 
-`--uninstall` works even if `~/.me/` is missing or has a spec version this installer doesn't recognize — uninstall always has a clean exit path.
+`--uninstall` works even if `~/.me/` is missing or has a spec version this installer doesn't recognize; uninstall always has a clean exit path.
 
 ## How loading works
 
-Codex reads `~/.codex/AGENTS.md` once per session at startup and folds it into the system-tier instruction chain. This matches dot-me [SPEC §6.2](../../SPEC.md) (system-tier) and [§6.3](../../SPEC.md) (read at session start). This consumer adds no new tool surface scoped to dot-me content — there is no `read_user_identity` skill or MCP resource that the model can call mid-session.
+Codex reads `~/.codex/AGENTS.md` once per session at startup and folds it into the system-tier instruction chain. This matches dot-me [SPEC §6.2](../../SPEC.md) (system-tier) and [§6.3](../../SPEC.md) (read at session start). This consumer adds no new tool surface scoped to dot-me content; there is no `read_user_identity` skill or MCP resource that the model can call mid-session.
 
-**The filesystem reality.** Codex needs the content on disk to load it, so an installed dot-me block lives at the well-known path `~/.codex/AGENTS.md`. A generic filesystem tool the model has access to (a `Bash` tool, a `Read` tool) could re-read that file mid-session if a malicious project's prompt asks it to. The same exposure exists for `~/.me/` itself. SPEC §6.3 explicitly does not require the filesystem to be unreachable — it bans *new dot-me-scoped* surfaces, which this consumer doesnt add. Generic filesystem-tool exfiltration is a property of the user's tool-permission setup, addressed by sandboxing, not by dot-me.
+**The filesystem reality.** Codex needs the content on disk to load it, so an installed dot-me block lives at the well-known path `~/.codex/AGENTS.md`. A generic filesystem tool the model has access to (a `Bash` tool, a `Read` tool) could re-read that file mid-session if a malicious project's prompt asks it to. The same exposure exists for `~/.me/` itself. SPEC §6.3 explicitly does not require the filesystem to be unreachable; it bans *new dot-me-scoped* surfaces, which this consumer doesn't add. Generic filesystem-tool exfiltration is a property of the user's tool-permission setup, addressed by sandboxing, not by dot-me.
 
 **Tradeoff with `--with-voice`.** Voice content concentrates writing patterns and sample passages at one well-known path, raising the value of a filesystem-tool exfil. Default mode (identity + preferences) keeps that surface narrower. If you only need voice for tasks that generate user-facing text, consider keeping voice paste-in at the project level for those repos rather than inlining globally.
 
 ## Why inline instead of `@`-import
 
-Claude Codes `CLAUDE.md` supports `@<path>` imports — you can write `@~/.me/identity.yaml` and the file is loaded by reference. **Codex doesnt have this.** As of May 2026, Codex CLIs `AGENTS.md` reader treats `@<path>` lines as literal text. The only native path is to inline the content.
+Claude Code's `CLAUDE.md` supports `@<path>` imports; you can write `@~/.me/identity.yaml` and the file is loaded by reference. **Codex doesn't have this.** As of May 2026, Codex CLI's `AGENTS.md` reader treats `@<path>` lines as literal text. The only native path is to inline the content.
 
 If Codex adds `@`-imports in a future release, this installer will switch to writing a single `@~/.me/identity.yaml` line in the block (smaller footprint, automatic content refresh on edit).
 

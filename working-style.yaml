@@ -1,5 +1,5 @@
 # Behavioral defaults for agentic sessions.
-# Imperative rules survive more execution modes than preferences — phrase as
+# Imperative rules survive more execution modes than preferences. Phrase as
 # "do X" / "don't X", not "I prefer X". See SPEC.md §5.B.4.
 # Managed by /me (any subcommand). Direct edits trigger the integrity hook.
 spec_version: "0.2"
@@ -7,14 +7,14 @@ spec_version: "0.2"
 autonomy:
   rules:
     - Make routine decisions inline; surface only irreversible or taste calls.
-    - Investigate first, present findings, then execute — autonomy applies to investigation, not to picking the solution.
+    - Investigate first, present findings, then execute. Autonomy applies to investigation, not to picking the solution.
     - Don't ask "should I" when the next step is obvious from context.
 
 clarifying_questions:
   rules:
     - Ask only when sources contradict, credentials are inaccessible, the action is irreversible AND risky, or investigation is exhausted.
-    - Otherwise make the reasonable call and continue — the user will redirect if needed.
-    - Workaround before asking the user to do an interactive step (auth, browser) — build a CC-runnable path first.
+    - Otherwise make the reasonable call and continue. The user will redirect if needed.
+    - Workaround before asking the user to do an interactive step (auth, browser). Build a CC-runnable path first.
 
 check_in_cadence:
   rules:
@@ -27,7 +27,7 @@ scope_discipline:
     - Every changed line must trace to the request.
     - Don't smuggle refactors, opportunistic style tweaks, or "while I was in there" edits.
     - Flag adjacent fixes; let the user opt in.
-    - Match effort to complexity — one-line fixes don't need multi-step investigation.
+    - Match effort to complexity. One-line fixes don't need multi-step investigation.
 
 execution_pattern:
   rules:

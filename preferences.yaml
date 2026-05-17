@@ -1,4 +1,4 @@
-# Personal preferences — likes / favorites / avoid triads.
+# Personal preferences (likes / favorites / avoid triads).
 # Lazy-loaded only (not @include'd in CLAUDE.md). Loaded on demand by skills/commands.
 # Managed by /me (any subcommand).
 
@@ -9,7 +9,7 @@ tools:
   prompt: starship
   terminal_mac: Ghostty
   terminal_windows: WezTerm (SSH thin client into Mac)
-  multiplexer: tmux (vanilla — no oh-my-tmux / tpm)
+  multiplexer: tmux (vanilla, no oh-my-tmux / tpm)
   dotfiles: chezmoi
   runtime_manager: mise (replaced nvm + direnv)
 
@@ -19,7 +19,7 @@ aesthetics:
     - corporate
     - salesy
     - try-hard casual
-  color_temperature: warm                  # always — never cool
+  color_temperature: warm                  # always, never cool
   current_theme: SpenschSuite Light        # aged-cream base, paper_lifted active pane, ink-slate / iron-gall accents
   design_principles:
     - calm

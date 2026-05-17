@@ -11,12 +11,12 @@
 
 Every new project, every new ticket, every fresh subagent, every fresh chat — your AI tools start with no idea who you are *and* no idea how you want them to work with you. So you re-onboard yourself, twice. You paste a paragraph into CLAUDE.md saying who you are. You paste another about how to write for you. You re-explain your dogs *and* your tolerance for clarifying questions to ChatGPT for the seventh time this week.
 
-dot-me is the file you stop copy-pasting. It carries two layers in three files:
+dot-me is the file you stop copy-pasting. It carries two layers in four files:
 
 - **Identity layer** — who you are. Stable, vCard-shaped. Lives in `identity.yaml`.
-- **Working-agreement layer** — how you want the AI to write for you and work with you. Lives in `voice.md` (prose) and `preferences.yaml` (structured).
+- **Working-agreement layer** — how you want the AI to write for you and work with you. Lives in `voice.md` (prose), `preferences.yaml` (structured), and `working-style.yaml` (imperative behavioral defaults).
 
-Three files at `~/.me/`. Plain YAML and Markdown. Any AI tool can opt in.
+Four files at `~/.me/`. Plain YAML and Markdown. Any AI tool can opt in.
 
 ## 2. The gap
 
@@ -30,30 +30,31 @@ dot-me is the lowest-effort fix for that cost.
 
 ## 3. What dot-me is not
 
-- **Not a brain.** No recall, no embeddings, no retrieval. It's three static files.
+- **Not a brain.** No recall, no embeddings, no retrieval. It's four static files.
 - **Not a service.** No daemon, no API, no background process. Read-from-disk-once at session start, done.
 - **Not AGENTS.md.** AGENTS.md is the project brief — what this codebase is, what conventions to follow, what tests to run. dot-me is the personal-context card — who the human at the keyboard is and how they want the AI to work with them. They're orthogonal. You SHOULD have both.
 - **Not a replacement for per-project memory.** Project memory still has its place — what you discovered debugging that flaky test last Tuesday. dot-me is the layer above project memory: invariant facts about the human, not the project.
 
 ## 4. File layout
 
-dot-me content lives at a well-known home-dir path: `~/.me/`. Three content files:
+dot-me content lives at a well-known home-dir path: `~/.me/`. Four content files:
 
 ```text
 ~/.me/
-├── identity.yaml      # invariant facts about the user
-├── voice.md           # voice profile (tone, lexicon, anti-patterns)
-└── preferences.yaml   # likes / favorites / avoid triads
+├── identity.yaml       # invariant facts about the user
+├── voice.md            # voice profile (tone, lexicon, anti-patterns)
+├── preferences.yaml    # likes / favorites / avoid triads
+└── working-style.yaml  # imperative behavioral defaults (autonomy, scope, irreversibility, ...)
 ```
 
-These three files are the format. Anything else in `~/.me/` (integrity sidecars, update logs, encrypted vaults) is implementation choice, not part of the spec. Consumers MUST NOT depend on the presence of any file beyond the three above.
+These four files are the format. Anything else in `~/.me/` (integrity sidecars, update logs, encrypted vaults) is implementation choice, not part of the spec. Consumers MUST NOT depend on the presence of any file beyond the four above.
 
 ## 5. Schema
 
-The three content files split across two layers:
+The four content files split across two layers:
 
 - **§5.A Identity layer** — answers *who you are*. `identity.yaml`. Stable, vCard-aligned.
-- **§5.B Working-agreement layer** — answers *how you want the AI to write for you and work with you*. `voice.md` + `preferences.yaml` today; a future `working-style.yaml` file is planned.
+- **§5.B Working-agreement layer** — answers *how you want the AI to write for you and work with you*. `voice.md` + `preferences.yaml` + `working-style.yaml`.
 
 Schemas are intentionally loose — most fields are optional, and consumers MUST ignore unknown fields (forward-compat). Conformance at the layer level is addressed in §6.1 — consumers MUST disclose which layers they load so adopters can tell layer-aware adoption from layer-skipping adoption.
 
@@ -102,7 +103,7 @@ Required: `name`. The single strictness elsewhere is `location.timezone` — whe
 
 ### 5.B. Working-agreement layer
 
-The working-agreement layer carries the behavioral content that moves agent output on every session, not just sessions where identity context happens to surface. Two files today: `voice.md` (prose-shaped — *how the AI should write for you*) and `preferences.yaml` (structured — *what tools and aesthetics you favor*). A future `working-style.yaml` is planned to extend the layer with imperative behavioral defaults (autonomy level, scope discipline, interruption thresholds).
+The working-agreement layer carries the behavioral content that moves agent output on every session, not just sessions where identity context happens to surface. Three files: `voice.md` (prose-shaped — *how the AI should write for you*), `preferences.yaml` (structured — *what tools and aesthetics you favor*), and `working-style.yaml` (imperative behavioral defaults — *how the AI should work with you*).
 
 Working-agreement content benefits from a different authoring style than identity content. The execution-time differences documented in §6.6 suggest that prohibitions and hard constraints ("don't ask before doing routine decisions", "always explain irreversible changes before acting") port more reliably across Claude / Codex / Gemini / Cursor than permissions or preferences ("I prefer autonomy"); the latter are easier for a given tool's instruction-application semantics to soften or override. Authors of working-agreement files SHOULD lean imperative. This is maintainer experience to date — not a systematic study — and the format will accommodate corrections from implementers who hit different results in practice.
 
@@ -133,17 +134,50 @@ workflow:     { commit_messages: ... }
 
 Each top-level key is optional. Nested keys are free-form: `likes`, `favorites`, `avoid` triads work for most categories. A trailing `notes` block accommodates cross-cutting preferences that don't fit a category.
 
-### 5.4. Why three files, not one
+#### 5.4. `working-style.yaml`
 
-The three files have different lifecycles:
+```yaml
+spec_version: "0.2"                  # optional but recommended
+
+autonomy:
+  rules:
+    - <imperative rule string>
+    - ...
+
+clarifying_questions:
+  rules: [...]
+
+check_in_cadence:
+  rules: [...]
+
+scope_discipline:
+  rules: [...]
+
+execution_pattern:
+  rules: [...]
+
+irreversibility:
+  rules: [...]
+```
+
+Each top-level key is optional. Each `rules:` list is optional within a key. The six dimensions above are a recommended floor — producers MAY add more, consumers MUST ignore unknown keys per §5.6.
+
+Rule strings SHOULD be phrased as imperatives ("don't X", "always X") rather than preferences ("I prefer X"). The execution-mode portability evidence in §6.6 motivates this — imperatives survive more cross-vendor execution modes than preferences. The dimension keys are descriptive, not normative; consumers MUST treat them as human-readable section markers, not as parseable behavior controls.
+
+**Why structured + imperative, not freeform prose like `voice.md`.** Voice content is artistic — sample passages, anti-patterns, dialogue — and benefits from prose. Working-style content is rule-shaped and benefits from per-dimension structure: a consumer that wants to surface only the autonomy rules can reach for `working-style.autonomy.rules` without parsing prose. The imperative-string-value compromise keeps the rule wording portable while letting consumers slice by dimension.
+
+### 5.5. Why four files, not one
+
+The four files have different lifecycles:
 
 - `identity.yaml` — rarely changes (your name, timezone, dogs). Near-static.
 - `voice.md` — stable, occasionally refined. Medium velocity.
+- `working-style.yaml` — stable, occasionally refined as you learn what autonomy level you actually want. Medium velocity.
 - `preferences.yaml` — churns (you swap editors, change themes, update the avoid lists).
 
-Separating by lifecycle lets consumers cache the stable parts and re-load the volatile parts independently. As a downstream benefit, this also helps with prompt-cache prefix-stability on providers that offer it — but lifecycle is the honest reason; cache is a side-effect. A combined `me.md` would force all three to share a cache fate and re-invalidate the stable parts whenever the volatile parts changed.
+Separating by lifecycle lets consumers cache the stable parts and re-load the volatile parts independently. As a downstream benefit, this also helps with prompt-cache prefix-stability on providers that offer it — but lifecycle is the honest reason; cache is a side-effect. A combined `me.md` would force all four to share a cache fate and re-invalidate the stable parts whenever the volatile parts changed.
 
-### 5.5. Unknown keys
+### 5.6. Unknown keys
 
 Consumers MUST ignore unknown keys silently. Producers MAY add new keys at any time without coordinating with consumers. This is the entire versioning policy v0.1 has — additive-only, ignore-what-you-don't-know.
 
@@ -157,7 +191,10 @@ dot-me content is meant to be loaded into the agent's instruction context at ses
 
 - `identity.yaml` — load every session. Small, stable, near-universal value.
 - `voice.md` — load when the agent generates user-facing text (writing, replying, drafting, generating commit messages). A math-only or pure-code-fix context can skip it.
+- `working-style.yaml` — load when the agent will take actions on the user's behalf (any session involving Edit/Write/Bash, agentic loops, or multi-step task execution). Pure read-only Q&A can skip it.
 - `preferences.yaml` — load when the agent makes recommendations (tool choice, design direction, copy tone). A strict bug-fix context can skip it.
+
+**Consumer coverage as of 2026-05-17.** The reference Claude Code plugin in this repo auto-imports `identity.yaml` and recognises all four files in its `/me` management surface (`show`, `edit`, `add`, `init`, `check`, integrity baseline). `voice.md`, `preferences.yaml`, and `working-style.yaml` are lazy-loaded by skills that need them. The Codex / Cursor / Gemini installers in `consumers/` currently inline only `identity.yaml` (and optionally `preferences.yaml` / `voice.md`); `working-style.yaml` support in those installers is tracked as a follow-up. Adopters using those installers SHOULD apply the conformance disclosure rule below — a tool that does not yet load `working-style.yaml` will not honor its rules.
 
 **Conformance disclosure (v0.2+).** A consumer MAY load any subset of files, but it MUST disclose which layers it loads (identity / working-agreement / both) and, optionally, which files within each layer. The disclosure SHOULD be made in the consumer's public documentation (README, install guide, or equivalent adopter-facing surface) and MAY also be surfaced at runtime (e.g., a verbose-mode banner or startup log line). Adopters use this disclosure to predict cross-tool behavior — a tool that loads only the identity layer will not honor the user's voice or working-agreement rules, and adopters must be able to tell that from the tool's documentation rather than discovering it through behavior drift. A consuming tool that only reads `identity.yaml` is still a valid dot-me consumer at the identity-layer level; it is NOT a full dot-me consumer.
 
@@ -190,7 +227,7 @@ Inline consumers SHOULD also surface the host's instruction-budget cap (e.g., Co
 
 ### 6.5. Prompt-cache guidance (advisory)
 
-Stable content (identity, voice) belongs before volatile content (preferences) in any cached system-prompt prefix. Mechanics differ across providers — as of May 2026, Anthropic uses explicit `cache_control` breakpoints with provider-specified minimum-token thresholds; OpenAI uses automatic exact-prefix caching with a 1024-token minimum; others vary. Provider mechanics and thresholds change across API versions — verify current behavior before relying on specific numbers. Consumers SHOULD bundle dot-me content with other stable system content to clear provider cache minimums, since the three files alone are usually too small to cache independently.
+Stable content (identity, voice, working-style) belongs before volatile content (preferences) in any cached system-prompt prefix. Mechanics differ across providers — as of May 2026, Anthropic uses explicit `cache_control` breakpoints with provider-specified minimum-token thresholds; OpenAI uses automatic exact-prefix caching with a 1024-token minimum; others vary. Provider mechanics and thresholds change across API versions — verify current behavior before relying on specific numbers. Consumers SHOULD bundle dot-me content with other stable system content to clear provider cache minimums, since the four files alone are usually too small to cache independently.
 
 Specific cache annotations are the consumer's responsibility, not the spec's. The spec only ranks files by stability.
 
@@ -283,7 +320,7 @@ The combination of user-level scope and cross-vendor portability is the niche do
 
 Producers concerned about local tamper detection MAY maintain integrity files alongside the schema:
 
-- `.integrity` — a SHA-256 hash baseline of the three content files, regenerated on every legitimate write.
+- `.integrity` — a SHA-256 hash baseline of the four content files (`identity.yaml`, `voice.md`, `preferences.yaml`, `working-style.yaml`), regenerated on every legitimate write.
 - Signed git commits in the `~/.me/` directory — covers append-only history; tampering is detectable post-hoc via `git log --show-signature`.
 - A `SessionStart`-style hook that compares actual hashes to baseline at every session start and warns on drift.
 
@@ -311,3 +348,5 @@ These are not part of the format. A consumer MUST work correctly whether or not 
 Design rationale, adversarial-review thread, and migration design for the v0.1 reference implementation live in the maintainer's home-lab repo: [`personal-context-design.md`](https://github.com/thebestmensch/home-lab/blob/main/docs/superpowers/specs/2026-05-05-personal-context-design.md). That document is the design history; this file is the public spec.
 
 **v0.2 (2026-05-16):** Adds seven optional identity fields to align `identity.yaml` with the baseline shape used by canonical identity specs (vCard RFC 6350, Schema.org Person, OIDC standard claims, FOAF, JSON Resume): `nickname`, `email`, `website`, `avatar`, `headline`, `social_profiles[]` (preferred over the legacy single `handle`), `languages` (split out from `knows_about` per Schema.org's `knowsLanguage`/`knowsAbout` distinction), and `location.city` + `location.country`. All additive — v0.1 files remain valid v0.2 files.
+
+**v0.2 (2026-05-17):** Adds `working-style.yaml` as a fourth content file, extending the working-agreement layer with imperative behavioral defaults (autonomy, clarifying-questions, check-in cadence, scope discipline, execution pattern, irreversibility). Additive — v0.1 / earlier-v0.2 setups remain valid; consumers MUST ignore the file when absent.

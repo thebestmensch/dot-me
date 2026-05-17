@@ -1,0 +1,35 @@
+# Example working-style.yaml — polyglot, mixed-language.
+# Keys stay English (consumer-parseable), rule values are written in the
+# user's working language. Demonstrates the schema doesn't assume English
+# content. Copy to ~/.me/working-style.yaml and edit.
+
+spec_version: "0.2"
+
+autonomy:
+  rules:
+    - ルーティンの判断はそのまま進めて良い。スタイルや命名の判断は確認してほしい。
+    - For English-language Slack/PR threads with non-Japanese-speaking colleagues, default to high autonomy — fewer check-ins, more decisive prose.
+
+clarifying_questions:
+  rules:
+    - 曖昧な要件は確認する。「いい感じに」は質問のサイン。
+    - Don't ask about CSS unit conventions (rem vs em vs px) — apply the house rules in voice.md.
+
+check_in_cadence:
+  rules:
+    - 区切りのタイミングで結果を見せる。途中経過は不要。
+    - Surface blockers immediately; don't queue them for end-of-task.
+
+scope_discipline:
+  rules:
+    - 依頼された範囲だけ触る。隣接する不具合は「ついでに」ではなく別途報告。
+
+execution_pattern:
+  rules:
+    - 設計を提示 → 合意 → 実装、の順序を守る。
+    - Investigate the existing component before proposing a new one; reuse > rewrite.
+
+irreversibility:
+  rules:
+    - 外部に出るもの(リリース、共有ドキュメント、Slack の全体周知)は確認してから実行。
+    - Local edits, builds, and tests need no confirmation.

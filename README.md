@@ -6,10 +6,10 @@ every new agent forgets you. twice.
 
 it forgets who you are — your name, your timezone, the dogs, the project youve been on for two months. and it forgets how you want it to work with you — autonomous or check-in-heavy, terse or explanatory, the call you already made about scope discipline. you typed both in last tuesday. typed them again wednesday. youll type them again in the next chat.
 
-dot-me is a folder at `~/.me/` — three plain-text files that name both layers.
+dot-me is a folder at `~/.me/` — four plain-text files that name both layers.
 
 - **identity** — your name tag at the door. `identity.yaml`.
-- **working agreement** — how you want the AI to write and work with you. `voice.md` + `preferences.yaml`.
+- **working agreement** — how you want the AI to write and work with you. `voice.md` + `preferences.yaml` + `working-style.yaml`.
 
 tools that opt in read them when they start. claude code reads them via a plugin. everywhere else, paste them into the tool's instructions and re-paste when the files change.
 
@@ -27,12 +27,13 @@ one `identity.yaml`. claude code reads it. codex cli reads it. same answer, no c
 
 ```
 ~/.me/
-├── identity.yaml      # invariant facts: name, timezone, dogs, work, what you know
-├── voice.md           # how you sound: tone, lexicon, anti-patterns, sample passages
-└── preferences.yaml   # likes / favorites / avoid — tools, media, aesthetics
+├── identity.yaml       # invariant facts: name, timezone, dogs, work, what you know
+├── voice.md            # how you sound: tone, lexicon, anti-patterns, sample passages
+├── preferences.yaml    # likes / favorites / avoid — tools, media, aesthetics
+└── working-style.yaml  # how you want the AI to *work* with you — autonomy, scope, irreversibility
 ```
 
-three files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business — consumers MUST NOT depend on it.
+four files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business — consumers MUST NOT depend on it.
 
 required: `name` in `identity.yaml`. everything else is optional. unknown keys are ignored silently — additive-only, forward-compatible.
 
@@ -51,7 +52,7 @@ native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
 /plugin install dot-me@dot-me
 ```
 
-handles loading `identity.yaml` into session context, drops in the `/me` command for managing all three files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
+handles loading `identity.yaml` into session context, drops in the `/me` command for managing all four files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
 
 ### Codex CLI
 
@@ -82,7 +83,7 @@ inlines `identity.yaml` (and `preferences.yaml`) into `~/.gemini/GEMINI.md` betw
 for tools without a native consumer yet — Cowork, raw OpenAI / Anthropic API calls. the path:
 
 1. `git clone git@github.com:thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
-2. paste `identity.yaml`, `voice.md`, and `preferences.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
+2. paste `identity.yaml`, `voice.md`, `preferences.yaml`, and `working-style.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
 3. re-paste when the files change
 
 filesystem-aware tools that support `@`-includes can reference `~/.me/identity.yaml` directly instead of copying.
@@ -93,19 +94,19 @@ filesystem-aware tools that support `@`-includes can reference `~/.me/identity.y
 dot-me init
 ```
 
-drops a working starter into `~/.me/` — identity scaffold, blank voice profile with section headers, preferences skeleton. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
+drops a working starter into `~/.me/` — identity scaffold, blank voice profile with section headers, preferences skeleton, and a working-style file with the recommended dimensions. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
 
 ## Why this shape
 
 - **`~/.me/`, not `$XDG_CONFIG_HOME/me/`.** brevity, discoverability, hand-typeability. `~/.me/` is two characters past `~/`. dot-me leans on the same convention as `~/.ssh/` and `~/.gitconfig`: well-known, home-rooted, no env-var indirection. tools that want XDG can resolve `$XDG_CONFIG_HOME/me/` as a fallback path; `~/.me/` is the canonical one.
 - **YAML for the structured parts, Markdown for the prose part.** identity and preferences are queryable (name, timezone, editor, color temperature). voice is artistic — sample passages, anti-patterns, dialogue. forcing voice into YAML loses the expressive prose. forcing identity into Markdown loses the structure. two formats for two problems.
-- **Three files, not one.** different lifecycles. identity rarely changes (your name, timezone). voice occasionally refines. preferences churn (editors, themes, avoid-lists). a combined `me.md` would re-invalidate the stable parts whenever the volatile parts changed.
+- **Four files, not one.** different lifecycles. identity rarely changes (your name, timezone). voice occasionally refines. working-style occasionally refines as you learn what autonomy level you actually want. preferences churn (editors, themes, avoid-lists). a combined `me.md` would re-invalidate the stable parts whenever the volatile parts changed.
 
 ## What dot-me is *not*
 
 most "personal AI" projects in 2026 want to give you a brain. mem0, Letta, Khoj, Rewind — they capture, embed, retrieve, recall. vector DBs, daemons, capture pipelines.
 
-dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences. thats it.
+dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences, and how you want it to work with you. thats it.
 
 |                   | dot-me                          | AGENTS.md (project)    | Cursor rules (project)     | `~/.codex/AGENTS.md` (user) | ChatGPT Memory / mem0       |
 | ----------------- | ------------------------------- | ---------------------- | -------------------------- | --------------------------- | --------------------------- |

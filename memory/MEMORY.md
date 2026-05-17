@@ -7,9 +7,7 @@
 - [Chezmoi changes use branch + PR](feedback_chezmoi_pr_workflow.md) — never commit + push direct to chezmoi main; feature branch → push → `gh pr create` so CodeRabbit reviews the diff
 - [Workaround before auth ask](feedback_workaround_before_auth_ask.md) — when CC can't trigger interactive auth (Touch ID, browser), build a CC-runnable workaround (direct API call, monkey-patch in $CLAUDE_JOB_DIR) before punting to JM
 - [Explicit verb over flag](feedback_explicit_verb_over_flag.md) — new variant of `/jm-*` command? Default to dedicated slash command, not flag on parent; "flag is too implicit"
-- [Codex round-cap discipline](feedback_codex_round_cap_discipline.md) — same conceptual issue across 2+ Codex rounds = bypass with documented reasoning, not iterate; trust Edit #N hook checkpoints
 - [User pivot is scope reduction](feedback_user_pivot_is_scope_reduction.md) — "we already have X" mid-implementation = use X with minimal glue, never extend X to accommodate; resist Codex-driven scope expansion of the existing surface
-- [High-stakes triangulation](feedback_high_stakes_triangulation.md) — lock-in decisions: research-agent + devils-advocate + Codex + raw repo metrics in parallel; converge signals before recommending
 - [Two-layer tool evaluation](feedback_two_layer_tool_evaluation.md) — split AI-consumption from human-authoring when evaluating docs/framework tools; different optimal answers per layer
 - [Transcripts before workflow modeling](feedback_transcripts_before_workflow_modeling.md) — visualizing/documenting "how user works" → sample `~/.claude/projects/*/` transcripts FIRST; rules describe intent, transcripts show practice
 - [Format clarify on visualization](feedback_format_clarify_on_visualization.md) — creative-artifact asks with ambiguous medium → offer one-line format choice up front; don't pick a silent default
@@ -21,7 +19,5 @@
 - [No em dashes in output](feedback_no_emdashes.md) — em dashes read as AI-generated in 2026; use comma/semicolon/parens/rewrite; en dashes for ranges and hyphens still fine
 - [Voice doc reconciliation on style rule](feedback_voice_doc_reconciliation.md) — new style memory? grep voice.md + preferences.yaml for contradictions, fix in same PR; otherwise /jm-voice re-introduces the banned pattern
 - [OOM account naming](project_oom_account_naming.md) — `personal`=james@jamesmensch.com (jm), `oom`=james@oneonme.com (work); legacy tower file `.credentials-fallback-jm.json` is inverted (actually OOM)
-- [Pre-commit gate bypass loop](feedback_pre_commit_gate_bypass_loop.md) — gate fights `touch skip_codex_gate` via mtime race; on 2nd retry, dispatch real adversarial-review (small diffs run inline) instead of touching markers
-- [CR non-overlap after Codex approves](feedback_cr_non_overlap_after_codex.md) — CR catches ordering/coverage bugs Codex misses on classification logic; expect 2-3 CR rounds even after Codex green
 - [Sentry: Fixes trailer over MCP](feedback_sentry_fixes_trailer_over_manual.md) — commit `Fixes ISSUE-N` trailers auto-resolve on merge; skip `mcp__sentry__update_issue` (auto-mode denies inconsistently)
 - [Workspace pattern: agents session](project_workspace_pattern.md) — JM works in `agents` tmux session via Claude Agents project selector; legacy `jm` / `oom` per-workspace panes unused

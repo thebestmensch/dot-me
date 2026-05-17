@@ -371,15 +371,16 @@ Optional flag: `--from <path>` — copy from a local clone instead of fetching f
 
 7. **Print next steps.** One short summary to the user:
 
-   > `~/.me/ seeded from examples. Four files to personalize:`
-   > `  - identity.yaml — name, timezone, work, pets`
-   > `  - voice.md — how you sound (or delete and rebuild)`
-   > `  - preferences.yaml — likes / favorites / avoid triads`
-   > `  - working-style.yaml — imperative rules: autonomy, scope discipline, irreversibility`
+   > `~/.me/` seeded from examples. Four files to personalize:
    >
-   > `Edit them via \`/me edit identity\` (or voice / preferences / working-style). Or use \`/me add "<fact>"\` to add facts one at a time.`
+   > - `identity.yaml` — name, timezone, work, pets
+   > - `voice.md` — how you sound (or delete and rebuild)
+   > - `preferences.yaml` — likes / favorites / avoid triads
+   > - `working-style.yaml` — imperative rules: autonomy, scope discipline, irreversibility
    >
-   > `Optional: enable signed commits for tamper detection — \`git -C ~/.me config commit.gpgsign true\` after setting your signing key.`
+   > Edit them via `/me edit identity` (or `voice` / `preferences` / `working-style`). Or use `/me add "<fact>"` to add facts one at a time.
+   >
+   > Optional: enable signed commits for tamper detection — `git -C ~/.me config commit.gpgsign true` after setting your signing key.
 
 Do not commit on init — the user-edited content will get committed by the first `/me add` or `/me edit` after they fill in real data.
 

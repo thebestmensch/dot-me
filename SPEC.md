@@ -30,7 +30,7 @@ dot-me is the lowest-effort fix for that cost.
 
 ## 3. What dot-me is not
 
-- **Not a brain.** No recall, no embeddings, no retrieval. It's three static files.
+- **Not a brain.** No recall, no embeddings, no retrieval. It's four static files.
 - **Not a service.** No daemon, no API, no background process. Read-from-disk-once at session start, done.
 - **Not AGENTS.md.** AGENTS.md is the project brief — what this codebase is, what conventions to follow, what tests to run. dot-me is the personal-context card — who the human at the keyboard is and how they want the AI to work with them. They're orthogonal. You SHOULD have both.
 - **Not a replacement for per-project memory.** Project memory still has its place — what you discovered debugging that flaky test last Tuesday. dot-me is the layer above project memory: invariant facts about the human, not the project.
@@ -51,7 +51,7 @@ These four files are the format. Anything else in `~/.me/` (integrity sidecars, 
 
 ## 5. Schema
 
-The three content files split across two layers:
+The four content files split across two layers:
 
 - **§5.A Identity layer** — answers *who you are*. `identity.yaml`. Stable, vCard-aligned.
 - **§5.B Working-agreement layer** — answers *how you want the AI to write for you and work with you*. `voice.md` + `preferences.yaml` + `working-style.yaml`.
@@ -228,7 +228,7 @@ Inline consumers SHOULD also surface the host's instruction-budget cap (e.g., Co
 
 ### 6.5. Prompt-cache guidance (advisory)
 
-Stable content (identity, voice) belongs before volatile content (preferences) in any cached system-prompt prefix. Mechanics differ across providers — as of May 2026, Anthropic uses explicit `cache_control` breakpoints with provider-specified minimum-token thresholds; OpenAI uses automatic exact-prefix caching with a 1024-token minimum; others vary. Provider mechanics and thresholds change across API versions — verify current behavior before relying on specific numbers. Consumers SHOULD bundle dot-me content with other stable system content to clear provider cache minimums, since the three files alone are usually too small to cache independently.
+Stable content (identity, voice, working-style) belongs before volatile content (preferences) in any cached system-prompt prefix. Mechanics differ across providers — as of May 2026, Anthropic uses explicit `cache_control` breakpoints with provider-specified minimum-token thresholds; OpenAI uses automatic exact-prefix caching with a 1024-token minimum; others vary. Provider mechanics and thresholds change across API versions — verify current behavior before relying on specific numbers. Consumers SHOULD bundle dot-me content with other stable system content to clear provider cache minimums, since the four files alone are usually too small to cache independently.
 
 Specific cache annotations are the consumer's responsibility, not the spec's. The spec only ranks files by stability.
 
@@ -321,7 +321,7 @@ The combination of user-level scope and cross-vendor portability is the niche do
 
 Producers concerned about local tamper detection MAY maintain integrity files alongside the schema:
 
-- `.integrity` — a SHA-256 hash baseline of the three content files, regenerated on every legitimate write.
+- `.integrity` — a SHA-256 hash baseline of the four content files (`identity.yaml`, `voice.md`, `preferences.yaml`, `working-style.yaml`), regenerated on every legitimate write.
 - Signed git commits in the `~/.me/` directory — covers append-only history; tampering is detectable post-hoc via `git log --show-signature`.
 - A `SessionStart`-style hook that compares actual hashes to baseline at every session start and warns on drift.
 

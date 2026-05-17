@@ -52,7 +52,7 @@ native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
 /plugin install dot-me@dot-me
 ```
 
-handles loading `identity.yaml` into session context, drops in the `/me` command for managing all three files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
+handles loading `identity.yaml` into session context, drops in the `/me` command for managing all four files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
 
 ### Codex CLI
 
@@ -83,7 +83,7 @@ inlines `identity.yaml` (and `preferences.yaml`) into `~/.gemini/GEMINI.md` betw
 for tools without a native consumer yet — Cowork, raw OpenAI / Anthropic API calls. the path:
 
 1. `git clone git@github.com:thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
-2. paste `identity.yaml`, `voice.md`, and `preferences.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
+2. paste `identity.yaml`, `voice.md`, `preferences.yaml`, and `working-style.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
 3. re-paste when the files change
 
 filesystem-aware tools that support `@`-includes can reference `~/.me/identity.yaml` directly instead of copying.
@@ -94,7 +94,7 @@ filesystem-aware tools that support `@`-includes can reference `~/.me/identity.y
 dot-me init
 ```
 
-drops a working starter into `~/.me/` — identity scaffold, blank voice profile with section headers, preferences skeleton. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
+drops a working starter into `~/.me/` — identity scaffold, blank voice profile with section headers, preferences skeleton, and a working-style file with the recommended dimensions. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
 
 ## Why this shape
 
@@ -106,7 +106,7 @@ drops a working starter into `~/.me/` — identity scaffold, blank voice profile
 
 most "personal AI" projects in 2026 want to give you a brain. mem0, Letta, Khoj, Rewind — they capture, embed, retrieve, recall. vector DBs, daemons, capture pipelines.
 
-dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences. thats it.
+dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences, and how you want it to work with you. thats it.
 
 |                   | dot-me                          | AGENTS.md (project)    | Cursor rules (project)     | `~/.codex/AGENTS.md` (user) | ChatGPT Memory / mem0       |
 | ----------------- | ------------------------------- | ---------------------- | -------------------------- | --------------------------- | --------------------------- |

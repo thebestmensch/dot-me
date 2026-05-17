@@ -24,3 +24,4 @@
 - [Sentry: Fixes trailer over MCP](feedback_sentry_fixes_trailer_over_manual.md) — commit `Fixes ISSUE-N` trailers auto-resolve on merge; skip `mcp__sentry__update_issue` (auto-mode denies inconsistently)
 - [Workspace pattern: agents session](project_workspace_pattern.md) — JM works in `agents` tmux session via Claude Agents project selector; legacy `jm` / `oom` per-workspace panes unused
 - [Landscape scan before bulk creative](feedback_landscape_scan_before_bulk_creative.md) — bulk-file tickets/posts/proposals → run broad audit + per-item competitor scan BEFORE filing; broad survey alone underestimates saturation
+- [JM/OOM parity surfaces drift silently](feedback_jm_oom_parity_surfaces.md) — `setup_{jm,oom}_*`, `op-*-{jm,oom}`, slash-command pairs etc; edit one half → grep sibling, port in same PR

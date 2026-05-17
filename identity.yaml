@@ -39,4 +39,6 @@ pets:
 # Free-text relationship notes deferred to v1 with encryption.
 family: []
 
-inner_circle: []
+inner_circle:
+  - name: Rachel
+    role: cofounder + CEO, OneOnMe

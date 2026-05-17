@@ -7,3 +7,4 @@
 2026-05-16T19:01:24Z	me-add	identity.yaml	preferred_name: JM → James
 2026-05-17T02:00:00Z	manual	working-style.yaml	add file: behavioral defaults for agentic sessions (v0.2)
 2026-05-17T03:00:00Z	manual	working-style.yaml	remove autonomy.level field per CR review (dimension keys are markers, not parseable)
+2026-05-17T19:33:48Z	jm-retro	identity.yaml	added Rachel (cofounder + CEO, OneOnMe) to inner_circle

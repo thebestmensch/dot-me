@@ -1,0 +1,58 @@
+# working-style.yaml: annotated scaffold.
+#
+# Behavioral defaults for agentic sessions. The fourth dot-me file, alongside
+# identity.yaml / voice.md / preferences.yaml. Carries imperative rules about
+# *how* you want the AI to work with you (vs. who you are, how you sound, or
+# what tools you use).
+#
+# Authoring guidance:
+# - Phrase rules as imperatives ("don't X", "always X") not preferences
+#   ("I prefer X"). SPEC §6.6 documents why: imperatives survive more
+#   execution modes across Claude / Codex / Cursor / Gemini.
+# - Be specific about *when* a rule applies and *what* the alternative is.
+#   "Don't ask routine questions" beats "be autonomous"; "investigate first,
+#   then act" beats "be thorough".
+# - All top-level keys are optional. All `rules:` lists are optional within
+#   a key. Drop what doesn't matter to you; consumers ignore unknown fields.
+# - The 6 dimensions below are the recommended floor. Extend as needed.
+
+spec_version: "0.2"                  # optional but recommended; pins the schema version
+
+# How much standing license to act without checking in.
+autonomy:
+  rules:
+    # Examples (replace with your own):
+    - Make routine decisions inline; surface only irreversible or taste calls.
+    - Investigate first, present findings, then execute. Autonomy applies to investigation, not to picking the solution.
+
+# When the agent should pause to ask vs. make a call and keep going.
+clarifying_questions:
+  rules:
+    - Ask only when sources contradict, credentials are inaccessible, or investigation is exhausted.
+    - Otherwise make the reasonable call and continue.
+
+# How often the agent should surface status.
+check_in_cadence:
+  rules:
+    - Signal milestones; don't narrate every step.
+    - Status updates at meaningful boundaries, not play-by-play.
+
+# How tightly to bound changes to the explicit request.
+scope_discipline:
+  rules:
+    - Every changed line must trace to the request.
+    - Don't smuggle refactors or "while I was in there" edits.
+    - Flag adjacent fixes; let the user opt in.
+
+# Default workflow shape and tool-use patterns.
+execution_pattern:
+  rules:
+    - Investigate → present findings → align → execute → verify → report.
+    - Use parallel tool calls when calls are independent.
+    - Cut losses after 2-3 failed attempts; reframe or escalate.
+
+# Friction floor for actions that can't be undone or that touch shared state.
+irreversibility:
+  rules:
+    - Confirm before destructive, user-visible, or shared-state actions.
+    - Local reversible work needs no confirmation.

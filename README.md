@@ -6,10 +6,10 @@ every new agent forgets you. twice.
 
 it forgets who you are: your name, your timezone, the dogs, the project youve been on for two months. and it forgets how you want it to work with you: autonomous or check-in-heavy, terse or explanatory, the call you already made about scope discipline. you typed both in last tuesday. typed them again wednesday. youll type them again in the next chat.
 
-dot-me is a folder at `~/.me/`: three plain-text files that name both layers.
+dot-me is a folder at `~/.me/`: four plain-text files that name both layers.
 
 - **identity**: your name tag at the door. `identity.yaml`.
-- **working agreement**: how you want the AI to write and work with you. `voice.md` + `preferences.yaml`.
+- **working agreement**: how you want the AI to write and work with you. `voice.md` + `preferences.yaml` + `working-style.yaml`.
 
 tools that opt in read them when they start. claude code reads them via a plugin. everywhere else, paste them into the tool's instructions and re-paste when the files change.
 
@@ -21,24 +21,25 @@ the files are yours. delete them and nothing breaks.
 
 one `identity.yaml`. claude code reads it. codex cli reads it. same answer, no copy-paste.
 
-[interactive version on asciinema.org](https://asciinema.org/a/obe7oBGbHzr2LN74); pausable, scrubbable, copy commands straight out of the player.
+[interactive version on asciinema.org](https://asciinema.org/a/obe7oBGbHzr2LN74): pausable, scrubable, copy commands straight out of the player.
 
 ## The shape
 
-```text
+```
 ~/.me/
-├── identity.yaml      # invariant facts: name, timezone, dogs, work, what you know
-├── voice.md           # how you sound: tone, lexicon, anti-patterns, sample passages
-└── preferences.yaml   # likes / favorites / avoid: tools, media, aesthetics
+├── identity.yaml       # invariant facts: name, timezone, dogs, work, what you know
+├── voice.md            # how you sound: tone, lexicon, anti-patterns, sample passages
+├── preferences.yaml    # likes / favorites / avoid — tools, media, aesthetics
+└── working-style.yaml  # how you want the AI to *work* with you — autonomy, scope, irreversibility
 ```
 
-three files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business; consumers MUST NOT depend on it.
+four files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business. consumers MUST NOT depend on it.
 
-required: `name` in `identity.yaml`. everything else is optional. unknown keys are ignored silently (additive-only, forward-compatible).
+required: `name` in `identity.yaml`. everything else is optional. unknown keys are ignored silently. additive-only, forward-compatible.
 
 ## Status
 
-v0.2, solo-maintained, RFC-stage. one reference consumer (the Claude Code plugin shipped in this repo). interest from other AI tools is what graduates this from "spec the author uses" to "spec." [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`; the format will evolve based on what real implementers hit.
+v0.2, solo-maintained, RFC-stage. one reference consumer (the Claude Code plugin shipped in this repo). interest from other AI tools is what graduates this from "spec the author uses" to "spec." [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`. the format will evolve based on what real implementers hit.
 
 native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
 
@@ -51,7 +52,7 @@ native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
 /plugin install dot-me@dot-me
 ```
 
-handles loading `identity.yaml` into session context, drops in the `/me` command for managing all three files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
+handles loading `identity.yaml` into session context, drops in the `/me` command for managing all four files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
 
 ### Codex CLI
 
@@ -67,7 +68,7 @@ inlines `identity.yaml` (and `preferences.yaml`) into `~/.codex/AGENTS.md` betwe
 bash <(curl -fsSL https://raw.githubusercontent.com/thebestmensch/dot-me/main/consumers/cursor/install.sh)
 ```
 
-renders the dot-me block, pipes it to `pbcopy` on macOS, and prints paste instructions for Cursor Settings → Rules → User Rules. for repos where you'd rather have the rule sync from disk, `--project <dir>` writes `.cursor/rules/dot-me.mdc` instead; re-running refreshes the file with no paste step. Cursor's design forces the tradeoff: User Rules are IDE-stored (no filesystem hook), Project Rules are filesystem-backed but per-repo. full docs and modes: [`consumers/cursor/`](consumers/cursor/README.md).
+renders the dot-me block, pipes it to `pbcopy` on macOS, and prints paste instructions for Cursor Settings → Rules → User Rules. for repos where you'd rather have the rule sync from disk, `--project <dir>` writes `.cursor/rules/dot-me.mdc` instead. re-running refreshes the file with no paste step. Cursor's design forces the tradeoff: User Rules are IDE-stored (no filesystem hook), Project Rules are filesystem-backed but per-repo. full docs and modes: [`consumers/cursor/`](consumers/cursor/README.md).
 
 ### Gemini CLI
 
@@ -79,10 +80,10 @@ inlines `identity.yaml` (and `preferences.yaml`) into `~/.gemini/GEMINI.md` betw
 
 ### Other tools (manual)
 
-for tools without a native consumer yet (Cowork, raw OpenAI / Anthropic API calls). the path:
+for tools without a native consumer yet (Cowork, raw OpenAI / Anthropic API calls), the path:
 
 1. `git clone git@github.com:thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
-2. paste `identity.yaml`, `voice.md`, and `preferences.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
+2. paste `identity.yaml`, `voice.md`, `preferences.yaml`, and `working-style.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
 3. re-paste when the files change
 
 filesystem-aware tools that support `@`-includes can reference `~/.me/identity.yaml` directly instead of copying.
@@ -93,19 +94,19 @@ filesystem-aware tools that support `@`-includes can reference `~/.me/identity.y
 dot-me init
 ```
 
-drops a working starter into `~/.me/`: identity scaffold, blank voice profile with section headers, preferences skeleton. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
+drops a working starter into `~/.me/`: identity scaffold, blank voice profile with section headers, preferences skeleton, and a working-style file with the recommended dimensions. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
 
 ## Why this shape
 
 - **`~/.me/`, not `$XDG_CONFIG_HOME/me/`.** brevity, discoverability, hand-typeability. `~/.me/` is two characters past `~/`. dot-me leans on the same convention as `~/.ssh/` and `~/.gitconfig`: well-known, home-rooted, no env-var indirection. tools that want XDG can resolve `$XDG_CONFIG_HOME/me/` as a fallback path; `~/.me/` is the canonical one.
 - **YAML for the structured parts, Markdown for the prose part.** identity and preferences are queryable (name, timezone, editor, color temperature). voice is artistic: sample passages, anti-patterns, dialogue. forcing voice into YAML loses the expressive prose. forcing identity into Markdown loses the structure. two formats for two problems.
-- **Three files, not one.** different lifecycles. identity rarely changes (your name, timezone). voice occasionally refines. preferences churn (editors, themes, avoid-lists). a combined `me.md` would re-invalidate the stable parts whenever the volatile parts changed.
+- **Four files, not one.** different lifecycles. identity rarely changes (your name, timezone). voice occasionally refines. working-style occasionally refines as you learn what autonomy level you actually want. preferences churn (editors, themes, avoid-lists). a combined `me.md` would re-invalidate the stable parts whenever the volatile parts changed.
 
 ## What dot-me is *not*
 
-most "personal AI" projects in 2026 want to give you a brain. mem0, Letta, Khoj, Rewind: they capture, embed, retrieve, recall. vector DBs, daemons, capture pipelines.
+most "personal AI" projects in 2026 want to give you a brain. mem0, Letta, Khoj, Rewind. they capture, embed, retrieve, recall. vector DBs, daemons, capture pipelines.
 
-dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences. thats it.
+dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences, and how you want it to work with you. thats it.
 
 |                   | dot-me                          | AGENTS.md (project)    | Cursor rules (project)     | `~/.codex/AGENTS.md` (user) | ChatGPT Memory / mem0       |
 | ----------------- | ------------------------------- | ---------------------- | -------------------------- | --------------------------- | --------------------------- |
@@ -118,7 +119,7 @@ dot-me aims much lower. its only job: when an agent starts, it knows your name, 
 
 the user-level cross-vendor cell is what dot-me claims. Codex's `~/.codex/AGENTS.md` is the closest analog but ships with Codex only.
 
-dot-me is **not a replacement for AGENTS.md**; theyre orthogonal. AGENTS.md is the project brief (what this codebase is, what conventions to follow). dot-me is who the human is and how they want the AI to work with them. a tool that consumes both SHOULD load dot-me as the person-level layer first, then apply AGENTS.md as the project-level layer on top.
+dot-me is **not a replacement for AGENTS.md**. theyre orthogonal. AGENTS.md is the project brief (what this codebase is, what conventions to follow). dot-me is who the human is and how they want the AI to work with them. a tool that consumes both SHOULD load dot-me as the person-level layer first, then apply AGENTS.md as the project-level layer on top.
 
 dot-me is also **not a replacement for per-project memory.** project memory still has its place: what you discovered debugging that flaky test last tuesday. dot-me is the layer above project memory: invariant facts about the human, not the project.
 
@@ -135,7 +136,7 @@ dot-me isnt alone in the personal-context space.
 - **AGENTS.md** ([agentsmd/agents.md](https://github.com/agentsmd/agents.md)): project-level context for coding agents, Linux-Foundation-stewarded, 60k+ adopters as of mid-2026. orthogonal to dot-me as covered in the table above. AGENTS.md has an [open issue](https://github.com/agentsmd/agents.md/issues/91) for adding personal/identity fields; dot-me is one possible answer to that gap.
 - **`~/.agents/profile/user.md`** ([dotstandards.info](https://dotstandards.info/standards/agents/)): a parallel draft v0.1 covering similar scope, maintained by secondtruthLabs and the Open WebTech Association. uses freeform Markdown for everything rather than splitting structured fields from prose. dot-me's bet: structured YAML for the invariant parts is easier for tool implementers to parse without inventing a schema. both drafts are early; convergence is negotiable.
 - **Vendor memory features** (ChatGPT memory, Claude memory features): vendor-managed, conversational-retrieval style, locked to the vendor. solves a different problem (remembering things from past sessions). complementary, not competitive.
-- **Memory services** (mem0, Letta, Khoj, Rewind): service-shaped, vector-DB-backed, capture-and-retrieve oriented. dot-me is files; they are infrastructure. different orders of magnitude in setup cost.
+- **Memory services** (mem0, Letta, Khoj, Rewind): service-shaped, vector-DB-backed, capture-and-retrieve oriented. dot-me is files, they are infrastructure. different orders of magnitude in setup cost.
 
 ## Spec
 

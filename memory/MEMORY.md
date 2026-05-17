@@ -24,3 +24,4 @@
 - [Pre-commit gate bypass loop](feedback_pre_commit_gate_bypass_loop.md) — gate fights `touch skip_codex_gate` via mtime race; on 2nd retry, dispatch real adversarial-review (small diffs run inline) instead of touching markers
 - [CR non-overlap after Codex approves](feedback_cr_non_overlap_after_codex.md) — CR catches ordering/coverage bugs Codex misses on classification logic; expect 2-3 CR rounds even after Codex green
 - [Sentry: Fixes trailer over MCP](feedback_sentry_fixes_trailer_over_manual.md) — commit `Fixes ISSUE-N` trailers auto-resolve on merge; skip `mcp__sentry__update_issue` (auto-mode denies inconsistently)
+- [Workspace pattern: agents session](project_workspace_pattern.md) — JM works in `agents` tmux session via Claude Agents project selector; legacy `jm` / `oom` per-workspace panes unused

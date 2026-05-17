@@ -1,4 +1,4 @@
-# Personal identity — invariant facts about user-as-subject.
+# Personal identity (invariant facts about user-as-subject).
 # Managed by /me (any subcommand). Direct edits will trigger the SessionStart integrity hook.
 # Schema: see SPEC.md (sibling file in this repo)
 
@@ -35,7 +35,7 @@ pets:
     species: dog
     breed: Alaskan Klee Kai
 
-# Minimal social ring — names + role only, no free-text notes.
+# Minimal social ring: names + role only, no free-text notes.
 # Free-text relationship notes deferred to v1 with encryption.
 family: []
 

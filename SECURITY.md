@@ -4,8 +4,8 @@
 
 `dot-me` defines a file format consumed by AI tools as authoritative user-context. The two attack classes that shape the v0.1 spec:
 
-1. **Local file tamper** — an attacker with filesystem access modifies `identity.yaml` / `voice.md` / `preferences.yaml` to inject persistent instructions into every future AI session.
-2. **Exfiltration via prompt injection** — a malicious project's `CLAUDE.md`, `AGENTS.md`, or similar instructs the agent to read and exfiltrate `~/.me/voice.md` (or another file) to a third party.
+1. **Local file tamper**: an attacker with filesystem access modifies `identity.yaml` / `voice.md` / `preferences.yaml` to inject persistent instructions into every future AI session.
+2. **Exfiltration via prompt injection**: a malicious project's `CLAUDE.md`, `AGENTS.md`, or similar instructs the agent to read and exfiltrate `~/.me/voice.md` (or another file) to a third party.
 
 The spec's primary mitigation for class (2) is the **read-at-startup, not retrievable** rule: consumers SHOULD load `~/.me/` files once at session start and MUST NOT expose them as tools the agent can re-read mid-session. Class (1) is mitigated by optional integrity tooling (`.integrity` hash baselines + signed git commits + a SessionStart drift check); these are not part of the format and consumers MUST work correctly whether or not they exist.
 
@@ -27,7 +27,7 @@ I'll acknowledge within 7 days. Coordinated disclosure preferred for issues that
 
 - Vulnerabilities in **specific consumer tools** that load `dot-me` files (Claude Code, future Claude Cowork plugin, third-party agents). Report those to the tool's vendor.
 - Vulnerabilities in **a user's personal `~/.me/` content** (e.g. weak GPG key, world-readable filesystem permissions). The spec recommends practices; enforcement is the user's responsibility.
-- Issues with the example content in this repo (the maintainer's `identity.yaml` etc.) — these are illustrative, not normative.
+- Issues with the example content in this repo (the maintainer's `identity.yaml` etc.). These are illustrative, not normative.
 
 ## Disclosure history
 

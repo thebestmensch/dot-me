@@ -113,7 +113,7 @@ dot-me aims much lower. its only job: when an agent starts, it knows your name, 
 | Filesystem scope  | user (`~/`)                     | project (`./`)         | project (`.cursor/rules/`) | user (`~/.codex/`)          | none (vendor service)       |
 | Format            | YAML + Markdown                 | freeform Markdown      | `.mdc` (front-matter + MD) | freeform Markdown           | proprietary, vendor-managed |
 | Cross-vendor      | yes (filesystem + consumers)    | yes (multi-tool)       | no (Cursor-only)           | no (Codex-only)             | no (vendor-locked)          |
-| Load model        | read at session start           | read at session start  | scope-on-glob              | read at session start       | retrieved on demand         |
+| Load model        | read at session start           | read at session start  | scope-on-glob, `alwaysApply` | read at session start       | retrieved on demand         |
 | Infrastructure    | none                            | none                   | none                       | none                        | service / vector DB         |
 
 the user-level cross-vendor cell is what dot-me claims — Codex's `~/.codex/AGENTS.md` is the closest analog but ships with Codex only.

@@ -185,7 +185,7 @@ Register still applies inside Format. A README for a personal-project repo is `d
 >
 > every new chat, every new repo, every new agent: you re-onboard yourself. you re-explain how you write, what you know, what your dog's name is. AI tools don't carry it across sessions, and the ones that try are locked to a single vendor.
 >
-> `~/.me/` is a folder you own. three files (identity, voice, preferences) that any tool can read. you write them once. they show up at the start of every chat as durable context.
+> `~/.me/` is a folder you own. four files (identity, voice, preferences, working-style) that any tool can read. you write them once. they show up at the start of every chat as durable context.
 
 Lead with a one-line hook. Pain-first second paragraph. Solution paragraph names the artifact and its shape. Headings come later, once the reader has accepted the framing.
 

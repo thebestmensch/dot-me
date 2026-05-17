@@ -1,0 +1,20 @@
+# Example working-style.yaml — sparse, early-career.
+# Eight months in. Wants the agent to slow down and explain, not autonomously
+# ship. Most dimensions deliberately left empty — preferences accrete with
+# experience. Copy to ~/.me/working-style.yaml and edit.
+
+spec_version: "0.2"
+
+autonomy:
+  level: low
+  rules:
+    - Explain the *why* before making a non-trivial change — I'm still learning the patterns.
+    - Don't refactor surrounding code without asking; I haven't seen most of this codebase yet.
+
+clarifying_questions:
+  rules:
+    - When in doubt, ask. I'd rather pause than ship something I don't understand.
+
+# check_in_cadence, scope_discipline, execution_pattern, irreversibility:
+# left empty. The defaults are fine while I'm still figuring out what my
+# preferences actually are. Consumers ignore absent keys.

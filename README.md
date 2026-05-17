@@ -6,10 +6,10 @@ every new agent forgets you. twice.
 
 it forgets who you are — your name, your timezone, the dogs, the project youve been on for two months. and it forgets how you want it to work with you — autonomous or check-in-heavy, terse or explanatory, the call you already made about scope discipline. you typed both in last tuesday. typed them again wednesday. youll type them again in the next chat.
 
-dot-me is a folder at `~/.me/` — three plain-text files that name both layers.
+dot-me is a folder at `~/.me/` — four plain-text files that name both layers.
 
 - **identity** — your name tag at the door. `identity.yaml`.
-- **working agreement** — how you want the AI to write and work with you. `voice.md` + `preferences.yaml`.
+- **working agreement** — how you want the AI to write and work with you. `voice.md` + `preferences.yaml` + `working-style.yaml`.
 
 tools that opt in read them when they start. claude code reads them via a plugin. everywhere else, paste them into the tool's instructions and re-paste when the files change.
 
@@ -27,12 +27,13 @@ one `identity.yaml`. claude code reads it. codex cli reads it. same answer, no c
 
 ```
 ~/.me/
-├── identity.yaml      # invariant facts: name, timezone, dogs, work, what you know
-├── voice.md           # how you sound: tone, lexicon, anti-patterns, sample passages
-└── preferences.yaml   # likes / favorites / avoid — tools, media, aesthetics
+├── identity.yaml       # invariant facts: name, timezone, dogs, work, what you know
+├── voice.md            # how you sound: tone, lexicon, anti-patterns, sample passages
+├── preferences.yaml    # likes / favorites / avoid — tools, media, aesthetics
+└── working-style.yaml  # how you want the AI to *work* with you — autonomy, scope, irreversibility
 ```
 
-three files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business — consumers MUST NOT depend on it.
+four files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business — consumers MUST NOT depend on it.
 
 required: `name` in `identity.yaml`. everything else is optional. unknown keys are ignored silently — additive-only, forward-compatible.
 
@@ -99,7 +100,7 @@ drops a working starter into `~/.me/` — identity scaffold, blank voice profile
 
 - **`~/.me/`, not `$XDG_CONFIG_HOME/me/`.** brevity, discoverability, hand-typeability. `~/.me/` is two characters past `~/`. dot-me leans on the same convention as `~/.ssh/` and `~/.gitconfig`: well-known, home-rooted, no env-var indirection. tools that want XDG can resolve `$XDG_CONFIG_HOME/me/` as a fallback path; `~/.me/` is the canonical one.
 - **YAML for the structured parts, Markdown for the prose part.** identity and preferences are queryable (name, timezone, editor, color temperature). voice is artistic — sample passages, anti-patterns, dialogue. forcing voice into YAML loses the expressive prose. forcing identity into Markdown loses the structure. two formats for two problems.
-- **Three files, not one.** different lifecycles. identity rarely changes (your name, timezone). voice occasionally refines. preferences churn (editors, themes, avoid-lists). a combined `me.md` would re-invalidate the stable parts whenever the volatile parts changed.
+- **Four files, not one.** different lifecycles. identity rarely changes (your name, timezone). voice occasionally refines. working-style occasionally refines as you learn what autonomy level you actually want. preferences churn (editors, themes, avoid-lists). a combined `me.md` would re-invalidate the stable parts whenever the volatile parts changed.
 
 ## What dot-me is *not*
 

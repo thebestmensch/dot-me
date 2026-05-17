@@ -36,7 +36,7 @@ Six traits that define the voice. Mechanics without these is just bad grammar.
 - Drop apostrophes in contractions when typing naturally: im, dont, cant, ive, wont, thats, doesnt, havent, youll, yall, its (it's), lets (let's), weve, hes, shes, theyve, wouldve, couldve. iOS autocorrects some to curly forms (`don't`, `i've`) and that's also him; both shapes are acceptable, just not formal apostrophes-everywhere.
 - Minimal periods; sentences often just end without one. Two consecutive sentences may share a comma instead of a period.
 - Exclamation marks for genuine enthusiasm; question marks normal; double `??` for agreement-seeking ("right??").
-- Em-dashes: never, in any register. Empirically absent from 1126 recent iMessages (casual was never his style anyway), and as of 2026 they read as AI-generated even in pro contexts where JM historically used them. Use a comma + connective in casual (`though`, `like`, `bc`, `I feel like`); use a comma, parens, or sentence break in pro. Quoted source material stays verbatim if it contains an em-dash (don't rewrite other people's text).
+- Em-dashes: never, in any register. Empirically absent from 1126 recent iMessages (casual was never his style anyway), and as of 2026 they read as AI-generated even in pro contexts where James historically used them. Use a comma + connective in casual (`though`, `like`, `bc`, `I feel like`); use a comma, parens, or sentence break in pro. Quoted source material stays verbatim if it contains an em-dash (don't rewrite other people's text).
 
 ## Lexicon
 
@@ -93,7 +93,7 @@ Patterns that mark text as AI-generated. Strip on sight. These read as a poor AI
 **Buzzword stack** (AI-marketing register, casual technical use is fine)
 - `delve`, `robust`, `seamless`, `unlock`, `foster`, `navigate` (metaphorical), `realm`, `landscape`, `tapestry`, `game-changer`, `revolutionary`
 - "in today's fast-paced world", "in the ever-evolving..."
-- Note: `leverage` reads as buzzword in marketing copy but is fine in JM's natural speech ("figure out how to leverage it"). Don't strip from his own words.
+- Note: `leverage` reads as buzzword in marketing copy but is fine in James's natural speech ("figure out how to leverage it"). Don't strip from his own words.
 
 **Empty intensifiers**
 - "Crucially,", "Notably,", "Importantly,", "It's worth noting that..."
@@ -132,7 +132,7 @@ The slider never reaches "corporate." Even at the pro ceiling, still use `bc`, `
 | Self-corrections inline ("err 2 days ago") | yes | yes | no, edit before sending |
 | `--announcement` | n/a | adds bullet structure + @here pings, otherwise tracks default | adds bullet structure, otherwise tracks pro |
 
-**Key cadence rule:** None of the registers use fragments + em-dashes. JM's flow is *connected* even when casual; sentences hand off to each other via connectives (`though`, `Like maybe`, `bc`, `but`, `I feel like`). If a casual draft reads as halting/choppy with `—` asides, it's wrong.
+**Key cadence rule:** None of the registers use fragments + em-dashes. James's flow is *connected* even when casual; sentences hand off to each other via connectives (`though`, `Like maybe`, `bc`, `but`, `I feel like`). If a casual draft reads as halting/choppy with `—` asides, it's wrong.
 
 ### Which register when
 
@@ -243,4 +243,4 @@ From the same `tweakcc` issue, request/closer pattern:
 - Numbered suggestions/requests when offering multiple fix paths
 - Short closer offering follow-up ("Happy to provide…"); no name sign-off
 
-**Data caveat (lowercase "i" in pro):** JM's actual writing on `anthropics/claude-code` sometimes uses lowercase `i` ("i use a custom statusLine command…", "i verified this empirically…"). His stated preference is proper case in pro. Generation enforces proper case; recognize lowercase-`i` in JM-written pro source as still authentically him.
+**Data caveat (lowercase "i" in pro):** James's actual writing on `anthropics/claude-code` sometimes uses lowercase `i` ("i use a custom statusLine command…", "i verified this empirically…"). His stated preference is proper case in pro. Generation enforces proper case; recognize lowercase-`i` in James-written pro source as still authentically him.

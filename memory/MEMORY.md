@@ -17,7 +17,6 @@
 - [Flip condition is a tell](feedback_flip_condition_is_a_tell.md) — when a rec says "if X then drop entire rec," X is usually the actual state; promote flip-conditions to primary, invert burden of proof
 - [claude plugin update no-op on version match](reference_claude_plugin_update_noop.md) — CC plugin-update CLI compares plugin.json version, not git sha; static-version plugins (e.g. claude-hud) need uninstall+reinstall to refresh
 - [gh search user flags](reference_gh_search_user_flags.md) — `gh search issues/prs` returns `[]` on `involves:@me` query token; must use `--involves <user>` / `--review-requested <user>` flags with explicit username
-- [Ghostty macOS menu keybind intercept](reference_ghostty_macos_menu_keybind_intercept.md) — default keybinds tied to Edit menu (super+shift+t=undo, etc.) fire before user overrides; must `unbind` first, then rebind
 - [Favorite color: purple](user_favorite_color.md) — soft preference for personal/aesthetic choices; warm muted purple in SpenschSuite contexts (`#7A5775`), not Screenroom's saturated `#9775fa`
 - [No em dashes in output](feedback_no_emdashes.md) — em dashes read as AI-generated in 2026; use comma/semicolon/parens/rewrite; en dashes for ranges and hyphens still fine
 - [Voice doc reconciliation on style rule](feedback_voice_doc_reconciliation.md) — new style memory? grep voice.md + preferences.yaml for contradictions, fix in same PR; otherwise /jm-voice re-introduces the banned pattern

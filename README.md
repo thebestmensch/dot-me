@@ -29,8 +29,8 @@ one `identity.yaml`. claude code reads it. codex cli reads it. same answer, no c
 ~/.me/
 ├── identity.yaml       # invariant facts: name, timezone, dogs, work, what you know
 ├── voice.md            # how you sound: tone, lexicon, anti-patterns, sample passages
-├── preferences.yaml    # likes / favorites / avoid — tools, media, aesthetics
-└── working-style.yaml  # how you want the AI to *work* with you — autonomy, scope, irreversibility
+├── preferences.yaml    # likes / favorites / avoid (tools, media, aesthetics)
+└── working-style.yaml  # how you want the AI to *work* with you (autonomy, scope, irreversibility)
 ```
 
 four files. thats the format. anything else you keep at `~/.me/` (integrity hashes, update logs, encrypted vaults) is your business. consumers MUST NOT depend on it.

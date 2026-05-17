@@ -61,7 +61,7 @@ Schemas are intentionally loose — most fields are optional, and consumers MUST
 
 The identity layer is one file: `identity.yaml`. It carries durable, low-velocity facts about the user — name, timezone, pronouns, what they know about, the family/pets/work surface tools use for rapport and contextual cues. v0.2 aligned this layer with canonical identity specs (vCard RFC 6350, Schema.org Person, JSON Resume, FOAF) so tool implementers can reuse existing schemas instead of inventing a new one.
 
-### 5.1. `identity.yaml`
+#### 5.1. `identity.yaml`
 
 ```yaml
 name: <string>                    # required
@@ -106,7 +106,7 @@ The working-agreement layer carries the behavioral content that moves agent outp
 
 Working-agreement content benefits from a different authoring style than identity content. The execution-time differences documented in §6.6 suggest that prohibitions and hard constraints ("don't ask before doing routine decisions", "always explain irreversible changes before acting") port more reliably across Claude / Codex / Gemini / Cursor than permissions or preferences ("I prefer autonomy"); the latter are easier for a given tool's instruction-application semantics to soften or override. Authors of working-agreement files SHOULD lean imperative. This is maintainer experience to date — not a systematic study — and the format will accommodate corrections from implementers who hit different results in practice.
 
-### 5.2. `voice.md`
+#### 5.2. `voice.md`
 
 Freeform Markdown. The five section headers below are a recommended convention, not required. When present, consumers MUST treat them as human-readable markers only — not as parseable structure.
 
@@ -122,7 +122,7 @@ Content within sections is intentionally unstructured — voice is artistic, not
 
 **Authoring tip — name the quiet traits, not just the loud ones.** It's tempting to capture only the traits a reader would notice in 30 seconds (humor, bluntness, hedging). But generation defaults strip whatever isn't named, so unnamed traits that *do* show up in your writing — sincerity, vulnerability, restraint, formality, warmth — quietly disappear from output. If a sample passage of yours has a trait the trait list doesn't mention, that's a gap. Name it.
 
-### 5.3. `preferences.yaml`
+#### 5.3. `preferences.yaml`
 
 ```yaml
 tools:        { editor: ..., shell: ..., ... }

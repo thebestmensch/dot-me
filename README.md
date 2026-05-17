@@ -1,12 +1,15 @@
 # dot-me
 
-> a name tag at the door for AI tools.
+> the personal-context card AI tools read at the door — your name, your voice, your working agreement.
 
-every new agent forgets you.
+every new agent forgets you. twice.
 
-your name. your timezone. how you write. what you read. the project youve been on for two months. you typed it in last tuesday. typed it in again wednesday. youll type it again in the next chat.
+it forgets who you are — your name, your timezone, the dogs, the project youve been on for two months. and it forgets how you want it to work with you — autonomous or check-in-heavy, terse or explanatory, the call you already made about scope discipline. you typed both in last tuesday. typed them again wednesday. youll type them again in the next chat.
 
-dot-me is a folder at `~/.me/` — three plain-text files.
+dot-me is a folder at `~/.me/` — three plain-text files that name both layers.
+
+- **identity** — your name tag at the door. `identity.yaml`.
+- **working agreement** — how you want the AI to write and work with you. `voice.md` + `preferences.yaml`.
 
 tools that opt in read them when they start. claude code reads them via a plugin. everywhere else, paste them into the tool's instructions and re-paste when the files change.
 
@@ -104,16 +107,18 @@ most "personal AI" projects in 2026 want to give you a brain. mem0, Letta, Khoj,
 
 dot-me aims much lower. its only job: when an agent starts, it knows your name, your voice, your preferences. thats it.
 
-|                   | dot-me                  | AGENTS.md              | ChatGPT Memory / mem0       |
-| ----------------- | ----------------------- | ---------------------- | --------------------------- |
-| Subject           | the human               | the project            | the conversation history    |
-| Filesystem scope  | user (`~/`)             | project (`./`)         | none (vendor service)       |
-| Format            | YAML + Markdown         | freeform Markdown      | proprietary, vendor-managed |
-| Portability       | filesystem              | filesystem (in-repo)   | locked to vendor            |
-| Load model        | read at session start   | read at session start  | retrieved on demand         |
-| Infrastructure    | none                    | none                   | service / vector DB         |
+|                   | dot-me                          | AGENTS.md (project)    | Cursor rules (project)     | `~/.codex/AGENTS.md` (user) | ChatGPT Memory / mem0       |
+| ----------------- | ------------------------------- | ---------------------- | -------------------------- | --------------------------- | --------------------------- |
+| Subject           | the human (identity + agreement)| the project            | the project                | the human (Codex-only)      | the conversation history    |
+| Filesystem scope  | user (`~/`)                     | project (`./`)         | project (`.cursor/rules/`) | user (`~/.codex/`)          | none (vendor service)       |
+| Format            | YAML + Markdown                 | freeform Markdown      | `.mdc` (front-matter + MD) | freeform Markdown           | proprietary, vendor-managed |
+| Cross-vendor      | yes (filesystem + consumers)    | yes (multi-tool)       | no (Cursor-only)           | no (Codex-only)             | no (vendor-locked)          |
+| Load model        | read at session start           | read at session start  | scope-on-glob, `alwaysApply` | read at session start       | retrieved on demand         |
+| Infrastructure    | none                            | none                   | none                       | none                        | service / vector DB         |
 
-dot-me is **not a replacement for AGENTS.md** — theyre orthogonal. AGENTS.md is the project brief (what this codebase is, what conventions to follow). dot-me is the name tag (who is the human at the keyboard). a tool that consumes both SHOULD load dot-me as the person-level layer first, then apply AGENTS.md as the project-level layer on top.
+the user-level cross-vendor cell is what dot-me claims — Codex's `~/.codex/AGENTS.md` is the closest analog but ships with Codex only.
+
+dot-me is **not a replacement for AGENTS.md** — theyre orthogonal. AGENTS.md is the project brief (what this codebase is, what conventions to follow). dot-me is who the human is and how they want the AI to work with them. a tool that consumes both SHOULD load dot-me as the person-level layer first, then apply AGENTS.md as the project-level layer on top.
 
 dot-me is also **not a replacement for per-project memory.** project memory still has its place — what you discovered debugging that flaky test last tuesday. dot-me is the layer above project memory: invariant facts about the human, not the project.
 

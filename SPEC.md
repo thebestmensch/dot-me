@@ -3,15 +3,18 @@
 **Date:** 2026-05-16
 **Status:** RFC, solo-maintained
 **Scope:** Schema, load contract, update invariants, and precedence vs existing personal-context layers (AGENTS.md, Codex memories, Claude Code global CLAUDE.md, `~/.agents/profile/user.md`) for a lightweight, file-based personal-context standard at `~/.me/`.
-**Driver:** AI tools re-onboard the user in every new project, ticket, subagent, and chat. There is no portable, file-based standard for "who is the human at the keyboard" — AGENTS.md handles project context, vendor memory features handle conversation history, neither covers durable personal identity. dot-me fills that gap as the lowest-effort viable answer.
+**Driver:** AI tools re-onboard the user in every new project, ticket, subagent, and chat — twice. They forget *who you are* (name, timezone, dogs, durable context) and they forget *how you want them to work with you* (autonomy level, voice, scope discipline, the calls you already made). AGENTS.md handles project context; vendor memory features handle conversation history; no portable, file-based standard covers either layer of durable personal context. dot-me fills both as the lowest-effort viable answer.
 
-> a name tag at the door for AI tools.
+> the personal-context card AI tools read at the door — your name tag and your working agreement.
 
 ## 1. What this is
 
-Every new project, every new ticket, every fresh subagent, every fresh chat — your AI tools start with no idea who you are. So you re-onboard yourself. You paste a paragraph into CLAUDE.md. You copy three lines about your tone into a new repo. You re-explain your dogs to ChatGPT for the seventh time this week.
+Every new project, every new ticket, every fresh subagent, every fresh chat — your AI tools start with no idea who you are *and* no idea how you want them to work with you. So you re-onboard yourself, twice. You paste a paragraph into CLAUDE.md saying who you are. You paste another about how to write for you. You re-explain your dogs *and* your tolerance for clarifying questions to ChatGPT for the seventh time this week.
 
-dot-me is the file you stop copy-pasting.
+dot-me is the file you stop copy-pasting. It carries two layers in three files:
+
+- **Identity layer** — who you are. Stable, vCard-shaped. Lives in `identity.yaml`.
+- **Working-agreement layer** — how you want the AI to write for you and work with you. Lives in `voice.md` (prose) and `preferences.yaml` (structured).
 
 Three files at `~/.me/`. Plain YAML and Markdown. Any AI tool can opt in.
 
@@ -29,7 +32,7 @@ dot-me is the lowest-effort fix for that cost.
 
 - **Not a brain.** No recall, no embeddings, no retrieval. It's three static files.
 - **Not a service.** No daemon, no API, no background process. Read-from-disk-once at session start, done.
-- **Not AGENTS.md.** AGENTS.md is the project brief — what this codebase is, what conventions to follow, what tests to run. dot-me is the name tag — who is the human at the keyboard. They're orthogonal. You SHOULD have both.
+- **Not AGENTS.md.** AGENTS.md is the project brief — what this codebase is, what conventions to follow, what tests to run. dot-me is the personal-context card — who the human at the keyboard is and how they want the AI to work with them. They're orthogonal. You SHOULD have both.
 - **Not a replacement for per-project memory.** Project memory still has its place — what you discovered debugging that flaky test last Tuesday. dot-me is the layer above project memory: invariant facts about the human, not the project.
 
 ## 4. File layout
@@ -47,9 +50,18 @@ These three files are the format. Anything else in `~/.me/` (integrity sidecars,
 
 ## 5. Schema
 
-Each file has a defined shape. Schemas are intentionally loose — most fields are optional, and consumers MUST ignore unknown fields (forward-compat).
+The three content files split across two layers:
 
-### 5.1. `identity.yaml`
+- **§5.A Identity layer** — answers *who you are*. `identity.yaml`. Stable, vCard-aligned.
+- **§5.B Working-agreement layer** — answers *how you want the AI to write for you and work with you*. `voice.md` + `preferences.yaml` today; a future `working-style.yaml` file is planned.
+
+Schemas are intentionally loose — most fields are optional, and consumers MUST ignore unknown fields (forward-compat). Conformance at the layer level is addressed in §6.1 — consumers MUST disclose which layers they load so adopters can tell layer-aware adoption from layer-skipping adoption.
+
+### 5.A. Identity layer
+
+The identity layer is one file: `identity.yaml`. It carries durable, low-velocity facts about the user — name, timezone, pronouns, what they know about, the family/pets/work surface tools use for rapport and contextual cues. v0.2 aligned this layer with canonical identity specs (vCard RFC 6350, Schema.org Person, JSON Resume, FOAF) so tool implementers can reuse existing schemas instead of inventing a new one.
+
+#### 5.1. `identity.yaml`
 
 ```yaml
 name: <string>                    # required
@@ -88,7 +100,13 @@ Required: `name`. The single strictness elsewhere is `location.timezone` — whe
 
 **`languages` vs `knows_about` (v0.2):** Schema.org separates `knowsLanguage` (spoken/written languages) from `knowsAbout` (domain expertise). v0.1 conflated them; v0.2 introduces `languages` as the dedicated field. `knows_about` retains its v0.1 semantics — free-text expertise topics, not languages.
 
-### 5.2. `voice.md`
+### 5.B. Working-agreement layer
+
+The working-agreement layer carries the behavioral content that moves agent output on every session, not just sessions where identity context happens to surface. Two files today: `voice.md` (prose-shaped — *how the AI should write for you*) and `preferences.yaml` (structured — *what tools and aesthetics you favor*). A future `working-style.yaml` is planned to extend the layer with imperative behavioral defaults (autonomy level, scope discipline, interruption thresholds).
+
+Working-agreement content benefits from a different authoring style than identity content. The execution-time differences documented in §6.6 suggest that prohibitions and hard constraints ("don't ask before doing routine decisions", "always explain irreversible changes before acting") port more reliably across Claude / Codex / Gemini / Cursor than permissions or preferences ("I prefer autonomy"); the latter are easier for a given tool's instruction-application semantics to soften or override. Authors of working-agreement files SHOULD lean imperative. This is maintainer experience to date — not a systematic study — and the format will accommodate corrections from implementers who hit different results in practice.
+
+#### 5.2. `voice.md`
 
 Freeform Markdown. The five section headers below are a recommended convention, not required. When present, consumers MUST treat them as human-readable markers only — not as parseable structure.
 
@@ -104,7 +122,7 @@ Content within sections is intentionally unstructured — voice is artistic, not
 
 **Authoring tip — name the quiet traits, not just the loud ones.** It's tempting to capture only the traits a reader would notice in 30 seconds (humor, bluntness, hedging). But generation defaults strip whatever isn't named, so unnamed traits that *do* show up in your writing — sincerity, vulnerability, restraint, formality, warmth — quietly disappear from output. If a sample passage of yours has a trait the trait list doesn't mention, that's a gap. Name it.
 
-### 5.3. `preferences.yaml`
+#### 5.3. `preferences.yaml`
 
 ```yaml
 tools:        { editor: ..., shell: ..., ... }
@@ -141,7 +159,7 @@ dot-me content is meant to be loaded into the agent's instruction context at ses
 - `voice.md` — load when the agent generates user-facing text (writing, replying, drafting, generating commit messages). A math-only or pure-code-fix context can skip it.
 - `preferences.yaml` — load when the agent makes recommendations (tool choice, design direction, copy tone). A strict bug-fix context can skip it.
 
-A consuming tool that only reads `identity.yaml` is still a valid consumer. Tool builders are encouraged to document which files they load.
+**Conformance disclosure (v0.2+).** A consumer MAY load any subset of files, but it MUST disclose which layers it loads (identity / working-agreement / both) and, optionally, which files within each layer. The disclosure SHOULD be made in the consumer's public documentation (README, install guide, or equivalent adopter-facing surface) and MAY also be surfaced at runtime (e.g., a verbose-mode banner or startup log line). Adopters use this disclosure to predict cross-tool behavior — a tool that loads only the identity layer will not honor the user's voice or working-agreement rules, and adopters must be able to tell that from the tool's documentation rather than discovering it through behavior drift. A consuming tool that only reads `identity.yaml` is still a valid dot-me consumer at the identity-layer level; it is NOT a full dot-me consumer.
 
 ### 6.2. Where in the instruction hierarchy
 
@@ -175,6 +193,23 @@ Inline consumers SHOULD also surface the host's instruction-budget cap (e.g., Co
 Stable content (identity, voice) belongs before volatile content (preferences) in any cached system-prompt prefix. Mechanics differ across providers — as of May 2026, Anthropic uses explicit `cache_control` breakpoints with provider-specified minimum-token thresholds; OpenAI uses automatic exact-prefix caching with a 1024-token minimum; others vary. Provider mechanics and thresholds change across API versions — verify current behavior before relying on specific numbers. Consumers SHOULD bundle dot-me content with other stable system content to clear provider cache minimums, since the three files alone are usually too small to cache independently.
 
 Specific cache annotations are the consumer's responsibility, not the spec's. The spec only ranks files by stability.
+
+### 6.6. Portability limits at execution time
+
+dot-me content is portable as text. Its *effect* is not uniformly portable, because consuming tools differ at the execution-mode layer in ways the format cannot reach.
+
+Example: the working-agreement instruction *"When you make a change, always explain what you changed and why before showing any code."* placed identically in each tool's user-global config yields four different observable behaviors —
+
+- **Claude Code (`CLAUDE.md`):** followed in conversational mode; in non-interactive `-p` mode, the explanation is suppressed by the terminal harness even though the instruction fires internally.
+- **Codex CLI (`~/.codex/AGENTS.md`):** followed in TUI mode; in `--full-auto --quiet`, explanations are suppressed at the infrastructure level regardless of the AGENTS.md instruction.
+- **Cursor (User Rules / `.cursor/rules/*.mdc`):** in agent mode the explanation appears in the thinking pane but not necessarily in the diff view the user watches.
+- **Gemini CLI (`GEMINI.md`):** followed consistently in interactive mode.
+
+The instruction text is identical and parsed similarly by all four. Outcomes diverge because each tool's execution-mode architecture handles suppression, surfacing, and rendering differently. Other behavioral divergences with the same shape: instruction-budget thresholds (Claude Code's ~150–200 soft cap, Gemini's recursive concatenation, Codex's 32 KiB chain limit), path-scoped rule application (Claude Code's `@include` + path-scope vs. Codex/AGENTS.md applying globally), and self-modifying memory (Claude Code can write to its own context; no other tool does).
+
+**Adopter expectation.** Consumers and adopters SHOULD expect dot-me to give them more consistent *instruction parsing* across tools (the format is plain text, the working-agreement file ports cleanly). They SHOULD NOT expect identical *behavior* across tools, because execution-mode quirks downstream of parsing are out of scope for any text-based personal-context format. The bounded determinism claim is the only honest one.
+
+**Authoring implication.** Working-agreement content written as prohibitions and hard constraints survives more execution modes than content written as preferences. Where you can phrase a rule as "don't X" or "always X", do — the imperative form has the best cross-vendor survival rate. Preferences are still useful (they shape default behavior in interactive modes) but expect them to be the first thing tools drop under context-budget pressure.
 
 ## 7. Update invariants
 
@@ -212,7 +247,7 @@ A tool that consumes both SHOULD load dot-me as the person-level layer first, th
 - dot-me splits structured fields (identity, preferences) from prose (voice) using YAML and Markdown respectively; `.agents/profile/user.md` is single-file freeform Markdown.
 - dot-me's `~/.me/` is shorter to type and matches `~/.ssh/` / `~/.gitconfig` convention; `~/.agents/` is parallel to the project-scoped `.agents/` directory the broader dotstandards.info covers.
 
-A future spec revision may define a compatibility profile (e.g., publish a dot-me-shaped `user.md` for tools that only look in `~/.agents/profile/`). Out of scope for v0.1.
+A future spec revision may define a compatibility profile (e.g., publish a dot-me-shaped `user.md` for tools that only look in `~/.agents/profile/`). Out of scope for this version.
 
 ### 8.4. Portability limits
 
@@ -233,14 +268,16 @@ See current threat-modeling literature on agentic memory compromise and instruct
 
 ## Appendix B — Comparison
 
-|                   | dot-me                  | AGENTS.md              | ChatGPT Memory / mem0       |
-| ----------------- | ----------------------- | ---------------------- | --------------------------- |
-| Subject           | the human               | the project            | the conversation history    |
-| Filesystem scope  | user (`~/`)             | project (`./`)         | none (vendor service)       |
-| Format            | YAML + Markdown         | freeform Markdown      | proprietary, vendor-managed |
-| Portability       | filesystem              | filesystem (in-repo)   | locked to vendor            |
-| Load model        | read at session start   | read at session start  | retrieved on demand         |
-| Infrastructure   | none                    | none                   | service / vector DB         |
+|                   | dot-me                              | AGENTS.md (project)    | Cursor rules (project)        | `~/.codex/AGENTS.md` (user) | ChatGPT Memory / mem0       |
+| ----------------- | ----------------------------------- | ---------------------- | ----------------------------- | --------------------------- | --------------------------- |
+| Subject           | the human (identity + agreement)    | the project            | the project                   | the human (Codex-only)      | the conversation history    |
+| Filesystem scope  | user (`~/`)                         | project (`./`)         | project (`.cursor/rules/`)    | user (`~/.codex/`)          | none (vendor service)       |
+| Format            | YAML + Markdown                     | freeform Markdown      | `.mdc` (front-matter + MD)    | freeform Markdown           | proprietary, vendor-managed |
+| Cross-vendor      | yes (filesystem + consumers)        | yes (multi-tool)       | no (Cursor-only)              | no (Codex-only)             | no (vendor-locked)          |
+| Load model        | read at session start               | read at session start  | scope-on-glob, `alwaysApply`  | read at session start       | retrieved on demand         |
+| Infrastructure    | none                                | none                   | none                          | none                        | service / vector DB         |
+
+The combination of user-level scope and cross-vendor portability is the niche dot-me claims. Codex's `~/.codex/AGENTS.md` is the closest analog as a user-level behavioral-config file but ships with Codex only; Cursor rules and AGENTS.md are project-scoped. No prior artifact in the developer-tooling ecosystem positions itself as a user-level, cross-vendor, behavioral working agreement.
 
 ## Appendix C — Hardening sketch (optional)
 
@@ -254,13 +291,13 @@ These are not part of the format. A consumer MUST work correctly whether or not 
 
 ## Out of scope (deferred)
 
-- Encrypted vault (sops/age). The reference implementation reserves a directory for it; not part of v0.1.
+- Encrypted vault (sops/age). The reference implementation reserves a directory for it; not part of this version.
 - Free-text relationship notes for `family` / `inner_circle` (deferred to v1, conditional on encrypted-vault availability).
 - Multi-user or per-org variants.
 - Selective per-project loading (load only `voice.md` for repo X).
 - Conformance test suite.
 - Reference implementations beyond the author's `~/.me/` setup and Claude Code integration.
-- MCP-resource architecture (could expose `~/.me/` files as resources; conflicts with §6.3 read-at-startup rule for v0.1).
+- MCP-resource architecture (could expose `~/.me/` files as resources; conflicts with §6.3 read-at-startup rule).
 - Compatibility profile for `~/.agents/profile/user.md` (see §8.3).
 
 ## Open questions for v0.3

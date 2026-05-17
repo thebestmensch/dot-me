@@ -1,6 +1,8 @@
 # Examples
 
-Four fictional personas demonstrating the shape of `~/.me/`. Each subdir contains a complete `identity.yaml` + `voice.md` + `preferences.yaml` set you can copy-paste as a starting template, then edit to reflect yourself.
+Four fictional personas demonstrating the shape of `~/.me/`. Each subdir contains a complete `identity.yaml` + `voice.md` + `preferences.yaml` + `working-style.yaml` set you can copy-paste as a starting template, then edit to reflect yourself.
+
+For a standalone annotated `working-style.yaml` (the newest dot-me file) with inline schema comments, see [`working-style-scaffold.yaml`](working-style-scaffold.yaml).
 
 | Persona | Shape | Demonstrates |
 |---|---|---|

@@ -10,8 +10,8 @@ effort: low
 |---|---|
 | `/me` (bare) | Scan current session → propose candidate facts → write |
 | `/me add "<fact>" [--source <name>]` | Manual: record one fact |
-| `/me show [identity\|voice\|preferences]` | Render current state |
-| `/me edit identity\|voice\|preferences` | Open file in $EDITOR, re-baseline integrity after |
+| `/me show [identity\|voice\|preferences\|working-style]` | Render current state |
+| `/me edit identity\|voice\|preferences\|working-style` | Open file in $EDITOR, re-baseline integrity after |
 | `/me check` | Verify `.integrity` baseline against current file hashes |
 | `/me init` | Seed `~/.me/` from `examples/` on a fresh machine |
 
@@ -82,7 +82,7 @@ On any reject:
 
 ### 4. Hash-dedup against existing `~/.me/` content (Q5)
 
-For each remaining candidate, compare against existing content in `~/.me/identity.yaml`, `~/.me/voice.md`, `~/.me/preferences.yaml`, and every `~/.me/memory/*.md` file. Use Read + Grep — don't shell out to text-similarity tools.
+For each remaining candidate, compare against existing content in `~/.me/identity.yaml`, `~/.me/voice.md`, `~/.me/preferences.yaml`, `~/.me/working-style.yaml`, and every `~/.me/memory/*.md` file. Use Read + Grep — don't shell out to text-similarity tools.
 
 Three outcomes per candidate:
 
@@ -130,6 +130,7 @@ For each accepted candidate (whether `new` or `update`), invoke the **add** subc
   - `identity` → `identity.yaml`
   - `voice` → `voice.md`
   - `preferences` → `preferences.yaml`
+  - `working-style` → `working-style.yaml`
   - `memory` → `memory/<topic>.md` (use the candidate's hint or ask the user for a topic slug)
 - For each candidate, the `.updates.log` entry uses `source: session-scan`. The commit message also tags `via session-scan`.
 - Batch the commits: one signed commit per file per scan run. If three candidates land in `preferences.yaml`, that's one commit covering all three. If candidates touch all three files, that's three commits.
@@ -168,14 +169,15 @@ The 9-step write protocol. The fact is everything in `$ARGUMENTS` after the `add
 3. **Read state and capture hashes.**
    ```bash
    cd ~/.me
-   shasum -a 256 identity.yaml voice.md preferences.yaml
+   shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml
    ```
-   Remember the three hashes — they're the conflict-detection guard.
+   Remember the four hashes — they're the conflict-detection guard.
 
 4. **Classify the fact** into exactly one bucket:
    - `identity.yaml` — invariant facts about the user-as-subject (name, location, pets, work roles, things they know about, family/inner-circle names+roles)
    - `voice.md` — writing-style observations (a new lexicon entry, a register example, a new anti-pattern)
    - `preferences.yaml` — likes / favorites / avoid across tools, aesthetics, media, food, etc.
+   - `working-style.yaml` — imperative behavioral rules for agentic sessions (autonomy level, clarifying-question policy, check-in cadence, scope discipline, execution pattern, irreversibility thresholds)
    - `not-applicable` — fact is project-scoped, ephemeral, or a feedback rule. Tell the user "this belongs in auto-memory or a project memory file, not `~/.me/`" and stop.
 
 5. **Pruning pass.** Read the destination file. Check whether the candidate supersedes an existing entry (e.g. updated job, replaced favorite editor, refined voice rule). If yes, prepare an **update-in-place**, not an append. If no, prepare an append in the appropriate section.
@@ -200,10 +202,10 @@ The 9-step write protocol. The fact is everything in `$ARGUMENTS` after the `add
      >> ~/.me/.updates.log
    ```
 
-10. **Regenerate `.integrity`** — recompute SHA-256 for all three files and rewrite. `shasum -a 256 <files>` already prints `<hash>  <filename>`, which `me-integrity.sh` parses via `read -r expected file`:
+10. **Regenerate `.integrity`** — recompute SHA-256 for all four files and rewrite. `shasum -a 256 <files>` already prints `<hash>  <filename>`, which `me-integrity.sh` parses via `read -r expected file`:
     ```bash
     cd ~/.me
-    shasum -a 256 identity.yaml voice.md preferences.yaml > .integrity
+    shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml > .integrity
     ```
     (Don't reintroduce an `awk`-based extractor here — dollar-N field refs collide with the slash-command preprocessor's positional-arg expansion. See `feedback_slash_command_dollar_collision`.)
 
@@ -226,14 +228,15 @@ After step 11: one-line confirmation with the commit SHA. No preamble, no "succe
 
 ---
 
-## show [identity|voice|preferences]
+## show [identity|voice|preferences|working-style]
 
 Render `~/.me/` content to the user without touching state.
 
-- `/me show` → render all three files (identity.yaml + voice.md + preferences.yaml) in that order, each preceded by a `## <filename>` header.
+- `/me show` → render all four files (identity.yaml + voice.md + preferences.yaml + working-style.yaml) in that order, each preceded by a `## <filename>` header.
 - `/me show identity` → render only `identity.yaml`.
 - `/me show voice` → render only `voice.md`.
 - `/me show preferences` → render only `preferences.yaml`.
+- `/me show working-style` → render only `working-style.yaml`.
 
 Use Read for each file. If a file doesn't exist, print `(<filename> not found at ~/.me/)` for that slot and continue with the others. Don't fail the whole command.
 
@@ -241,11 +244,11 @@ No writes, no commits, no integrity touch.
 
 ---
 
-## edit identity|voice|preferences
+## edit identity|voice|preferences|working-style
 
 Open the requested file in `$EDITOR`, then re-baseline integrity after the user closes the editor.
 
-1. **Pick the file** from the second token: `identity` → `identity.yaml`, `voice` → `voice.md`, `preferences` → `preferences.yaml`. If missing or unrecognized, list the three options and stop.
+1. **Pick the file** from the second token: `identity` → `identity.yaml`, `voice` → `voice.md`, `preferences` → `preferences.yaml`, `working-style` → `working-style.yaml`. If missing or unrecognized, list the four options and stop.
 
 2. **Capture pre-edit hash.**
    ```bash
@@ -324,18 +327,19 @@ Optional flag: `--from <path>` — copy from a local clone instead of fetching f
      cp -R "<path>"/. "$HOME/.me/"
      ```
 
-3. **Seed content from a starter persona.** `examples/` ships four fictional personas in subdirs (`sam-patel/`, `maya-okonkwo/`, `marcus-webb/`, `aki-tanaka/`); pick the one whose shape is closest to your situation, then copy its three files into the real slots. Default to `sam-patel/` if unsure — it's the fully-populated reference. See `examples/README.md` for a comparison.
+3. **Seed content from a starter persona.** `examples/` ships four fictional personas in subdirs (`sam-patel/`, `maya-okonkwo/`, `marcus-webb/`, `aki-tanaka/`); pick the one whose shape is closest to your situation, then copy its four files into the real slots. Default to `sam-patel/` if unsure — it's the fully-populated reference. See `examples/README.md` for a comparison.
    ```bash
    STARTER="sam-patel"   # or maya-okonkwo / marcus-webb / aki-tanaka
-   cp "$HOME/.me/examples/$STARTER/identity.yaml"    "$HOME/.me/identity.yaml"
-   cp "$HOME/.me/examples/$STARTER/voice.md"         "$HOME/.me/voice.md"
-   cp "$HOME/.me/examples/$STARTER/preferences.yaml" "$HOME/.me/preferences.yaml"
+   cp "$HOME/.me/examples/$STARTER/identity.yaml"      "$HOME/.me/identity.yaml"
+   cp "$HOME/.me/examples/$STARTER/voice.md"           "$HOME/.me/voice.md"
+   cp "$HOME/.me/examples/$STARTER/preferences.yaml"   "$HOME/.me/preferences.yaml"
+   cp "$HOME/.me/examples/$STARTER/working-style.yaml" "$HOME/.me/working-style.yaml"
    ```
 
 4. **Generate fresh `.integrity` baseline.**
    ```bash
    cd "$HOME/.me"
-   shasum -a 256 identity.yaml voice.md preferences.yaml > .integrity
+   shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml > .integrity
    ```
 
 5. **Append `@-import` to `~/.claude/CLAUDE.md` (idempotent).** Only add the import if it isn't already there — grep first, append only on miss. Ensure the parent `~/.claude/` directory exists on a truly-fresh machine before appending; otherwise the redirect fails AFTER `~/.me/` is already seeded, leaving the preflight check refusing the retry:
@@ -367,14 +371,16 @@ Optional flag: `--from <path>` — copy from a local clone instead of fetching f
 
 7. **Print next steps.** One short summary to the user:
 
-   > `~/.me/ seeded from examples. Three files to personalize:`
-   > `  - identity.yaml — name, timezone, work, pets`
-   > `  - voice.md — how you sound (or delete and rebuild)`
-   > `  - preferences.yaml — likes / favorites / avoid triads`
+   > `~/.me/` seeded from examples. Four files to personalize:
    >
-   > `Edit them via \`/me edit identity\` (or voice / preferences). Or use \`/me add "<fact>"\` to add facts one at a time.`
+   > - `identity.yaml` — name, timezone, work, pets
+   > - `voice.md` — how you sound (or delete and rebuild)
+   > - `preferences.yaml` — likes / favorites / avoid triads
+   > - `working-style.yaml` — imperative rules: autonomy, scope discipline, irreversibility
    >
-   > `Optional: enable signed commits for tamper detection — \`git -C ~/.me config commit.gpgsign true\` after setting your signing key.`
+   > Edit them via `/me edit identity` (or `voice` / `preferences` / `working-style`). Or use `/me add "<fact>"` to add facts one at a time.
+   >
+   > Optional: enable signed commits for tamper detection — `git -C ~/.me config commit.gpgsign true` after setting your signing key.
 
 Do not commit on init — the user-edited content will get committed by the first `/me add` or `/me edit` after they fill in real data.
 

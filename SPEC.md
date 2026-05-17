@@ -104,7 +104,7 @@ Required: `name`. The single strictness elsewhere is `location.timezone` — whe
 
 The working-agreement layer carries the behavioral content that moves agent output on every session, not just sessions where identity context happens to surface. Two files today: `voice.md` (prose-shaped — *how the AI should write for you*) and `preferences.yaml` (structured — *what tools and aesthetics you favor*). A future `working-style.yaml` is planned to extend the layer with imperative behavioral defaults (autonomy level, scope discipline, interruption thresholds).
 
-Working-agreement content benefits from a different authoring style than identity content. Cross-vendor portability findings (see §6.6) show that prohibitions and hard constraints ("don't ask before doing routine decisions", "always explain irreversible changes before acting") port more reliably across Claude / Codex / Gemini / Cursor than permissions or preferences ("I prefer autonomy"). Authors of working-agreement files SHOULD lean imperative.
+Working-agreement content benefits from a different authoring style than identity content. The execution-time differences documented in §6.6 suggest that prohibitions and hard constraints ("don't ask before doing routine decisions", "always explain irreversible changes before acting") port more reliably across Claude / Codex / Gemini / Cursor than permissions or preferences ("I prefer autonomy"); the latter are easier for a given tool's instruction-application semantics to soften or override. Authors of working-agreement files SHOULD lean imperative. This is maintainer experience to date — not a systematic study — and the format will accommodate corrections from implementers who hit different results in practice.
 
 ### 5.2. `voice.md`
 

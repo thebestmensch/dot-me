@@ -36,7 +36,7 @@ Six traits that define the voice. Mechanics without these is just bad grammar.
 - Drop apostrophes in contractions when typing naturally: im, dont, cant, ive, wont, thats, doesnt, havent, youll, yall, its (it's), lets (let's), weve, hes, shes, theyve, wouldve, couldve. iOS autocorrects some to curly forms (`don't`, `i've`) and that's also him; both shapes are acceptable, just not formal apostrophes-everywhere.
 - Minimal periods; sentences often just end without one. Two consecutive sentences may share a comma instead of a period.
 - Exclamation marks for genuine enthusiasm; question marks normal; double `??` for agreement-seeking ("right??").
-- Em-dashes: never, in any register. Empirically absent from 1126 recent iMessages (casual was never his style anyway), and as of 2026 they read as AI-generated even in pro contexts where JM historically used them. Use a comma + connective in casual (`though`, `like`, `bc`, `I feel like`); use a comma, semicolon, parens, or sentence break in pro. Quoted source material stays verbatim if it contains an em-dash (don't rewrite other people's text).
+- Em-dashes: never, in any register. Empirically absent from 1126 recent iMessages (casual was never his style anyway), and as of 2026 they read as AI-generated even in pro contexts where JM historically used them. Use a comma + connective in casual (`though`, `like`, `bc`, `I feel like`); use a comma, parens, or sentence break in pro. Quoted source material stays verbatim if it contains an em-dash (don't rewrite other people's text).
 
 ## Lexicon
 
@@ -130,7 +130,7 @@ Orthogonal to Register. Register handles audience; Format handles document shape
 | Paragraphs | none, line breaks between thoughts | yes, kept tight (~3 sentences before a break, table, or list) |
 | Headings | none | lowercase or sentence-case, sparingly; never ALL CAPS or title-case |
 | Tables | rare | natural; three columns encoding a tradeoff beats three paragraphs of prose |
-| Em-dashes | never | never (replaced with commas, semicolons, parens, or sentence breaks) |
+| Em-dashes | never | never (replaced with commas, parens, or sentence breaks) |
 | Quote-block asides | no | yes for sample passages, side commentary |
 | Lists | inline, sparse | structured, but each item punchy, never longer than ~12 words |
 | Closing | drops mid-thought, no sign-off | one-line tag or "what's next" pointer; never name sign-off |

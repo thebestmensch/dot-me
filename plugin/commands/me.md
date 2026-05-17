@@ -367,14 +367,14 @@ Optional flag: `--from <path>` copies from a local clone instead of fetching fro
 
 7. **Print next steps.** One short summary to the user:
 
-   > `~/.me/ seeded from examples. Three files to personalize:`
-   > `  - identity.yaml: name, timezone, work, pets`
-   > `  - voice.md: how you sound (or delete and rebuild)`
-   > `  - preferences.yaml: likes / favorites / avoid triads`
+   > `~/.me/` seeded from examples. Three files to personalize:
+   > - `identity.yaml`: name, timezone, work, pets
+   > - `voice.md`: how you sound (or delete and rebuild)
+   > - `preferences.yaml`: likes / favorites / avoid triads
    >
-   > `Edit them via \`/me edit identity\` (or voice / preferences). Or use \`/me add "<fact>"\` to add facts one at a time.`
+   > Edit them via `/me edit identity` (or voice / preferences). Or use `/me add "<fact>"` to add facts one at a time.
    >
-   > `Optional: enable signed commits for tamper detection. \`git -C ~/.me config commit.gpgsign true\` after setting your signing key.`
+   > Optional: enable signed commits for tamper detection. `git -C ~/.me config commit.gpgsign true` after setting your signing key.
 
 Do not commit on init; the user-edited content will get committed by the first `/me add` or `/me edit` after they fill in real data.
 
@@ -388,4 +388,4 @@ Do not commit on init; the user-edited content will get committed by the first `
 | Drift-check before writing | The hash captured pre-edit must match at write time. Always. Catches concurrent CC sessions racing on the same file |
 | Show before write | Diff-preview + user confirmation is non-negotiable on `add`. Even on routed dispatches from `/jm-retro` |
 | Source provenance | Commit messages and `.updates.log` lines record `<source>`: `jm-retro` (auto-routed), `me-add` (direct), `session-scan` (JM-158 bare-invocation), `me-edit` (`/me edit`), or `manual` (someone bypassed and re-baselined) |
-| Don't improvise stubs | The `scan` and `init` paths print their stub message and stop. They do not have ad-hoc implementations |
+| Don't improvise stubs | Only subcommands explicitly marked as stubs print their stub message and stop. Implement defined paths exactly as specified |

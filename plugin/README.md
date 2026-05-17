@@ -12,7 +12,7 @@ The reference consumer plugin for [dot-me](https://github.com/thebestmensch/dot-
 
 ## Install: Claude Code
 
-```
+```bash
 /plugin marketplace add thebestmensch/dot-me
 /plugin install dot-me@dot-me
 ```
@@ -44,13 +44,13 @@ The plugin is **opt-in**: nothing reads `~/.me/` until you explicitly install it
 
 ## Uninstall
 
-```
+```bash
 /plugin uninstall dot-me
 ```
 
 Removes the slash command and hook. Does NOT touch `~/.me/`; your personal content is preserved. To reverse the install entirely:
 
-```
+```bash
 /plugin uninstall dot-me
 rm -rf ~/.me                       # only if you don't want the content
 # manually remove the `@~/.me/identity.yaml` line from ~/.claude/CLAUDE.md

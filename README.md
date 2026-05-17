@@ -21,11 +21,11 @@ the files are yours. delete them and nothing breaks.
 
 one `identity.yaml`. claude code reads it. codex cli reads it. same answer, no copy-paste.
 
-[interactive version on asciinema.org](https://asciinema.org/a/obe7oBGbHzr2LN74); pausable, scrubable, copy commands straight out of the player.
+[interactive version on asciinema.org](https://asciinema.org/a/obe7oBGbHzr2LN74); pausable, scrubbable, copy commands straight out of the player.
 
 ## The shape
 
-```
+```text
 ~/.me/
 ├── identity.yaml      # invariant facts: name, timezone, dogs, work, what you know
 ├── voice.md           # how you sound: tone, lexicon, anti-patterns, sample passages

@@ -247,7 +247,7 @@ A tool that consumes both SHOULD load dot-me as the person-level layer first, th
 - dot-me splits structured fields (identity, preferences) from prose (voice) using YAML and Markdown respectively; `.agents/profile/user.md` is single-file freeform Markdown.
 - dot-me's `~/.me/` is shorter to type and matches `~/.ssh/` / `~/.gitconfig` convention; `~/.agents/` is parallel to the project-scoped `.agents/` directory the broader dotstandards.info covers.
 
-A future spec revision may define a compatibility profile (e.g., publish a dot-me-shaped `user.md` for tools that only look in `~/.agents/profile/`). Out of scope for v0.1.
+A future spec revision may define a compatibility profile (e.g., publish a dot-me-shaped `user.md` for tools that only look in `~/.agents/profile/`). Out of scope for this version.
 
 ### 8.4. Portability limits
 
@@ -291,13 +291,13 @@ These are not part of the format. A consumer MUST work correctly whether or not 
 
 ## Out of scope (deferred)
 
-- Encrypted vault (sops/age). The reference implementation reserves a directory for it; not part of v0.1.
+- Encrypted vault (sops/age). The reference implementation reserves a directory for it; not part of this version.
 - Free-text relationship notes for `family` / `inner_circle` (deferred to v1, conditional on encrypted-vault availability).
 - Multi-user or per-org variants.
 - Selective per-project loading (load only `voice.md` for repo X).
 - Conformance test suite.
 - Reference implementations beyond the author's `~/.me/` setup and Claude Code integration.
-- MCP-resource architecture (could expose `~/.me/` files as resources; conflicts with §6.3 read-at-startup rule for v0.1).
+- MCP-resource architecture (could expose `~/.me/` files as resources; conflicts with §6.3 read-at-startup rule).
 - Compatibility profile for `~/.agents/profile/user.md` (see §8.3).
 
 ## Open questions for v0.3

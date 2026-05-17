@@ -17,7 +17,11 @@
 - [Flip condition is a tell](feedback_flip_condition_is_a_tell.md) — when a rec says "if X then drop entire rec," X is usually the actual state; promote flip-conditions to primary, invert burden of proof
 - [claude plugin update no-op on version match](reference_claude_plugin_update_noop.md) — CC plugin-update CLI compares plugin.json version, not git sha; static-version plugins (e.g. claude-hud) need uninstall+reinstall to refresh
 - [gh search user flags](reference_gh_search_user_flags.md) — `gh search issues/prs` returns `[]` on `involves:@me` query token; must use `--involves <user>` / `--review-requested <user>` flags with explicit username
+- [Ghostty macOS menu keybind intercept](reference_ghostty_macos_menu_keybind_intercept.md) — default keybinds tied to Edit menu (super+shift+t=undo, etc.) fire before user overrides; must `unbind` first, then rebind
 - [Favorite color: purple](user_favorite_color.md) — soft preference for personal/aesthetic choices; warm muted purple in SpenschSuite contexts (`#7A5775`), not Screenroom's saturated `#9775fa`
 - [No em dashes in output](feedback_no_emdashes.md) — em dashes read as AI-generated in 2026; use comma/semicolon/parens/rewrite; en dashes for ranges and hyphens still fine
 - [Voice doc reconciliation on style rule](feedback_voice_doc_reconciliation.md) — new style memory? grep voice.md + preferences.yaml for contradictions, fix in same PR; otherwise /jm-voice re-introduces the banned pattern
 - [OOM account naming](project_oom_account_naming.md) — `personal`=james@jamesmensch.com (jm), `oom`=james@oneonme.com (work); legacy tower file `.credentials-fallback-jm.json` is inverted (actually OOM)
+- [Pre-commit gate bypass loop](feedback_pre_commit_gate_bypass_loop.md) — gate fights `touch skip_codex_gate` via mtime race; on 2nd retry, dispatch real adversarial-review (small diffs run inline) instead of touching markers
+- [CR non-overlap after Codex approves](feedback_cr_non_overlap_after_codex.md) — CR catches ordering/coverage bugs Codex misses on classification logic; expect 2-3 CR rounds even after Codex green
+- [Sentry: Fixes trailer over MCP](feedback_sentry_fixes_trailer_over_manual.md) — commit `Fixes ISSUE-N` trailers auto-resolve on merge; skip `mcp__sentry__update_issue` (auto-mode denies inconsistently)

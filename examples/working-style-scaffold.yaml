@@ -20,7 +20,6 @@ spec_version: "0.2"                  # optional but recommended; pins the schema
 
 # How much standing license to act without checking in.
 autonomy:
-  level: high                        # one of: low | medium | high (free-text label, not enforced)
   rules:
     # Examples — replace with your own:
     - Make routine decisions inline; surface only irreversible or taste calls.

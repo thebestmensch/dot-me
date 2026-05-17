@@ -6,7 +6,6 @@
 spec_version: "0.2"
 
 autonomy:
-  level: low
   rules:
     - Explain the *why* before making a non-trivial change — I'm still learning the patterns.
     - Don't refactor surrounding code without asking; I haven't seen most of this codebase yet.

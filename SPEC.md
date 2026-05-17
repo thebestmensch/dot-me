@@ -140,7 +140,6 @@ Each top-level key is optional. Nested keys are free-form: `likes`, `favorites`,
 spec_version: "0.2"                  # optional but recommended
 
 autonomy:
-  level: <free-text label>           # e.g. "low" | "medium" | "high"; not enforced
   rules:
     - <imperative rule string>
     - ...

@@ -5,7 +5,6 @@
 spec_version: "0.2"
 
 autonomy:
-  level: high
   rules:
     - Make routine decisions inline; surface only irreversible or taste calls.
     - Investigate first, present findings, then execute — autonomy applies to investigation, not to picking the solution.

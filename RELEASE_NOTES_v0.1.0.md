@@ -12,9 +12,9 @@ Three files at `~/.me/` (`identity.yaml`, `voice.md`, `preferences.yaml`) that A
 
 - **The v0.1 format spec.** Schema + load contract + precedence rules. See [the spec](https://github.com/thebestmensch/home-lab/blob/main/docs/superpowers/specs/2026-05-05-personal-context-design.md).
 - **Reference content.** The maintainer's own `identity.yaml` + `voice.md` + `preferences.yaml` as a worked example.
-- **Templates** under `examples/` — a fictional Sam Patel persona demonstrating each schema.
-- **The `/me` consumer plugin** under `plugin/` — bundles a `/me` umbrella slash command (`scan` / `add` / `show` / `edit` / `check` / `init` subcommands) and a `SessionStart` integrity hook.
-- **Public-repo hygiene** — LICENSE (MIT), SECURITY.md (threat model + disclosure), CONTRIBUTING.md (additive-only schema policy), GitHub issue templates.
+- **Templates** under `examples/`: a fictional Sam Patel persona demonstrating each schema.
+- **The `/me` consumer plugin** under `plugin/`: bundles a `/me` umbrella slash command (`scan` / `add` / `show` / `edit` / `check` / `init` subcommands) and a `SessionStart` integrity hook.
+- **Public-repo hygiene**: LICENSE (MIT), SECURITY.md (threat model + disclosure), CONTRIBUTING.md (additive-only schema policy), GitHub issue templates.
 
 ## Audience
 

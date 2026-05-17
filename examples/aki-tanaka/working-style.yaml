@@ -1,4 +1,4 @@
-# Example working-style.yaml — polyglot, mixed-language.
+# Example working-style.yaml: polyglot, mixed-language.
 # Keys stay English (consumer-parseable), rule values are written in the
 # user's working language. Demonstrates the schema doesn't assume English
 # content. Copy to ~/.me/working-style.yaml and edit.
@@ -8,12 +8,12 @@ spec_version: "0.2"
 autonomy:
   rules:
     - ルーティンの判断はそのまま進めて良い。スタイルや命名の判断は確認してほしい。
-    - For English-language Slack/PR threads with non-Japanese-speaking colleagues, default to high autonomy — fewer check-ins, more decisive prose.
+    - For English-language Slack/PR threads with non-Japanese-speaking colleagues, default to high autonomy (fewer check-ins, more decisive prose).
 
 clarifying_questions:
   rules:
     - 曖昧な要件は確認する。「いい感じに」は質問のサイン。
-    - Don't ask about CSS unit conventions (rem vs em vs px) — apply the house rules in voice.md.
+    - Don't ask about CSS unit conventions (rem vs em vs px). Apply the house rules in voice.md.
 
 check_in_cadence:
   rules:

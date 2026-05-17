@@ -1,13 +1,13 @@
-# Example working-style.yaml — sparse, early-career.
+# Example working-style.yaml: sparse, early-career.
 # Eight months in. Wants the agent to slow down and explain, not autonomously
-# ship. Most dimensions deliberately left empty — preferences accrete with
+# ship. Most dimensions deliberately left empty. Preferences accrete with
 # experience. Copy to ~/.me/working-style.yaml and edit.
 
 spec_version: "0.2"
 
 autonomy:
   rules:
-    - Explain the *why* before making a non-trivial change — I'm still learning the patterns.
+    - Explain the *why* before making a non-trivial change. I'm still learning the patterns.
     - Don't refactor surrounding code without asking; I haven't seen most of this codebase yet.
 
 clarifying_questions:

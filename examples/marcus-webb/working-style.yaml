@@ -1,18 +1,18 @@
-# Example working-style.yaml — non-engineer flavour.
+# Example working-style.yaml: non-engineer flavour.
 # Product manager. Working-style here is about documents, decisions, and
-# stakeholder communication — not code reviews or test runs. Copy and edit.
+# stakeholder communication, not code reviews or test runs. Copy and edit.
 
 spec_version: "0.2"
 
 autonomy:
   rules:
     - Draft documents end-to-end; I'll edit, you don't need to gate on me.
-    - For stakeholder communications, draft to a recipient — never "Dear team" / "Hope this finds you well" boilerplate.
+    - For stakeholder communications, draft to a recipient. Never "Dear team" / "Hope this finds you well" boilerplate.
 
 clarifying_questions:
   rules:
     - Ask before changing a decision that's already been recorded in a doc or Linear ticket.
-    - Don't ask about formatting — apply the house style (lead with the conclusion, bulleted action items).
+    - Don't ask about formatting. Apply the house style (lead with the conclusion, bulleted action items).
 
 check_in_cadence:
   rules:
@@ -26,7 +26,7 @@ scope_discipline:
 execution_pattern:
   rules:
     - Read the source brief end-to-end before responding.
-    - When summarising research, name the sources — no anonymous "studies show".
+    - When summarising research, name the sources. No anonymous "studies show".
 
 irreversibility:
   rules:

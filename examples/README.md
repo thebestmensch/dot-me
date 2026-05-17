@@ -4,6 +4,8 @@ Four fictional personas demonstrating the shape of `~/.me/`. Each subdir contain
 
 For a standalone annotated `working-style.yaml` (the newest dot-me file) with inline schema comments, see [`working-style-scaffold.yaml`](working-style-scaffold.yaml).
 
+Writing your own `voice.md` from scratch? Read [`VOICE-AUTHORING.md`](VOICE-AUTHORING.md) first. Six introspection questions, each mapped to a file section, with one worked end-to-end example. `voice.md` is the highest-leverage file in `~/.me/`; the guide is the difference between a weak and a strong one.
+
 | Persona | Shape | Demonstrates |
 |---|---|---|
 | [`sam-patel/`](sam-patel/) | full, English | Senior writer at a tech company. Fully-populated schema, the "everything filled in" reference. |

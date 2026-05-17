@@ -43,6 +43,11 @@ media:
 
 workflow:
   commit_messages: Conventional Commits (e.g. `feat:`, `fix(scope):`, `docs:`)
+  recommendation_order: |
+    When listing N recommendations (tools, options, approaches), order by
+    ROI (impact ÷ effort), not by theme or flow-position. JM re-ranks
+    thematic lists to ROI when given them. Override: if asked for a phased
+    rollout or sequenced plan, use that order instead.
 
 notes: |
   Voice tone (dry, irreverent, direct, warm) lives in voice.md, not here.

@@ -277,7 +277,7 @@ See current threat-modeling literature on agentic memory compromise and instruct
 | Load model        | read at session start               | read at session start  | scope-on-glob, `alwaysApply`  | read at session start       | retrieved on demand         |
 | Infrastructure    | none                                | none                   | none                          | none                        | service / vector DB         |
 
-The user-level cross-vendor cell is the niche dot-me claims. Codex's `~/.codex/AGENTS.md` is the closest analog as a user-level behavioral-config file but ships with Codex only; Cursor rules and AGENTS.md are project-scoped. No prior artifact in the developer-tooling ecosystem positions itself as a user-level, cross-vendor, behavioral working agreement.
+The combination of user-level scope and cross-vendor portability is the niche dot-me claims. Codex's `~/.codex/AGENTS.md` is the closest analog as a user-level behavioral-config file but ships with Codex only; Cursor rules and AGENTS.md are project-scoped. No prior artifact in the developer-tooling ecosystem positions itself as a user-level, cross-vendor, behavioral working agreement.
 
 ## Appendix C — Hardening sketch (optional)
 

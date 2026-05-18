@@ -1,4 +1,4 @@
-# Example identity.yaml — fully-populated fictional persona to demonstrate the schema.
+# Example identity.yaml: fully-populated fictional persona to demonstrate the schema.
 # Copy to ~/.me/identity.yaml via `/me init`, then edit to reflect yourself.
 # Schema reference: SPEC.md (sibling file in this repo)
 
@@ -7,7 +7,7 @@ preferred_name: Sam
 pronouns: they/them
 handle: "@sampatel"
 blurb: Senior writer at Acme Corp. Coffee, books, design systems.
-spec_version: "0.1"
+spec_version: "0.3"
 
 location:
   timezone: America/Los_Angeles
@@ -18,17 +18,32 @@ knows_about:
   - pour-over coffee technique
   - design-systems for documentation sites
 
-work:
+work:                                # current roles only (v0.3, see SPEC §5.A)
   - role: Senior Writer
     org: Acme Corp
 
-pets:
-  - name: Pixel
-    species: dog
-    breed: Border Collie mix
+past_work:                           # historical roles (v0.3 addition)
+  - role: Staff Writer
+    org: Beacon Media
+    start: 2019
+    end: 2023
+    summary: Investigative longform; mentored two interns into staff seats.
+  - role: Editor
+    org: Self-employed
+    start: 2016
+    end: 2019
+    summary: Freelance editing for indie nonfiction publishers.
 
 # Free-text relationship notes are deferred to v1 (conditional on encrypted-vault
-# availability). For v0.1, names + roles only — no notes.
+# availability). For names + roles only, use the shape below. To surface social
+# handles for an inner-circle contact (v0.3), see SPEC §5.A under
+# `inner_circle[].handles`; mind the always-loaded-tier privacy warning.
 family: []
 
-inner_circle: []
+inner_circle:
+  - name: Jordan
+    role: partner
+    handles:
+      bluesky: jordan.example.com    # bare handle, no leading @
+      website: https://jordancooks.example.com
+

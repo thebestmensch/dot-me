@@ -102,8 +102,8 @@ lowercase.
 
 ```
   ┃
-  ┃   (⌐■_■)  d o t  ·  m e
-  ┃           portable user-context · v<plugin version>
+  ┃    ‾‾‾‾‾‾‾
+  ┃   (⌐■_■)  d o t  ·  m e  ·  portable user-context for AI
   ┃
   ┃   <NAME-SPACED-CAPS>                                       <pronouns>
   ┃   <handle>
@@ -111,14 +111,21 @@ lowercase.
   ┃
 ```
 
-Two visual elements on the header's first row:
+Three visual elements:
 
-- **Mascot** `(⌐■_■)` — cool-dude-with-shades kaomoji, 6 visible chars.
-- **Wordmark** `d o t · m e` — brand name spelled in spaced caps to match
-  the NAME treatment below. The middle-dot `·` carries the `.me` motif.
+- **Brim** ` ‾‾‾‾‾‾‾` — overline (U+203E) chars sitting at the top of the
+  row above the mascot. Reads as a flat-brim hat / brow line. Indented 1
+  space so the brim spans the inside of the parens (cols 2-8 of the mascot
+  block).
+- **Mascot** `(⌐■_■)` — cool-dude-with-shades kaomoji, 9 visible cells
+  (see width quirk below). Sits on row 2 of the header.
+- **Wordmark + tagline** `d o t · m e  ·  portable user-context for AI` —
+  brand name in spaced caps + middle-dot separator + tagline, all on one
+  line to the right of the mascot. The middle dot carries the `.me` motif
+  twice (between `m e` and as the separator to the tagline).
 
-Tagline + plugin version sit on the second row, aligned with the wordmark
-(3-space indent past the mascot column).
+Version is omitted from the header — the footer chip `.me v<version>`
+already carries it.
 
 **Width quirk.** The mascot uses two East-Asian-Ambiguous-width chars
 (`⌐` U+00AC, `■` U+25A0). In terminals that resolve ambiguous-width to 2
@@ -126,21 +133,15 @@ Tagline + plugin version sit on the second row, aligned with the wordmark
 in terminals that resolve to 1 they render as 1 cell. Pure codepoint count
 is 6 but **display width is 9** in the 2-cell case.
 
-**Pragmatic rule.** Assume the 2-cell case (mascot display width = 9). It's
-the default in every modern terminal that handles East Asian width
-correctly. Concretely:
+**Pragmatic rule.** No vertical alignment to worry about (tagline is inline
+with the wordmark now). The 2-space gutter between `(⌐■_■)` and `d o t`
+holds whether the mascot renders 6 or 9 cells wide — terminals just see
+"mascot + 2 spaces + wordmark" left-to-right.
 
-- Row 1: `(⌐■_■)<2 spaces><wordmark>` — wordmark starts at visual col 12.
-- Row 2: `<11 spaces><tagline>` — tagline starts at visual col 12, directly
-  under wordmark.
-
-If you have access to `wcswidth` (or equivalent), compute `mascot_w =
-wcswidth("(⌐■_■)")` and use `" " * (mascot_w + 2)` instead of the hardcoded
-11 — alignment then auto-corrects on 1-cell terminals too. Either way,
-never use raw `len()` for padding (returns 6, breaks alignment).
-
-The 2-space gutter (down from 3) keeps the header tight even when the
-mascot expands to 9 cells.
+The brim row sits above the mascot. Indent it by 1 space (col 1) so
+` ‾‾‾‾‾‾‾` lines up with cols 2-8 of the mascot below — spanning the inside
+of the parens regardless of cell-width interpretation, since both rows are
+left-justified together.
 
 `NAME-SPACED-CAPS` = `preferred_name` (or `name`) uppercased with one space
 between each letter — gives the name visual weight without needing a figlet
@@ -210,6 +211,7 @@ their last character at or before column 68.
 ## Characters
 
 - Rail + section breaks: `┃ ┠ ─ ╴ ┤ ├`
+- Mascot brim: `‾` (U+203E OVERLINE)
 - Section glyphs: `● ○ ✦ ◉ ◈ ▣ ◐ ◌`
 - Bar fill: `▇` (U+2587)
 - Brand wordmark: `d o t · m e` in the header, `.me` in the footer
@@ -255,7 +257,7 @@ Use `\033[38;5;<n>m` … `\033[0m`. Two palettes, keyed by detected theme:
 | Wordmark `d o t · m e` + `.me`   | 215  | 166   | warm ochre / rust       |
 | Tagline, version                 | 245  | 240   | warm gray (mid / dark)  |
 | Header NAME (spaced caps)        | 223  |  94   | cream / dark brown      |
-| Mascot `(⌐■_■)`                  | 215  | 166   | warm ochre / rust       |
+| Mascot `(⌐■_■)` + brim `‾‾‾‾‾‾‾`| 215  | 166   | warm ochre / rust       |
 | Section glyphs `● ○ ✦ ◉ ◈ ▣ ◐ ◌`| 180  | 130   | warm tan / brown        |
 | Memory bars `▇`                  | 215  | 166   | warm ochre / rust       |
 | Footer chip brackets `┤ ├`       | 180  | 130   | warm tan / brown        |
@@ -270,8 +272,8 @@ color is decoration, never load-bearing.
 
 ```
   ┃
-  ┃   (⌐■_■)  d o t  ·  m e
-  ┃           portable user-context · v0.1.1
+  ┃    ‾‾‾‾‾‾‾
+  ┃   (⌐■_■)  d o t  ·  m e  ·  portable user-context for AI
   ┃
   ┃   J A M E S                                                   he/him
   ┃   @thebestmensch

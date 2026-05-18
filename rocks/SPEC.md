@@ -74,6 +74,7 @@ Location: `~/.claude/commands/jm-rocks-new.md`
 Behavior:
 - Finds most recent `~/.me/rocks/*.md` (yesterday or earlier)
 - Surfaces rocks with status != done as carryover candidates
+- Surfaces promotion candidates: rocks carrying 3+ days with 2+ Linear refs are flagged as Linear Project candidates per the guidance above (prompt only, never auto-promoted)
 - Optional pre-fill: scans Linear `In Progress` issues + open PRs across home-lab and oneonme for rock-shaped candidates
 - Prompts JM to confirm, edit, add
 - Writes today's file

@@ -102,9 +102,9 @@ lowercase.
 
 ```
   ┃
-  ┃   ╭───╮
-  ┃   │ · │   d o t  ·  m e
-  ┃   ╰───╯   portable user-context · v<plugin version>
+  ┃    o     ╭───╮
+  ┃   /|\    │ · │   d o t  ·  m e
+  ┃   / \    ╰───╯   portable user-context · v<plugin version>
   ┃
   ┃   <NAME-SPACED-CAPS>                                       <pronouns>
   ┃   <handle>
@@ -112,15 +112,28 @@ lowercase.
   ┃
 ```
 
-The **sigil** is a 3-line rounded box containing a single centered middle-dot
-(`·`) — visually echoes the `.me` filename, reads as a brand mark, anchors
-the top of the card. Right of the sigil sits the wordmark `d o t · m e`
-spelled in spaced caps to match the name treatment below. Tagline +
-plugin version sit on the sigil's third row, aligned with the wordmark.
+The header has two visual elements sitting side by side:
 
-The sigil block must be exactly 5 chars wide (`╭───╮ / │ · │ / ╰───╯`) and
-the wordmark/tagline indent to align with the right edge of the sigil + 3
-spaces of gutter.
+- A 3-line **stick figure** (`o` head, `/|\` body, `/ \` legs) on the left
+  — the user's avatar/mascot, friendly and minimal. Occupies 3 chars wide.
+- A 3-line **sigil** (rounded box containing a single centered middle-dot
+  `·`) — visually echoes the `.me` filename, reads as a brand mark.
+
+Right of the sigil sits the wordmark `d o t · m e` spelled in spaced caps
+to match the name treatment below. Tagline + plugin version sit on the
+sigil's third row, aligned with the wordmark.
+
+Layout (column positions inside the rail's content area, where col 1 = first
+char after the rail's 3-space gutter):
+
+- Figure: col 2-4 (head `o` centered at col 2; body/legs spanning col 1-3,
+  shifted right one for the head; concretely: ` o ` / `/|\` / `/ \`)
+- Sigil: col 7-11 (5 chars: `╭───╮` / `│ · │` / `╰───╯`)
+- Wordmark/tagline: col 15+ (sigil end + 3-space gutter)
+
+The sigil block must be exactly 5 chars wide. The figure occupies a 3-char
+column; if the name renders extremely long, the figure stays put and the
+right-aligned tokens (pronouns, etc.) wrap or truncate first.
 
 `NAME-SPACED-CAPS` = `preferred_name` (or `name`) uppercased with one space
 between each letter — gives the name visual weight without needing a figlet
@@ -198,35 +211,60 @@ their last character at or before column 68.
   stack entries (`zsh + zinit`), parentheses for parentheticals.
 - No emoji.
 
-## Color (default ON, warm palette)
+## Color (default ON, warm palette, dark/light aware)
 
 Color is **on by default**. Disable with `NO_COLOR` env var, when stdout is
 not a TTY, or when the user passes `--no-color`. Palette is warm/muted —
 matches the dot-me aesthetic (calm, minimal, never corporate blue).
 
-256-color ANSI codes (use `\033[38;5;<n>m` … `\033[0m`):
+### Dark/light mode detection
 
-| Element                          | Code | Color           |
-|----------------------------------|-----:|-----------------|
-| Rail `┃`, section dividers       | 180  | warm tan        |
-| Section labels (between `╴ ╶`)   | 215  | warm ochre      |
-| Sigil box `╭─╮ │ ╰─╯`            | 138  | dusty rose      |
-| Sigil interior dot `·`           | 139  | muted purple    |
-| Wordmark `d o t · m e` + `.me`   | 215  | warm ochre      |
-| Tagline, version                 | 245  | warm gray       |
-| Header NAME (spaced caps)        | 223  | cream           |
-| Section glyphs `● ○ ✦ ◉ ◈ ▣ ◐ ◌`| 180  | warm tan        |
-| Memory bars `▇`                  | 215  | warm ochre      |
-| Footer chip brackets `┤ ├`       | 180  | warm tan        |
-| Footer chip text                 | 245  | warm gray       |
-| Repo URL line                    | 244  | dimmer gray     |
-| Everything else (content)        | default (terminal foreground) |
+Resolve theme in this priority order, first hit wins:
+
+1. **Explicit flag** — `--light` or `--dark` on the command line.
+2. **Env override** — `ME_CARD_THEME=light` or `ME_CARD_THEME=dark`.
+3. **macOS Appearance** — `defaults read -g AppleInterfaceStyle 2>/dev/null`.
+   Returns `Dark` if the OS is in dark mode; exits non-zero / prints
+   nothing in light mode. Run with a 200ms timeout — never let detection
+   stall the render.
+4. **`COLORFGBG` env var** — parse the second `;`-delimited field. Values
+   `0,1,2,3,4,5,6,8` mean dark bg; anything else (typically `15` or `7`)
+   means light bg.
+5. **OSC 11 query** — write `\033]11;?\033\\` to the controlling TTY,
+   read the reply with a 100ms timeout, parse `rgb:RRRR/GGGG/BBBB`. Compute
+   luminance `(0.299·R + 0.587·G + 0.114·B) / 65535`. < 0.5 → dark, ≥ 0.5
+   → light. Skip if inside tmux without `allow-passthrough on` (the query
+   will hang or get echoed as garbage); detect tmux via `$TMUX` env var
+   and bypass this step when set.
+6. **Default** — `dark` (safest assumption; most terminals ship dark).
+
+### 256-color palettes
+
+Use `\033[38;5;<n>m` … `\033[0m`. Two palettes, keyed by detected theme:
+
+| Element                          | Dark | Light | Color name              |
+|----------------------------------|-----:|------:|-------------------------|
+| Rail `┃`, section dividers       | 180  | 130   | warm tan / brown        |
+| Section labels (between `╴ ╶`)   | 215  | 166   | warm ochre / rust       |
+| Sigil box `╭─╮ │ ╰─╯`            | 138  |  95   | dusty rose / mauve      |
+| Sigil interior dot `·`           | 139  |  97   | muted purple            |
+| Wordmark `d o t · m e` + `.me`   | 215  | 166   | warm ochre / rust       |
+| Tagline, version                 | 245  | 240   | warm gray (mid / dark)  |
+| Header NAME (spaced caps)        | 223  |  94   | cream / dark brown      |
+| Stick figure head `o`            | 215  | 166   | warm ochre / rust       |
+| Stick figure body/legs `/|\ / \` | 180  | 130   | warm tan / brown        |
+| Section glyphs `● ○ ✦ ◉ ◈ ▣ ◐ ◌`| 180  | 130   | warm tan / brown        |
+| Memory bars `▇`                  | 215  | 166   | warm ochre / rust       |
+| Footer chip brackets `┤ ├`       | 180  | 130   | warm tan / brown        |
+| Footer chip text                 | 245  | 240   | warm gray               |
+| Repo URL line                    | 244  | 242   | dim gray                |
+| Everything else (content)        | default (terminal foreground)             |
 
 The muted purple sigil dot is the one bright accent — single-pixel pop of
 James's favorite color (per `~/.me/memory/user_favorite_color.md` when
 present; for other users, just leave it as the same warm tan as the rest of
-the sigil). Don't read the memory file at runtime; treat 139 as the default
-sigil-dot color.
+the sigil). Don't read the memory file at runtime; treat 139/97 as the
+default sigil-dot color.
 
 Plain (no-color) form must remain fully legible and structured on its own —
 color is decoration, never load-bearing.
@@ -235,9 +273,9 @@ color is decoration, never load-bearing.
 
 ```
   ┃
-  ┃   ╭───╮
-  ┃   │ · │   d o t  ·  m e
-  ┃   ╰───╯   portable user-context · v0.1.1
+  ┃    o     ╭───╮
+  ┃   /|\    │ · │   d o t  ·  m e
+  ┃   / \    ╰───╯   portable user-context · v0.1.1
   ┃
   ┃   J A M E S                                                   he/him
   ┃   @thebestmensch

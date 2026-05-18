@@ -29,7 +29,7 @@ for repo in "${REPOS[@]}"; do
       grep -qxF "$hash" "$SEEN_FILE" 2>/dev/null && continue
       echo "$hash" >> "$SEEN_FILE"
       # ... use $entry ...
-    done < <(git -C "$wt" log --since=... --pretty=format:'%h %s' 2>/dev/null)
+    done < <(git -C "$wt" log --since=... --pretty=format:'%H %s' 2>/dev/null)
   done <<< "$worktrees"
 done
 ```

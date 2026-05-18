@@ -103,7 +103,8 @@ lowercase.
 ```
   ┃
   ┃    ‾‾‾‾‾‾‾
-  ┃   (⌐■_■)  d o t  ·  m e  ·  portable user-context for AI
+  ┃   (⌐■_■)  d o t  ·  m e
+  ┃   portable user-context for AI
   ┃
   ┃   <NAME-SPACED-CAPS>                                       <pronouns>
   ┃   <handle>
@@ -111,18 +112,17 @@ lowercase.
   ┃
 ```
 
-Three visual elements:
+Three rows for the brand block:
 
-- **Brim** ` ‾‾‾‾‾‾‾` — overline (U+203E) chars sitting at the top of the
-  row above the mascot. Reads as a flat-brim hat / brow line. Indented 1
-  space so the brim spans the inside of the parens (cols 2-8 of the mascot
-  block).
-- **Mascot** `(⌐■_■)` — cool-dude-with-shades kaomoji, 9 visible cells
-  (see width quirk below). Sits on row 2 of the header.
-- **Wordmark + tagline** `d o t · m e  ·  portable user-context for AI` —
-  brand name in spaced caps + middle-dot separator + tagline, all on one
-  line to the right of the mascot. The middle dot carries the `.me` motif
-  twice (between `m e` and as the separator to the tagline).
+- **Row 1 — brim** ` ‾‾‾‾‾‾‾` — overline (U+203E) chars sitting at the top
+  of the row above the mascot. Reads as a flat-brim hat / brow line.
+  Indented 1 space so the brim spans the inside of the parens (cols 2-8
+  of the mascot below).
+- **Row 2 — mascot + wordmark** — `(⌐■_■)` 2-space gutter `d o t · m e`.
+  The middle dot carries the `.me` motif.
+- **Row 3 — tagline** — `portable user-context for AI`, anchored at the
+  same column as the mascot (col 1 of the content area). Stays a separate
+  line for readability; no indent under the wordmark.
 
 Version is omitted from the header — the footer chip `.me v<version>`
 already carries it.
@@ -133,10 +133,12 @@ already carries it.
 in terminals that resolve to 1 they render as 1 cell. Pure codepoint count
 is 6 but **display width is 9** in the 2-cell case.
 
-**Pragmatic rule.** No vertical alignment to worry about (tagline is inline
-with the wordmark now). The 2-space gutter between `(⌐■_■)` and `d o t`
-holds whether the mascot renders 6 or 9 cells wide — terminals just see
-"mascot + 2 spaces + wordmark" left-to-right.
+**Pragmatic rule.** All three header rows are left-justified independently;
+no inter-row alignment to chase. The 2-space gutter between `(⌐■_■)` and
+`d o t` on row 2 holds whether the mascot renders 6 or 9 cells wide —
+terminals just see "mascot + 2 spaces + wordmark" left-to-right. The
+tagline on row 3 starts at col 1 of the content area (same column as
+mascot), so its position doesn't depend on the mascot's display width.
 
 The brim row sits above the mascot. Indent it by 1 space (col 1) so
 ` ‾‾‾‾‾‾‾` lines up with cols 2-8 of the mascot below — spanning the inside
@@ -273,7 +275,8 @@ color is decoration, never load-bearing.
 ```
   ┃
   ┃    ‾‾‾‾‾‾‾
-  ┃   (⌐■_■)  d o t  ·  m e  ·  portable user-context for AI
+  ┃   (⌐■_■)  d o t  ·  m e
+  ┃   portable user-context for AI
   ┃
   ┃   J A M E S                                                   he/him
   ┃   @thebestmensch

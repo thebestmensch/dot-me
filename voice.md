@@ -189,6 +189,17 @@ Register still applies inside Format. A README for a personal-project repo is `d
 
 Lead with a one-line hook. Pain-first second paragraph. Solution paragraph names the artifact and its shape. Headings come later, once the reader has accepted the framing.
 
+### Long-form posture: prescriptive over exploratory
+
+Default long-form public writing (blog posts, opinion-shaped docs) to **prescriptive framing**, not balanced survey. Most readers landing on a post want someone to make the call; "here are the patterns, here's the tradeoff space" reads as low-confidence even when it isn't, and reads as AI-shaped in 2026.
+
+- Title names the call (`your runbooks are missing hooks`), not the topic (`thoughts on runbook enforcement`).
+- Lead with a concrete failure → fix, not a landscape scan.
+- Recommend ONE path. Hedges and tradeoffs go in a single closing paragraph, not five comparable options.
+- If the call turns out wrong later, update the post. Don't pre-hedge.
+
+This is posture, distinct from the mechanics above. Format says *how the page is shaped*; this says *what argument the page is making*.
+
 ## Sample Passages
 
 Real excerpts from James's writing. These are the durable anchor when description-only style words drift across model updates; concrete examples don't drift.

@@ -1,6 +1,7 @@
 # Personal preferences (likes / favorites / avoid triads).
 # Lazy-loaded only (not @include'd in CLAUDE.md). Loaded on demand by skills/commands.
 # Managed by /me (any subcommand).
+spec_version: "0.2"
 
 tools:
   editor: Claude Code
@@ -41,14 +42,8 @@ media:
     likes:
       - adventure
 
-workflow:
-  commit_messages: Conventional Commits (e.g. `feat:`, `fix(scope):`, `docs:`)
-  recommendation_order: |
-    When listing N recommendations (tools, options, approaches), order by
-    ROI (impact ÷ effort), not by theme or flow-position. JM re-ranks
-    thematic lists to ROI when given them. Override: if asked for a phased
-    rollout or sequenced plan, use that order instead.
-
 notes: |
-  Voice tone (dry, irreverent, direct, warm) lives in voice.md, not here.
+  Voice tone (dry, irreverent, direct, warm) lives in voice.md.
+  Imperative behavioral rules (commit style, recommendation ordering,
+  autonomy, scope) live in working-style.yaml.
   Add cross-cutting preferences that don't fit a category to this notes block.

@@ -102,9 +102,9 @@ lowercase.
 
 ```
   ┃
-  ┃    o     ╭───╮
-  ┃   /|\    │ · │   d o t  ·  m e
-  ┃   / \    ╰───╯   portable user-context · v<plugin version>
+  ┃              ╭───╮
+  ┃   (⌐■_■)    │ · │   d o t  ·  m e
+  ┃              ╰───╯   portable user-context · v<plugin version>
   ┃
   ┃   <NAME-SPACED-CAPS>                                       <pronouns>
   ┃   <handle>
@@ -114,8 +114,9 @@ lowercase.
 
 The header has two visual elements sitting side by side:
 
-- A 3-line **stick figure** (`o` head, `/|\` body, `/ \` legs) on the left
-  — the user's avatar/mascot, friendly and minimal. Occupies 3 chars wide.
+- A **kaomoji mascot** `(⌐■_■)` — single-line cool-dude-with-shades,
+  vertically centered on the sigil's middle row. Friendly, recognizable,
+  doesn't compete with the sigil for attention.
 - A 3-line **sigil** (rounded box containing a single centered middle-dot
   `·`) — visually echoes the `.me` filename, reads as a brand mark.
 
@@ -126,14 +127,14 @@ sigil's third row, aligned with the wordmark.
 Layout (column positions inside the rail's content area, where col 1 = first
 char after the rail's 3-space gutter):
 
-- Figure: col 2-4 (head `o` centered at col 2; body/legs spanning col 1-3,
-  shifted right one for the head; concretely: ` o ` / `/|\` / `/ \`)
-- Sigil: col 7-11 (5 chars: `╭───╮` / `│ · │` / `╰───╯`)
-- Wordmark/tagline: col 15+ (sigil end + 3-space gutter)
+- Mascot: col 1-6 (`(⌐■_■)` = 6 visible chars), rendered only on the middle
+  row (sigil row 2); top and bottom rows have blank space at col 1-6.
+- Sigil: col 11-15 (5 chars: `╭───╮` / `│ · │` / `╰───╯`)
+- Wordmark/tagline: col 19+ (sigil end + 3-space gutter)
 
-The sigil block must be exactly 5 chars wide. The figure occupies a 3-char
-column; if the name renders extremely long, the figure stays put and the
-right-aligned tokens (pronouns, etc.) wrap or truncate first.
+The sigil block must be exactly 5 chars wide. If the name renders extremely
+long, the mascot and sigil stay put — right-aligned tokens (pronouns, etc.)
+wrap or truncate first.
 
 `NAME-SPACED-CAPS` = `preferred_name` (or `name`) uppercased with one space
 between each letter — gives the name visual weight without needing a figlet
@@ -251,8 +252,7 @@ Use `\033[38;5;<n>m` … `\033[0m`. Two palettes, keyed by detected theme:
 | Wordmark `d o t · m e` + `.me`   | 215  | 166   | warm ochre / rust       |
 | Tagline, version                 | 245  | 240   | warm gray (mid / dark)  |
 | Header NAME (spaced caps)        | 223  |  94   | cream / dark brown      |
-| Stick figure head `o`            | 215  | 166   | warm ochre / rust       |
-| Stick figure body/legs `/|\ / \` | 180  | 130   | warm tan / brown        |
+| Mascot `(⌐■_■)`                  | 215  | 166   | warm ochre / rust       |
 | Section glyphs `● ○ ✦ ◉ ◈ ▣ ◐ ◌`| 180  | 130   | warm tan / brown        |
 | Memory bars `▇`                  | 215  | 166   | warm ochre / rust       |
 | Footer chip brackets `┤ ├`       | 180  | 130   | warm tan / brown        |
@@ -273,9 +273,9 @@ color is decoration, never load-bearing.
 
 ```
   ┃
-  ┃    o     ╭───╮
-  ┃   /|\    │ · │   d o t  ·  m e
-  ┃   / \    ╰───╯   portable user-context · v0.1.1
+  ┃              ╭───╮
+  ┃   (⌐■_■)    │ · │   d o t  ·  m e
+  ┃              ╰───╯   portable user-context · v0.1.1
   ┃
   ┃   J A M E S                                                   he/him
   ┃   @thebestmensch

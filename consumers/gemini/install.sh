@@ -56,7 +56,8 @@ MARKER_END="<!-- dot-me:end -->"
 # (WSL / Windows-edited files). [[:space:]] covers \r per POSIX.
 MARKER_BEGIN_RE="^<!-- dot-me:begin -->[[:space:]]*\$"
 MARKER_END_RE="^<!-- dot-me:end -->[[:space:]]*\$"
-SUPPORTED_SPEC="0.1"
+SUPPORTED_SPEC="0.3"           # current spec version assumed when identity.yaml omits spec_version
+SUPPORTED_SPECS_RE='^(0\.1|0\.2|0\.3)$'   # known additive versions (SPEC §"Implementation history")
 
 MODE="standard"   # minimal | standard | full
 DRY_RUN=0
@@ -178,12 +179,9 @@ if [ -z "$spec_version" ]; then
   warn "identity.yaml has no spec_version; assuming $SUPPORTED_SPEC. Add spec_version: \"$SUPPORTED_SPEC\" per SPEC §5.5 to pin."
   spec_version="$SUPPORTED_SPEC"
 fi
-case "$spec_version" in
-  "$SUPPORTED_SPEC") ;;
-  *)
-    err "identity.yaml spec_version=$spec_version is unknown to this installer (supports $SUPPORTED_SPEC); upgrade consumers/gemini/install.sh first"
-    ;;
-esac
+if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
+  err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3); upgrade consumers/gemini/install.sh first"
+fi
 
 # --- Marker-collision preflight ---------------------------------------------
 # Inlined source files are copied verbatim. If any source contains literal

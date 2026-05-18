@@ -1,6 +1,6 @@
-# dot-me: Personal Context Spec (v0.2)
+# dot-me: Personal Context Spec (v0.3)
 
-**Date:** 2026-05-16
+**Date:** 2026-05-18
 **Status:** RFC, solo-maintained
 **Scope:** Schema, load contract, update invariants, and precedence vs existing personal-context layers (AGENTS.md, Codex memories, Claude Code global CLAUDE.md, `~/.agents/profile/user.md`) for a lightweight, file-based personal-context standard at `~/.me/`.
 **Driver:** AI tools re-onboard the user in every new project, ticket, subagent, and chat, twice. They forget *who you are* (name, timezone, dogs, durable context) and they forget *how you want them to work with you* (autonomy level, voice, scope discipline, the calls you already made). AGENTS.md handles project context; vendor memory features handle conversation history; no portable, file-based standard covers either layer of durable personal context. dot-me fills both as the lowest-effort viable answer.
@@ -78,7 +78,7 @@ social_profiles:                  # optional, list of social accounts (JSON Resu
     url: <URI>
 blurb: <one-line string>          # optional, short self-description / bio line
 headline: <one-line string>       # optional, professional label (JSON Resume basics.label / Schema.org jobTitle)
-spec_version: "0.2"               # optional but recommended; pins the schema version
+spec_version: "0.3"               # optional but recommended; pins the schema version
 location:
   timezone: <IANA tz string>      # required if location present
   city: <string>                  # optional, free-text city / locality
@@ -87,12 +87,30 @@ languages:                        # optional, BCP 47 language tags (Schema.org k
   - <bcp47 tag>                   #   e.g. "en", "en-US", "fr"
 knows_about:                      # optional, Schema.org knowsAbout semantics — domain expertise, NOT spoken languages
   - <free-text topic>
-work:                             # optional
+work:                             # optional, CURRENT roles only
+  - role: <string>
+    org: <string>                 #   OR `project: <string>` for OSS/personal work
+past_work:                        # optional, historical roles (v0.3)
   - role: <string>
     org: <string>
+    start: <YYYY>                 #   optional, four-digit year
+    end: <YYYY>                   #   optional, omit or "present" if ongoing
+    summary: <one-line string>    #   optional, what you did / scope of role
+    mission: <one-line string>    #   optional, stance-led one-liner (e.g. "fighting disinformation")
 pets: []                          # optional
 family: []                        # optional, may be deferred to v1
-inner_circle: []                  # optional, may be deferred to v1
+inner_circle:                     # optional, may be deferred to v1
+  - name: <string>
+    role: <string>                #   relationship label (e.g. "partner", "cofounder + CEO, OrgName")
+    handles:                      #   optional, social handles (v0.3)
+      instagram: <handle>         #     bare handle, no leading @ and no URL
+      linkedin: <handle>          #     known keys SHOULD be lowercase platform names
+      bluesky: <handle>           #     additional unknown keys allowed per §5.6
+      twitter: <handle>
+      github: <handle>
+      mastodon: <handle>
+      website: <URI>              #     full URL when the contact has a homepage
+      email: <string>
 ```
 
 Required: `name`. The single strictness elsewhere is `location.timezone`: when `location` is present, the timezone MUST be a valid IANA identifier (e.g., `America/Chicago`). `location.country` SHOULD be ISO 3166-1 alpha-2 when present; `languages` SHOULD be BCP 47 tags when present. Everything else is optional.
@@ -100,6 +118,12 @@ Required: `name`. The single strictness elsewhere is `location.timezone`: when `
 **`handle` vs `social_profiles` (v0.2):** v0.1 carried a single opaque `handle` string. v0.2 introduces `social_profiles` as a list of `{network, url}` objects (the shape used by JSON Resume, Schema.org `sameAs`, and vCard `IMPP`/`X-SOCIALPROFILE`). `handle` is retained for backward compatibility (consumers MUST continue to read it), but new producers SHOULD prefer `social_profiles`. When both are present, `social_profiles` is authoritative.
 
 **`languages` vs `knows_about` (v0.2):** Schema.org separates `knowsLanguage` (spoken/written languages) from `knowsAbout` (domain expertise). v0.1 conflated them; v0.2 introduces `languages` as the dedicated field. `knows_about` retains its v0.1 semantics: free-text expertise topics, not languages.
+
+**`work` vs `past_work` (v0.3):** v0.1/v0.2 carried a single `work[]` block conflating current and past roles. v0.3 narrows `work[]` to *current* roles only and introduces a sibling `past_work[]` block for historical employment. Reasoning: the two have different update cadences and different field sets (history wants `start`, `end`, `summary`, `mission`; current rarely needs them). Consumers that want a complete career timeline SHOULD read both. Consumers reading a v0.3 file that only want "what is this user doing now" SHOULD read only `work[]`. **For v0.1/v0.2 files, `work[]` semantics remain mixed** — consumers SHOULD branch on `spec_version` (per §5.6) and treat `work[]` as "all roles, mixed" when `spec_version` is `0.1` or `0.2` (or absent). v0.2 producers MAY migrate past roles into `past_work[]` but are not required to; the migration is the producer's call.
+
+**`inner_circle[].handles` (v0.3):** Each `inner_circle` entry MAY carry an optional `handles:` map of platform-key → handle. Known keys (`instagram`, `linkedin`, `bluesky`, `twitter`, `github`, `mastodon`, `website`, `email`) SHOULD be lowercase platform names. Per §5.6 (unknown-keys), consumers MUST tolerate additional unrecognised keys. Values for social-platform keys SHOULD be the bare handle (no leading `@`, no full URL) so a consumer can interpolate the right URL shape per platform. `website` and `email` are the exceptions: full URI / email address.
+
+> **⚠ Privacy note — third-party identifiers in the always-loaded tier.** `identity.yaml` is loaded into every session by every conforming consumer (see §6.1). Adding handles for someone other than yourself means *their* public identifiers will appear in every agent context the file reaches: unrelated coding sessions, generated outputs, copied global configs, shared screenshots. Free-text relationship *notes* are deferred to v1 conditional on encrypted-vault availability (see §"Out of scope") for the same containment reason. Producers SHOULD: (a) include third-party handles only with that person's consent; (b) keep the set minimal (one platform is usually enough for rapport-shaped context); (c) prefer `website` (already public per the contact's own choice) over per-platform handles when both are options; (d) treat the `family[]` block as off-limits for handles until v1's encrypted-vault story lands. Consumers MAY surface a per-installation warning when `inner_circle[].handles` is present so adopters notice the always-loaded propagation. A future spec version may move third-party identifiers behind an encrypted/lazy-loaded tier.
 
 ### 5.B. Working-agreement layer
 
@@ -337,11 +361,13 @@ These are not part of the format. A consumer MUST work correctly whether or not 
 - MCP-resource architecture (could expose `~/.me/` files as resources; conflicts with §6.3 read-at-startup rule).
 - Compatibility profile for `~/.agents/profile/user.md` (see §8.3).
 
-## Open questions for v0.3
+## Open questions for v0.4
 
 - Should `voice.md` allow optional YAML frontmatter for structured metadata (e.g., `voice_version`) without breaking the prose-not-data rule?
 - Does the spec need a "non-conformance" section? What does "this tool doesn't support dot-me" look like, and how does it degrade?
 - Native integrations: Codex hook, Cursor extension, Gemini CLI loader. Which lands first, and what's the minimum surface area for each?
+- Education / honors / certifications block on `identity.yaml`, mirroring the `past_work[]` shape — file separately if pursued.
+- Family / inner_circle `handles[]` parity: `family[]` entries currently have no schema; should they accept `handles:` once v1's encrypted-vault story lands?
 
 ## Implementation history
 
@@ -350,3 +376,5 @@ Design rationale, adversarial-review thread, and migration design for the v0.1 r
 **v0.2 (2026-05-16):** Adds seven optional identity fields to align `identity.yaml` with the baseline shape used by canonical identity specs (vCard RFC 6350, Schema.org Person, OIDC standard claims, FOAF, JSON Resume): `nickname`, `email`, `website`, `avatar`, `headline`, `social_profiles[]` (preferred over the legacy single `handle`), `languages` (split out from `knows_about` per Schema.org's `knowsLanguage`/`knowsAbout` distinction), and `location.city` + `location.country`. All additive: v0.1 files remain valid v0.2 files.
 
 **v0.2 (2026-05-17):** Adds `working-style.yaml` as a fourth content file, extending the working-agreement layer with imperative behavioral defaults (autonomy, clarifying-questions, check-in cadence, scope discipline, execution pattern, irreversibility). Additive: v0.1 / earlier-v0.2 setups remain valid; consumers MUST ignore the file when absent.
+
+**v0.3 (2026-05-18):** Two `identity.yaml` schema additions, both additive. (1) `past_work[]` sibling block for historical roles, narrowing `work[]` to current-only — fields: `role`, `org`, optional `start`/`end` (four-digit year), `summary`, `mission`. (2) `inner_circle[].handles` optional map of platform-key → bare handle (typed-recommended keys; unknown keys tolerated per §5.6). v0.2 files remain valid v0.3 files; the existing single `inner_circle[]` shape with no `handles:` is still legal.

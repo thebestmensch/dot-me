@@ -7,7 +7,7 @@ preferred_name: James
 pronouns: he/him
 handle: "@thebestmensch"
 blurb: "I build for the human side of tech. Cofounder and CTO at OneOnMe, a kinder way to send gifts in a virtualized world. Before that, cofounded Magnifai for public-agency data work and led product and frontend at New Knowledge, fighting disinformation. Engineer at Google in between. At home in Austin with Sarah and our three dogs: Bean, Gia, and Ruthie."
-spec_version: "0.2"
+spec_version: "0.3"
 
 location:
   timezone: America/Chicago           # IANA tz; the one strictness this file has
@@ -23,6 +23,16 @@ work:
     org: [redacted]
   - role: Maintainer
     project: home-lab
+
+past_work:
+  - role: Cofounder
+    org: Magnifai
+    summary: Public-agency data work
+  - role: Product & frontend lead
+    org: New Knowledge
+    mission: Fighting disinformation
+  - role: Engineer
+    org: Google
 
 pets:
   - name: Bean

@@ -77,7 +77,7 @@ Defaults: `DOT_ME_DIR=~/.me`, `CODEX_HOME=~/.codex` (or `$CODEX_HOME` if set per
 
 The installer reads `spec_version` from `identity.yaml` (per [SPEC §5.5](../../SPEC.md)):
 
-- **Missing** → warn, assume `"0.3"` (current spec version), proceed
+- **Missing** → warn, treat as legacy `"0.1"` (mixed `work[]` semantics per SPEC §5.A), proceed
 - **Matches a known additive version** (`"0.1"`, `"0.2"`, or `"0.3"`) → proceed silently
 - **Unknown / future** → refuse with an upgrade message; rerun after upgrading the installer
 

@@ -126,8 +126,8 @@ fi
 
 spec_version="$(awk -F'[:"]' '/^spec_version:/ {gsub(/[ "]/, "", $0); split($0, a, ":"); print a[2]; exit}' "$DOT_ME_DIR/identity.yaml" || true)"
 if [ -z "$spec_version" ]; then
-  printf 'warning: identity.yaml has no spec_version; assuming %s. Add spec_version: "%s" per SPEC §5.5 to pin.\n' "$SUPPORTED_SPEC" "$SUPPORTED_SPEC" >&2
-  spec_version="$SUPPORTED_SPEC"
+  printf 'warning: identity.yaml has no spec_version; treating as legacy 0.1 (mixed work[] semantics per SPEC §5.A). Add spec_version: "%s" to pin a current version.\n' "$SUPPORTED_SPEC" >&2
+  spec_version="0.1"
 fi
 if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
   # Refuse only on versions we don't recognize (future or malformed).

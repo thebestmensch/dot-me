@@ -176,8 +176,8 @@ fi
 
 spec_version="$(awk -F'[:"]' '/^spec_version:/ {gsub(/[ "]/, "", $0); split($0, a, ":"); print a[2]; exit}' "$DOT_ME_DIR/identity.yaml" || true)"
 if [ -z "$spec_version" ]; then
-  warn "identity.yaml has no spec_version; assuming $SUPPORTED_SPEC. Add spec_version: \"$SUPPORTED_SPEC\" per SPEC §5.5 to pin."
-  spec_version="$SUPPORTED_SPEC"
+  warn "identity.yaml has no spec_version; treating as legacy 0.1 (mixed work[] semantics per SPEC §5.A). Add spec_version: \"$SUPPORTED_SPEC\" to pin a current version."
+  spec_version="0.1"
 fi
 if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
   err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3); upgrade consumers/gemini/install.sh first"

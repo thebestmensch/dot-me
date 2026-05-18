@@ -98,13 +98,12 @@ Use `┠` (thick-rail thin-tee) and `─` (thin dash) and `╴` (thin terminator
 before the label) — this is what makes it look layered. The label is
 lowercase.
 
-### Brand sigil + header
+### Brand header
 
 ```
   ┃
-  ┃              ╭───╮
-  ┃   (⌐■_■)    │ · │   d o t  ·  m e
-  ┃              ╰───╯   portable user-context · v<plugin version>
+  ┃   (⌐■_■)   d o t  ·  m e
+  ┃            portable user-context · v<plugin version>
   ┃
   ┃   <NAME-SPACED-CAPS>                                       <pronouns>
   ┃   <handle>
@@ -112,29 +111,20 @@ lowercase.
   ┃
 ```
 
-The header has two visual elements sitting side by side:
+Two visual elements on the header's first row:
 
-- A **kaomoji mascot** `(⌐■_■)` — single-line cool-dude-with-shades,
-  vertically centered on the sigil's middle row. Friendly, recognizable,
-  doesn't compete with the sigil for attention.
-- A 3-line **sigil** (rounded box containing a single centered middle-dot
-  `·`) — visually echoes the `.me` filename, reads as a brand mark.
+- **Mascot** `(⌐■_■)` — cool-dude-with-shades kaomoji, 6 visible chars.
+- **Wordmark** `d o t · m e` — brand name spelled in spaced caps to match
+  the NAME treatment below. The middle-dot `·` carries the `.me` motif.
 
-Right of the sigil sits the wordmark `d o t · m e` spelled in spaced caps
-to match the name treatment below. Tagline + plugin version sit on the
-sigil's third row, aligned with the wordmark.
+Tagline + plugin version sit on the second row, aligned with the wordmark
+(3-space indent past the mascot column).
 
-Layout (column positions inside the rail's content area, where col 1 = first
+Layout (column positions inside the rail's content area, col 1 = first
 char after the rail's 3-space gutter):
 
-- Mascot: col 1-6 (`(⌐■_■)` = 6 visible chars), rendered only on the middle
-  row (sigil row 2); top and bottom rows have blank space at col 1-6.
-- Sigil: col 11-15 (5 chars: `╭───╮` / `│ · │` / `╰───╯`)
-- Wordmark/tagline: col 19+ (sigil end + 3-space gutter)
-
-The sigil block must be exactly 5 chars wide. If the name renders extremely
-long, the mascot and sigil stay put — right-aligned tokens (pronouns, etc.)
-wrap or truncate first.
+- Mascot: col 1-6 (`(⌐■_■)`)
+- Wordmark / tagline: col 10+ (mascot end + 3-space gutter)
 
 `NAME-SPACED-CAPS` = `preferred_name` (or `name`) uppercased with one space
 between each letter — gives the name visual weight without needing a figlet
@@ -204,7 +194,6 @@ their last character at or before column 68.
 ## Characters
 
 - Rail + section breaks: `┃ ┠ ─ ╴ ┤ ├`
-- Sigil box: `╭ ─ ╮ │ ╰ ╯`
 - Section glyphs: `● ○ ✦ ◉ ◈ ▣ ◐ ◌`
 - Bar fill: `▇` (U+2587)
 - Brand wordmark: `d o t · m e` in the header, `.me` in the footer
@@ -247,8 +236,6 @@ Use `\033[38;5;<n>m` … `\033[0m`. Two palettes, keyed by detected theme:
 |----------------------------------|-----:|------:|-------------------------|
 | Rail `┃`, section dividers       | 180  | 130   | warm tan / brown        |
 | Section labels (between `╴ ╶`)   | 215  | 166   | warm ochre / rust       |
-| Sigil box `╭─╮ │ ╰─╯`            | 138  |  95   | dusty rose / mauve      |
-| Sigil interior dot `·`           | 139  |  97   | muted purple            |
 | Wordmark `d o t · m e` + `.me`   | 215  | 166   | warm ochre / rust       |
 | Tagline, version                 | 245  | 240   | warm gray (mid / dark)  |
 | Header NAME (spaced caps)        | 223  |  94   | cream / dark brown      |
@@ -260,12 +247,6 @@ Use `\033[38;5;<n>m` … `\033[0m`. Two palettes, keyed by detected theme:
 | Repo URL line                    | 244  | 242   | dim gray                |
 | Everything else (content)        | default (terminal foreground)             |
 
-The muted purple sigil dot is the one bright accent — single-pixel pop of
-James's favorite color (per `~/.me/memory/user_favorite_color.md` when
-present; for other users, just leave it as the same warm tan as the rest of
-the sigil). Don't read the memory file at runtime; treat 139/97 as the
-default sigil-dot color.
-
 Plain (no-color) form must remain fully legible and structured on its own —
 color is decoration, never load-bearing.
 
@@ -273,9 +254,8 @@ color is decoration, never load-bearing.
 
 ```
   ┃
-  ┃              ╭───╮
-  ┃   (⌐■_■)    │ · │   d o t  ·  m e
-  ┃              ╰───╯   portable user-context · v0.1.1
+  ┃   (⌐■_■)   d o t  ·  m e
+  ┃            portable user-context · v0.1.1
   ┃
   ┃   J A M E S                                                   he/him
   ┃   @thebestmensch

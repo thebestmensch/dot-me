@@ -39,9 +39,9 @@ required: `name` in `identity.yaml`. everything else is optional. unknown keys a
 
 ## Status
 
-v0.2, solo-maintained, RFC-stage. one reference consumer (the Claude Code plugin shipped in this repo). interest from other AI tools is what graduates this from "spec the author uses" to "spec." [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`. the format will evolve based on what real implementers hit.
+v0.3, solo-maintained, RFC-stage. four reference consumers ship in this repo: the Claude Code plugin (auto-loads `identity.yaml`, drops in `/me`), plus install scripts for Codex CLI, Cursor, and Gemini CLI. a Claude Cowork beta cohort is being invited now; until that loop closes, the maintainer dogfoods every surface against this content daily. [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`. the format will evolve based on what real implementers hit.
 
-native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
+friction reports welcome in [`feedback.md`](feedback.md) (PRs that just append are merged without ceremony) or as a [spec-clarification issue](https://github.com/thebestmensch/dot-me/issues/new). beta-cohort notes shape the next spec revision.
 
 ## Install
 
@@ -53,6 +53,8 @@ native integrations for Codex, Cursor, and Gemini CLI ship in this repo.
 ```
 
 handles loading `identity.yaml` into session context, drops in the `/me` command for managing all four files, and wires the hardening hooks (see [SECURITY.md](SECURITY.md)).
+
+> **Claude Cowork users**: the SessionStart hook doesnt fire in Cowork yet (upstream [anthropics/claude-code#16288](https://github.com/anthropics/claude-code/issues/16288)). after `/me init`, paste `~/.me/identity.yaml` into **Settings → Cowork → Global Instructions** and re-paste when the file changes. `/me show identity` renders the current content for copying. when the upstream bug is fixed, the hook starts firing automatically with no install changes.
 
 ### Codex CLI
 
@@ -150,7 +152,7 @@ design history and adversarial-review thread for v0.1: [`personal-context-design
 
 spec clarifications and consumer-tool integration questions welcome. see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-PRs against `identity.yaml` / `voice.md` / `preferences.yaml` / `memory/` are closed without review. those are the maintainer's personal content, included as a worked example. fork freely; the format is the contract, the content is mine.
+PRs against `identity.yaml` / `voice.md` / `preferences.yaml` / `working-style.yaml` / `memory/` are closed without review. those are the maintainer's personal content, included as a worked example. fork freely; the format is the contract, the content is mine.
 
 ## License
 

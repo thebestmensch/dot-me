@@ -30,7 +30,7 @@ MARKER_END="<!-- dot-me:end -->"
 # (WSL / Windows-edited files). [[:space:]] covers \r per POSIX.
 MARKER_BEGIN_RE="^<!-- dot-me:begin -->[[:space:]]*\$"
 MARKER_END_RE="^<!-- dot-me:end -->[[:space:]]*\$"
-SUPPORTED_SPEC="0.3"           # current spec version assumed when identity.yaml omits spec_version
+SUPPORTED_SPEC="0.3"           # current spec version (recommended in warning when spec_version is absent; fallback value is "0.1" legacy per SPEC §5.A)
 SUPPORTED_SPECS_RE='^(0\.1|0\.2|0\.3)$'   # known additive versions (SPEC §"Implementation history")
 
 MODE="standard"   # minimal | standard | full

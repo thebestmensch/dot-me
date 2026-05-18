@@ -71,7 +71,7 @@ Behavior:
 - Reads today's rocks file
 - Calls shared eval lib
 - Prints status per rock to chat: `Rock 1: done via PR #41, JM-203. Rock 2: progressed (commit abc123). Rock 3: untouched.`
-- Idempotently rewrites the status section in the rocks file
+- Idempotently rewrites the status section in the rocks file using atomic-replace semantics (write a temp file in the same directory, fsync, then rename over the original). Last-writer-wins with no partial/interleaved markdown.
 
 Naming note: chose `/jm-rocks` (status is the high-frequency verb) over `/jm-rocks-status`. Asymmetric with `/jm-rocks-new` but matches actual usage frequency.
 
@@ -82,7 +82,7 @@ Location: `~/.claude/commands/jm-wrap.md` (existing, chezmoi-managed)
 Add step at end of wrap flow:
 - Calls shared eval lib
 - Surfaces this-session's contribution to each rock in wrap output
-- Idempotently rewrites status section in rocks file
+- Idempotently rewrites status section in rocks file with atomic-replace semantics (see § 3)
 
 Tradeoff: wrap gets ~1-2 minutes slower from the LLM eval pass. Acceptable cost; consider `--no-rocks` flag if it becomes annoying.
 
@@ -94,12 +94,12 @@ Contract:
 - Inputs: rocks file path, day scope (default today)
 - Activity sources:
   - Git log across home-lab + oneonme repos for the day
-  - PR activity via `gh search --author thebestmensch --updated >YYYY-MM-DD`
+  - PR activity via `gh search prs --author thebestmensch --updated ">=YYYY-MM-DD"` (quote the comparator to prevent shell redirection)
   - Linear ticket state transitions for the day (Linear MCP)
   - Optional: CC session transcript scanning under `~/.claude/projects/*/` for narrated rock references
 - LLM judgment pass: for each rock, classify as `done` / `progressed` / `blocked` / `untouched` and cite specific work
-- Output: structured per-rock status; optionally rewrites the status section in the rocks file
-- Idempotent — multiple callers safe; last-writer-wins is the intended semantic
+- Output: structured per-rock status; optionally rewrites the status section in the rocks file via atomic-replace (temp file + fsync + rename)
+- Idempotent — multiple callers safe; last-writer-wins is the intended semantic. Atomic replace ensures no partial/interleaved file writes under concurrent callers.
 
 LLM model: default `sonnet` for cost, escalate to `opus` if judgment quality is poor.
 

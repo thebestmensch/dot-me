@@ -13,6 +13,7 @@ effort: low
 | `/me show [identity\|voice\|preferences\|working-style]` | Render current state |
 | `/me edit identity\|voice\|preferences\|working-style` | Open file in $EDITOR, re-baseline integrity after |
 | `/me check` | Verify `.integrity` baseline against current file hashes |
+| `/me status [--remote]` | Compare your `spec_version` against the latest release; list new optional fields |
 | `/me init` | Seed `~/.me/` from `examples/` on a fresh machine |
 
 ## Dispatch
@@ -24,6 +25,7 @@ Parse the first whitespace-delimited token of `$ARGUMENTS`:
 - `show` → run **show** (second token is the file selector, optional)
 - `edit` → run **edit** (second token is the file selector, required)
 - `check` → run **check**
+- `status` → run **status** (second token may be `--remote`, optional)
 - `init` → run **init**
 - anything else (looks like a fact, e.g. quoted string or freeform text) → treat as legacy invocation, route to **add** with the full `$ARGUMENTS` as the fact and source defaulting to `me-legacy`
 
@@ -287,6 +289,130 @@ cd ~/.me && shasum -a 256 -c .integrity 2>&1
 - `.integrity` missing → print `no baseline at ~/.me/.integrity: run /me init or regenerate via /me add` and stop.
 
 No writes. This is a diagnostic command.
+
+---
+
+## status [--remote]
+
+Report the user's `spec_version` against the latest release shipped in `~/.me/CHANGELOG.md`, and list any new optional fields they could opt into. Read-only.
+
+The point: dot-me has no auto-updater and is additive-only. A v0.2 file is forever valid on a v0.3-aware consumer, so `git pull` won't tell the user they're missing useful fields. This subcommand surfaces the gap on demand.
+
+### 1. Resolve user's `spec_version`
+
+Parse `spec_version:` out of `~/.me/identity.yaml`. Accept quoted (`"0.2"`) or unquoted (`0.2`). Use `sed`, not `awk` — see `feedback_slash_command_dollar_collision`: this runbook executes through the slash-command preprocessor, which is documented to substitute `$1..$9` / `$@` / `$*` / `$ARGUMENTS` before Claude reads the body. `$0` is listed as the safe form, but `sed` with backreferences sidesteps the whole shell-positional surface and matches what the installer-side parsing should evolve to as well:
+
+```bash
+spec_version="$(sed -nE 's/^spec_version:[[:space:]]*"?([0-9]+\.[0-9]+)"?[[:space:]]*$/\1/p' "$HOME/.me/identity.yaml" 2>/dev/null | head -1)"
+[[ -z "$spec_version" ]] && spec_version="0.1"   # SPEC §5.A: absent → legacy 0.1
+```
+
+If `~/.me/identity.yaml` is missing entirely, print `no identity.yaml at ~/.me/: run /me init` and stop.
+
+### 2. Resolve latest release from local `CHANGELOG.md`
+
+Take the first version line in `~/.me/CHANGELOG.md`:
+
+```bash
+latest_local="$(grep -oE '\*\*\[v[0-9]+\.[0-9]+\.[0-9]+\]' "$HOME/.me/CHANGELOG.md" | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | cut -d. -f1-2)"
+```
+
+If `CHANGELOG.md` is missing, print `no CHANGELOG.md at ~/.me/: re-clone or git pull` and stop.
+
+### 3. (Optional) Resolve latest release from upstream
+
+If `--remote` was passed (second token), fetch the canonical CHANGELOG from GitHub raw and parse the same way:
+
+```bash
+latest_remote="$(curl -fsSL --max-time 5 https://raw.githubusercontent.com/thebestmensch/dot-me/main/CHANGELOG.md 2>/dev/null \
+  | grep -oE '\*\*\[v[0-9]+\.[0-9]+\.[0-9]+\]' | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | cut -d. -f1-2)"
+```
+
+On curl failure (timeout, offline, GitHub down), print `(remote check failed; reporting against local CHANGELOG only)` and fall through to the local-only comparison. Do not error.
+
+### 4. Compare and report
+
+Use a numeric comparator (split on `.`, compare major then minor) — string compare breaks at `0.10 vs 0.2`.
+
+```bash
+# returns 0 if A < B, 1 if A == B, 2 if A > B
+cmp_version() {
+  local A1 A2 B1 B2
+  A1="${1%%.*}"; A2="${1##*.}"
+  B1="${2%%.*}"; B2="${2##*.}"
+  if   [ "$A1" -lt "$B1" ] || { [ "$A1" -eq "$B1" ] && [ "$A2" -lt "$B2" ]; }; then return 0
+  elif [ "$A1" -eq "$B1" ] && [ "$A2" -eq "$B2" ]; then return 1
+  else return 2; fi
+}
+```
+
+Four states to handle:
+
+- **`spec_version == latest_local`** (and, if `--remote`, `latest_local == latest_remote`):
+  > `~/.me/ on spec v<X>. Latest published: v<X>. You're current.`
+
+- **`spec_version > latest_local`** (file is ahead of local release notes — common when the file was copied from a fresher machine onto a stale clone, or when the clone hasn't been pulled):
+  > Your `identity.yaml` reports spec v<user>, but your local clone only knows about v<latest_local>. Field-level guidance is suppressed because the local release notes are stale.
+  >
+  > Run `git -C ~/.me pull` to fetch the newer release notes, or re-run with `--remote` to compare against upstream. Don't interpret the gap from stale notes.
+
+- **`spec_version < latest_local`** (user is behind a release their local clone knows about):
+  > `~/.me/ on spec v<user>. Latest published: v<latest_local>.`
+  >
+  > New optional fields since v<user>:
+  > <list — see step 5>
+  >
+  > Your file as-is is still valid on a v<latest_local>-aware consumer (file-level additive). Bumping `spec_version` is opt-in.
+  >
+  > **Before bumping**, audit each release between yours and `v<latest_local>` for semantic changes — some releases narrow or re-semantic existing fields. Check the **Compatibility** section of every release notes file, not just the field list above. Concrete known case: v0.3 narrows `work[]` to current roles only; producers bumping from v0.2 must move historical roles into `past_work[]` first or the file silently reclassifies past jobs as current.
+  >
+  > To opt in: edit the relevant files (`identity.yaml`, `working-style.yaml`, …), add the fields you want, run any required semantic migrations, then bump `spec_version: "<latest_local>"` last.
+
+- **`latest_local < latest_remote`** (`--remote` only — local clone is stale):
+  > Your local clone is on v<latest_local>; upstream is on v<latest_remote>. Run `git -C ~/.me pull` to fetch the new release notes, then re-run `/me status` to see the field-level gap.
+
+### 5. List new fields since `spec_version`
+
+For each version strictly newer than the user's, parse the corresponding `~/.me/RELEASE_NOTES_v<N>.0.md` and surface field-additive headlines. Don't render the full release notes — too noisy.
+
+**Contract:** parse only the `## What's new` section (up to the next `## ` heading). Every release notes file in the repo follows this convention. The rest of the file (`## Compatibility`, `## Why these fields`, `## What did NOT make the cut`, `## Open questions for v0.<next>`) also contains bullets shaped like `- **\``, and a naive whole-file grep both lists deferred non-shipping fields as if they were available AND can omit real additions when capped by `head`. Scope the section, don't cap the output.
+
+**Preflight the glob.** Discover release-notes files explicitly via `find`, not a raw glob — bash's default unmatched-glob behavior iterates the literal pattern (silently no-ops) and zsh's default errors with `no matches found`. Stop loudly if the list is empty:
+
+```bash
+mapfile -t release_notes < <(find "$HOME/.me" -maxdepth 1 -type f -name 'RELEASE_NOTES_v*.md' | sort)
+if [ "${#release_notes[@]}" -eq 0 ]; then
+  echo "(no release notes found at ~/.me/RELEASE_NOTES_v*.md; re-clone or git pull)"
+  return 0   # or `exit 0` if not in a function; treat as soft-stop
+fi
+
+for notes in "${release_notes[@]}"; do
+  notes_version="$(basename "$notes" | sed -E 's/RELEASE_NOTES_v([0-9]+\.[0-9]+)\.0\.md/\1/')"
+  # only print versions strictly newer than the user's spec_version
+  cmp_version "$spec_version" "$notes_version" || continue   # cmp returns 0 only if user < notes
+  echo "v$notes_version:"
+  body="$(awk "/^## What.s new/{flag=1;next} /^## /{flag=0} flag" "$notes")"
+  if [ -z "$body" ]; then
+    echo "  (RELEASE_NOTES_v$notes_version.0.md missing '## What's new' section — parsing skipped)"
+    continue
+  fi
+  printf '%s\n' "$body" \
+    | grep -E '^- \*\*`' \
+    | sed -E 's/^- \*\*`([^`]+)`\*\*[[:space:]]*[-—:]?[[:space:]]*(.*)$/  - `\1` — \2/'
+done
+```
+
+### 6. Output discipline
+
+- Read-only. No writes, no commits, no integrity touch, no network in the default path.
+- `--remote` does exactly one curl with `--max-time 5`. No retries, no caching, no provenance log entry.
+- Multi-version gaps render as a single chronological list (v0.2 fields, then v0.3 fields), so a user who skipped a release sees both.
+- Suggest a next action exactly once at the bottom: edit + bump `spec_version`, or pull + re-run.
+
+### Failure modes
+
+- **`~/.me/identity.yaml` malformed** (no parseable `spec_version`): treat as `0.1` per SPEC §5.A and proceed. Don't fail — the report still surfaces what's available.
+- **No release notes at all**: print `(no release notes found at ~/.me/RELEASE_NOTES_v*.md; re-clone or git pull)` and stop. Versions without field-level guidance aren't actionable.
 
 ---
 

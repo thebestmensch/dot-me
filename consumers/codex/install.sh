@@ -133,6 +133,15 @@ if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
   # Refuse only on versions we don't recognize (future or malformed).
   err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3); upgrade consumers/codex/install.sh first"
 fi
+# Known-but-behind: nudge without blocking. The file is valid as-is (every prior
+# spec is file-level additive), so install still proceeds; just surface that
+# newer optional fields exist and that bumping spec_version may require
+# semantic migrations (see release notes Compatibility sections — v0.3 in
+# particular narrows work[] semantics).
+if [ "$spec_version" != "$SUPPORTED_SPEC" ]; then
+  printf 'note: identity.yaml spec_version=%s; latest is %s. Your file is valid as-is; install proceeds. Run /me status (Claude Code plugin) or read RELEASE_NOTES_v%s.0.md for new optional fields and any semantic changes before bumping spec_version.\n' \
+    "$spec_version" "$SUPPORTED_SPEC" "$SUPPORTED_SPEC" >&2
+fi
 
 # --- Marker-collision preflight ----------------------------------------------
 # Inlined source files are copied verbatim. If any source contains literal

@@ -33,3 +33,5 @@
 - [Corpus research specificity](feedback_corpus_research_specificity.md) — broad-bio / broad-pattern research is the wrong shape for positioning the user's specific case; dispatch a SECOND targeted pass on the matching intersection, don't extrapolate
 - [JM/OOM parity surfaces drift silently](feedback_jm_oom_parity_surfaces.md) — `setup_{jm,oom}_*`, `op-*-{jm,oom}`, slash-command pairs etc; edit one half → grep sibling, port in same PR
 - [Blog posts: prescriptive framing](feedback_blog_prescriptive_framing.md) — default to "tell reader what to do now" posture; title names the call, one path recommended, survey-style reads low-confidence + AI-shaped in 2026
+- [Tool primitive shape](feedback_tool_primitive_shape.md) — when user suggests known tool for new problem, compare tool's primitive vs problem's primitive before designing within it; mismatches mean wrong tool
+- [Parallel CC single-writer](feedback_parallel_cc_single_writer.md) — features with N concurrent CC sessions touching shared state need single-writer OR idempotent re-evaluation; never N appenders

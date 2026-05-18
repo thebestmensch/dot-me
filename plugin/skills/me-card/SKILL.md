@@ -102,8 +102,8 @@ lowercase.
 
 ```
   ┃
-  ┃   (⌐■_■)   d o t  ·  m e
-  ┃            portable user-context · v<plugin version>
+  ┃   (⌐■_■)  d o t  ·  m e
+  ┃           portable user-context · v<plugin version>
   ┃
   ┃   <NAME-SPACED-CAPS>                                       <pronouns>
   ┃   <handle>
@@ -120,11 +120,27 @@ Two visual elements on the header's first row:
 Tagline + plugin version sit on the second row, aligned with the wordmark
 (3-space indent past the mascot column).
 
-Layout (column positions inside the rail's content area, col 1 = first
-char after the rail's 3-space gutter):
+**Width quirk.** The mascot uses two East-Asian-Ambiguous-width chars
+(`⌐` U+00AC, `■` U+25A0). In terminals that resolve ambiguous-width to 2
+(Ghostty default, modern iTerm2, kitty, etc.) these render as 2 cells each;
+in terminals that resolve to 1 they render as 1 cell. Pure codepoint count
+is 6 but **display width is 9** in the 2-cell case.
 
-- Mascot: col 1-6 (`(⌐■_■)`)
-- Wordmark / tagline: col 10+ (mascot end + 3-space gutter)
+**Pragmatic rule.** Assume the 2-cell case (mascot display width = 9). It's
+the default in every modern terminal that handles East Asian width
+correctly. Concretely:
+
+- Row 1: `(⌐■_■)<2 spaces><wordmark>` — wordmark starts at visual col 12.
+- Row 2: `<11 spaces><tagline>` — tagline starts at visual col 12, directly
+  under wordmark.
+
+If you have access to `wcswidth` (or equivalent), compute `mascot_w =
+wcswidth("(⌐■_■)")` and use `" " * (mascot_w + 2)` instead of the hardcoded
+11 — alignment then auto-corrects on 1-cell terminals too. Either way,
+never use raw `len()` for padding (returns 6, breaks alignment).
+
+The 2-space gutter (down from 3) keeps the header tight even when the
+mascot expands to 9 cells.
 
 `NAME-SPACED-CAPS` = `preferred_name` (or `name`) uppercased with one space
 between each letter — gives the name visual weight without needing a figlet
@@ -254,8 +270,8 @@ color is decoration, never load-bearing.
 
 ```
   ┃
-  ┃   (⌐■_■)   d o t  ·  m e
-  ┃            portable user-context · v0.1.1
+  ┃   (⌐■_■)  d o t  ·  m e
+  ┃           portable user-context · v0.1.1
   ┃
   ┃   J A M E S                                                   he/him
   ┃   @thebestmensch

@@ -94,7 +94,7 @@ past_work:                        # optional, historical roles (v0.3)
   - role: <string>
     org: <string>
     start: <YYYY>                 #   optional, four-digit year
-    end: <YYYY>                   #   optional, omit or "present" if ongoing
+    end: <YYYY | "present">       #   optional, four-digit year or literal "present"; omit if unknown
     summary: <one-line string>    #   optional, what you did / scope of role
     mission: <one-line string>    #   optional, stance-led one-liner (e.g. "fighting disinformation")
 pets: []                          # optional
@@ -377,4 +377,4 @@ Design rationale, adversarial-review thread, and migration design for the v0.1 r
 
 **v0.2 (2026-05-17):** Adds `working-style.yaml` as a fourth content file, extending the working-agreement layer with imperative behavioral defaults (autonomy, clarifying-questions, check-in cadence, scope discipline, execution pattern, irreversibility). Additive: v0.1 / earlier-v0.2 setups remain valid; consumers MUST ignore the file when absent.
 
-**v0.3 (2026-05-18):** Two `identity.yaml` schema additions, both additive. (1) `past_work[]` sibling block for historical roles, narrowing `work[]` to current-only — fields: `role`, `org`, optional `start`/`end` (four-digit year), `summary`, `mission`. (2) `inner_circle[].handles` optional map of platform-key → bare handle (typed-recommended keys; unknown keys tolerated per §5.6). v0.2 files remain valid v0.3 files; the existing single `inner_circle[]` shape with no `handles:` is still legal.
+**v0.3 (2026-05-18):** Two `identity.yaml` schema additions, both additive. (1) `past_work[]` sibling block for historical roles, narrowing `work[]` to current-only — fields: `role`, `org`, optional `start` (four-digit year) / `end` (four-digit year or literal `"present"`; omit if unknown), `summary`, `mission`. (2) `inner_circle[].handles` optional map of platform-key → bare handle (typed-recommended keys; unknown keys tolerated per §5.6). v0.2 files remain valid v0.3 files; the existing single `inner_circle[]` shape with no `handles:` is still legal.

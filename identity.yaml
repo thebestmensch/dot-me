@@ -6,7 +6,7 @@ name: James Mensch
 preferred_name: James
 pronouns: he/him
 handle: "@thebestmensch"
-blurb: Building products that make the world a better place.
+blurb: "I build for the human side of tech. Cofounder and CTO at OneOnMe, a kinder way to send gifts in a virtualized world. Before that, cofounded Magnifai for public-agency data work and led product and frontend at New Knowledge, fighting disinformation. Engineer at Google in between. At home in Austin with Sarah and our three dogs: Bean, Gia, and Ruthie."
 spec_version: "0.2"
 
 location:
@@ -42,3 +42,8 @@ family: []
 inner_circle:
   - name: Rachel
     role: cofounder + CEO, OneOnMe
+  - name: Sarah
+    role: partner
+    handles:
+      instagram: spearsarah
+      linkedin: spearsarah

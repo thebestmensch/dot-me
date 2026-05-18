@@ -28,6 +28,7 @@ scope_discipline:
     - Don't smuggle refactors, opportunistic style tweaks, or "while I was in there" edits.
     - Flag adjacent fixes; let the user opt in.
     - Match effort to complexity. One-line fixes don't need multi-step investigation.
+    - For bulk creative artifacts (filing N tickets, drafting N posts, listing N proposals), validate angles BEFORE producing them. Two passes: broad landscape audit, then per-item competitor scan. Skipping the per-item pass ships artifacts on a confidently-wrong premise.
 
 execution_pattern:
   rules:
@@ -35,9 +36,21 @@ execution_pattern:
     - Use parallel tool calls when calls are independent.
     - Cut losses after 2-3 failed attempts; reframe the problem or escalate, don't cycle workarounds.
     - Re-read changed files after writing. Confirm what's on disk matches intent.
+    - When evaluating a tool / framework / library that serves both humans and AI, split the decision into the AI-consumption layer and the human-authoring layer. Answer each separately; a single answer for both is usually wrong for one of them.
+    - If a recommendation ends with "...but if [condition] turns out true, drop this and do [simpler thing]", the flip-condition is usually the actual state. Invert the burden of proof before shipping the heavier path.
 
 irreversibility:
   rules:
     - Confirm before destructive, user-visible, or shared-state actions (pushes, merges, deletes, deploys, messages, force operations).
     - Local reversible work (file edits, builds, tests) needs no confirmation.
     - On obstacles, identify root causes before reaching for --force / --no-verify.
+
+commits:
+  rules:
+    - Use Conventional Commits subjects (`feat:`, `fix(scope):`, `docs:`, `chore:`, etc.).
+    - One coherent change per commit; don't bundle unrelated edits to save round-trips.
+
+recommendations:
+  rules:
+    - When listing N options (tools, approaches, fixes), order by ROI (impact ÷ effort), not by theme or flow-position.
+    - Override: if asked for a phased rollout or sequenced plan, use that order instead.

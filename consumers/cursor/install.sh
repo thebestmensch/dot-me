@@ -32,7 +32,8 @@ set -o errexit -o nounset -o pipefail
 
 DOT_ME_DIR="${DOT_ME_DIR:-$HOME/.me}"
 
-SUPPORTED_SPEC="0.1"
+SUPPORTED_SPEC="0.3"           # current spec version (recommended in warning when spec_version is absent; fallback value is "0.1" legacy per SPEC §5.A)
+SUPPORTED_SPECS_RE='^(0\.1|0\.2|0\.3)$'   # known additive versions (SPEC §"Implementation history")
 MODE="standard"     # minimal | standard | full
 DRY_RUN=0
 UNINSTALL=0
@@ -125,15 +126,12 @@ fi
 
 spec_version="$(awk -F'[:"]' '/^spec_version:/ {gsub(/[ "]/, "", $0); split($0, a, ":"); print a[2]; exit}' "$DOT_ME_DIR/identity.yaml" || true)"
 if [ -z "$spec_version" ]; then
-  warn "identity.yaml has no spec_version; assuming $SUPPORTED_SPEC. Add spec_version: \"$SUPPORTED_SPEC\" per SPEC §5.5 to pin."
-  spec_version="$SUPPORTED_SPEC"
+  warn "identity.yaml has no spec_version; treating as legacy 0.1 (mixed work[] semantics per SPEC §5.A). Add spec_version: \"$SUPPORTED_SPEC\" to pin a current version."
+  spec_version="0.1"
 fi
-case "$spec_version" in
-  "$SUPPORTED_SPEC") ;;
-  *)
-    err "identity.yaml spec_version=$spec_version is unknown to this installer (supports $SUPPORTED_SPEC); upgrade consumers/cursor/install.sh first"
-    ;;
-esac
+if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
+  err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3); upgrade consumers/cursor/install.sh first"
+fi
 
 # --- Compose blocks ---------------------------------------------------------
 

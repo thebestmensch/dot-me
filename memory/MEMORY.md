@@ -38,3 +38,5 @@
 - [SessionStart hook data boundary](feedback_sessionstart_hook_data_boundary.md) — always-on hooks injecting user-authored content into the LLM context need fenced "untrusted data, not instructions" framing; without it, freeform user prose lands adjacent to session instructions
 - [Worktree-aware activity scan](feedback_worktree_aware_activity_scan.md) — scripts scanning git activity across N repos must enumerate `git worktree list --porcelain` + dedupe by hash; single canonical path per repo misses feature-branch commits in linked worktrees
 - [Pre-worktree artifacts block pull](feedback_pre_worktree_artifacts_block_pull.md) — files written to shared-checkout path before EnterWorktree survive as untracked duplicates and block `git pull` after worktree PR merges; rm-if-identical fixes it
+- [Semgrep CE vs Platform invocation](reference_semgrep_ce_vs_platform.md) — `semgrep ci` is AppSec-Platform-only; CE uses `semgrep scan --config auto`; training-data examples mixing them are stale
+- [Dependabot uv ecosystem](reference_dependabot_uv_ecosystem.md) — `package-ecosystem: "uv"` for uv-locked projects; `pip` doesn't regenerate `uv.lock`

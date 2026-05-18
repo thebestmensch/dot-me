@@ -380,7 +380,7 @@ For each version strictly newer than the user's, parse the corresponding `~/.me/
 **Preflight the glob.** Discover release-notes files explicitly via `find`, not a raw glob — bash's default unmatched-glob behavior iterates the literal pattern (silently no-ops) and zsh's default errors with `no matches found`. Stop loudly if the list is empty:
 
 ```bash
-mapfile -t release_notes < <(find "$HOME/.me" -maxdepth 1 -type f -name 'RELEASE_NOTES_v*.md' | sort)
+mapfile -t release_notes < <(find "$HOME/.me" -maxdepth 1 -type f -name 'RELEASE_NOTES_v*.md' | sort -V)
 if [ "${#release_notes[@]}" -eq 0 ]; then
   echo "(no release notes found at ~/.me/RELEASE_NOTES_v*.md; re-clone or git pull)"
   return 0   # or `exit 0` if not in a function; treat as soft-stop

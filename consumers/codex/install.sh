@@ -30,7 +30,8 @@ MARKER_END="<!-- dot-me:end -->"
 # (WSL / Windows-edited files). [[:space:]] covers \r per POSIX.
 MARKER_BEGIN_RE="^<!-- dot-me:begin -->[[:space:]]*\$"
 MARKER_END_RE="^<!-- dot-me:end -->[[:space:]]*\$"
-SUPPORTED_SPEC="0.1"
+SUPPORTED_SPEC="0.3"           # current spec version (recommended in warning when spec_version is absent; fallback value is "0.1" legacy per SPEC §5.A)
+SUPPORTED_SPECS_RE='^(0\.1|0\.2|0\.3)$'   # known additive versions (SPEC §"Implementation history")
 
 MODE="standard"   # minimal | standard | full
 DRY_RUN=0
@@ -125,17 +126,13 @@ fi
 
 spec_version="$(awk -F'[:"]' '/^spec_version:/ {gsub(/[ "]/, "", $0); split($0, a, ":"); print a[2]; exit}' "$DOT_ME_DIR/identity.yaml" || true)"
 if [ -z "$spec_version" ]; then
-  printf 'warning: identity.yaml has no spec_version; assuming %s. Add spec_version: "%s" per SPEC §5.5 to pin.\n' "$SUPPORTED_SPEC" "$SUPPORTED_SPEC" >&2
-  spec_version="$SUPPORTED_SPEC"
+  printf 'warning: identity.yaml has no spec_version; treating as legacy 0.1 (mixed work[] semantics per SPEC §5.A). Add spec_version: "%s" to pin a current version.\n' "$SUPPORTED_SPEC" >&2
+  spec_version="0.1"
 fi
-case "$spec_version" in
-  "$SUPPORTED_SPEC") ;;
-  *)
-    # Refuse only on versions we don't recognize (future or malformed).
-    # Older-version back-compat would be handled here if we ever ship a 0.2.
-    err "identity.yaml spec_version=$spec_version is unknown to this installer (supports $SUPPORTED_SPEC); upgrade consumers/codex/install.sh first"
-    ;;
-esac
+if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
+  # Refuse only on versions we don't recognize (future or malformed).
+  err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3); upgrade consumers/codex/install.sh first"
+fi
 
 # --- Marker-collision preflight ----------------------------------------------
 # Inlined source files are copied verbatim. If any source contains literal

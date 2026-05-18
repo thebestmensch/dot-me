@@ -27,6 +27,7 @@ date: 2026-05-18
 
 ## Rock 1: <one-line outcome statement>
 - Done when: <objective condition>
+- Linear: <optional, comma-sep JM-N / OOM-N refs covering this rock>
 - Status: <eval output: untouched | progressed | done | blocked>
 - Related: <git/PR/Linear refs from eval>
 
@@ -37,6 +38,21 @@ date: 2026-05-18
 ```
 
 Frontmatter enables future querying. Plain Markdown so JM can read and edit directly.
+
+### Linear linkage (optional, not required)
+
+The `Linear:` line is a soft pointer. A rock may have:
+- **Zero tickets** — themes like "Finish onboarding" or "Wrap dot-me for beta testers" routinely span work that never gets ticketed. Don't fabricate tickets to satisfy the field; omit the line.
+- **Partial coverage** — some sub-work ticketed, some not. List what exists; don't gate the rock on full coverage.
+- **Full coverage** — every meaningful chunk maps to a JM-N / OOM-N. Common for engineering-heavy rocks.
+
+The eval pass uses `Linear:` refs as additional signal sources when present (cross-references ticket state transitions), but absence of the field never downgrades status. Rocks remain primary; tickets are bookkeeping.
+
+### Promotion: rock → Linear Project
+
+When a rock carries forward 3+ days *and* has 2+ Linear refs, it's structurally a Project, not a daily theme. Suggest at carryover time (`/jm-rocks-new` § 2 guidance): "This rock has carried 4 days with refs JM-201, JM-205, JM-208 — consider promoting to a Linear Project so the issues nest under shipped scope, and let the rock become a daily pointer to the Project."
+
+This is a *prompt*, not an enforcement. Some rocks legitimately carry without ticket gravity (research, ops drift, life work).
 
 ## Components
 
@@ -58,6 +74,7 @@ Location: `~/.claude/commands/jm-rocks-new.md`
 Behavior:
 - Finds most recent `~/.me/rocks/*.md` (yesterday or earlier)
 - Surfaces rocks with status != done as carryover candidates
+- Surfaces promotion candidates: rocks carrying 3+ days with 2+ Linear refs are flagged as Linear Project candidates per the guidance above (prompt only, never auto-promoted)
 - Optional pre-fill: scans Linear `In Progress` issues + open PRs across home-lab and oneonme for rock-shaped candidates
 - Prompts JM to confirm, edit, add
 - Writes today's file

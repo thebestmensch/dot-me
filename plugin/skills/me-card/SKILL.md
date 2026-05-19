@@ -40,7 +40,7 @@ memory file contents.
 
 ## Layout
 
-Total column width: **68 chars** (rail + 2-space gutter + ≤64 chars content).
+Total column width: **68 chars** (2 leading spaces + rail + 3-space gutter + ≤62 chars content).
 
 Lines start with `  ┃   ` (two leading spaces, rail, three-space gutter) and
 then content. Blank lines between sections are `  ┃` (rail only). Never close
@@ -62,7 +62,7 @@ the gutter). Pick by section:
 | inner circle  | `◈`   | each `inner_circle[]` row               |
 | stack         | `▣`   | each tools row                          |
 | aesthetic     | `◐`   | each principles/theme row               |
-| memory        | (none — bar chart, see below)              |
+| memory        | (none) | bar chart, see below                   |
 
 The `now`/`then` filled-vs-open dot is intentional: a tiny temporal device
 that reinforces the dot motif while encoding past/present at a glance.
@@ -271,7 +271,7 @@ Use `\033[38;5;<n>m` … `\033[0m`. Two palettes, keyed by detected theme:
 | Footer chip brackets `┤ ├`       | 180  | 130   | warm tan / brown        |
 | Footer chip text                 | 245  | 240   | warm gray               |
 | Repo URL line                    | 244  | 242   | dim gray                |
-| Everything else (content)        | default (terminal foreground)             |
+| Everything else (content)        | default  | default  | terminal foreground |
 
 Plain (no-color) form must remain fully legible and structured on its own —
 color is decoration, never load-bearing.

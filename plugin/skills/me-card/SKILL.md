@@ -31,9 +31,11 @@ Best-effort. Skip any file that doesn't exist or fails to parse.
   optional, only used for the footer
 - `~/.me/memory/` — count files by prefix: `feedback_*.md`, `reference_*.md`,
   `project_*.md`, `user_*.md`. Each `.md` minus `MEMORY.md` and `.gitkeep`
-- `~/.me/plugin/.claude-plugin/plugin.json` — `version` field for the
-  spec/version stamp in the signature (fall back to identity.yaml
-  `spec_version` if the plugin file is missing)
+- `~/.me/identity.yaml` `spec_version` — primary source for the footer
+  version stamp. Fall back to `~/.me/plugin/.claude-plugin/plugin.json`
+  `version` only if `spec_version` is absent. (The stamp tracks the
+  user's `.me` spec, not the plugin software version, so the data
+  source takes precedence over the runtime source.)
 
 Use a quick `ls | wc -l` style scan for the memory tallies. Don't read the
 memory file contents.
@@ -137,12 +139,11 @@ already carries it.
 in terminals that resolve to 1 they render as 1 cell. Pure codepoint count
 is 6 but **display width is 9** in the 2-cell case.
 
-**Pragmatic rule.** All three header rows are left-justified independently;
-no inter-row alignment to chase. The 2-space gutter between `(⌐■_■)` and
-`d o t` on row 2 holds whether the mascot renders 6 or 9 cells wide —
-terminals just see "mascot + 2 spaces + wordmark" left-to-right. The
-tagline on row 3 starts at col 1 of the content area (same column as
-mascot), so its position doesn't depend on the mascot's display width.
+**Pragmatic rule.** Both header rows are left-justified independently; no
+inter-row alignment to chase. On row 2, the 2-space gutter between
+`(⌐■_■)` and `d o t` holds whether the mascot renders 6 or 9 cells wide
+— terminals just see "mascot + 2 spaces + wordmark + 2-space-dot-2-space
++ tagline" left-to-right, so display width never breaks the flow.
 
 The brim row sits above the mascot. Indent it by 1 space (col 1) so
 ` ‾‾‾‾‾‾‾` lines up with cols 2-8 of the mascot below — spanning the inside

@@ -29,6 +29,6 @@ dependencies = [
 - Writing version constraints in any `pyproject.toml`, `requirements.txt`, or PEP-621 metadata for a uv- or pip-managed project: never use `^`
 - Proposing version-pin language in CodeRabbit `.coderabbit.yaml` rules or custom_checks: use `~=` or bounded ranges, not `^`
 - Poetry-managed projects keep `^`. The distinction is per-tool, not per-language
-- When porting from a Poetry `pyproject.toml`, translate `^X.Y.Z` to `>=X.Y.Z,<(X+1).0.0`
+- When porting from a Poetry `pyproject.toml`, translate `^X.Y.Z` to `>=X.Y.Z,<(X+1).0.0` for stable versions (X ≥ 1). Poetry's pre-1.0 caret has different semantics: `^0.Y.Z` translates to `>=0.Y.Z,<0.(Y+1).0`, and `^0.0.Z` to `>=0.0.Z,<0.0.(Z+1)`
 
 Related: [[dependabot-uv-ecosystem]].

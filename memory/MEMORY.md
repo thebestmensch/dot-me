@@ -53,3 +53,5 @@
 - [Classifier bulk-ticket retry](feedback_classifier_bulk_ticket_retry.md) — auto-mode classifier can deny 1/N tickets in a session-authorized batch; retry with shorter description usually succeeds, don't re-ask the user
 - [Codex audit two-pass yield](feedback_codex_audit_two_pass_yield.md) — pass-2 with broadened-narrow scope (named-but-narrow categories pass-1 didn't list) reliably finds new Crits; budget 2 passes per non-trivial surface
 - [Codex fix-review iteration](feedback_codex_fix_review_iteration.md) — security-critical fix diffs may need 3–5 Codex rounds, each finding a new bypass; push back when a finding conflicts with documented codebase architecture, don't auto-refactor
+- [Wrap default execute mechanical](feedback_wrap_default_execute_mechanical.md) — /jm-wrap mechanical cross-repo deferreds run inline when user live + no parallel CC; don't dump shell one-liners under Blocking
+- [gh pr merge --delete-branch from worktree](reference_gh_pr_merge_delete_branch_worktree.md) — fails when primary holds default branch; merge lands but local cleanup errors; delete remote ref via REST API workaround

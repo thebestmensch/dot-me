@@ -47,3 +47,5 @@
 - [RTK caches stat output](reference_rtk_caches_stat_output.md) — bypass-mtime debugging: `/usr/bin/stat -f '%m %Sm %N'` for ground truth; RTK-proxied `stat` may return stale data and falsely suggest touch isn't working
 - [Codex resolution-drift findings need install verification](feedback_codex_resolution_drift_verify.md) — HIGH resolution-drift verdicts describe direction of risk, not necessarily current state; inspect node_modules/uv tree before reverting wholesale
 - [uv blocks on pre-release transitives](reference_uv_prerelease_transitive_block.md) — direct dep pulling pre-release transitive (e.g. mixpanel 5.1 → json-logic alpha) makes `uv lock` fail; hold direct floor until upstream patches
+- [Classifier bulk-ticket retry](feedback_classifier_bulk_ticket_retry.md) — auto-mode classifier can deny 1/N tickets in a session-authorized batch; retry with shorter description usually succeeds, don't re-ask the user
+- [Codex audit two-pass yield](feedback_codex_audit_two_pass_yield.md) — pass-2 with broadened-narrow scope (named-but-narrow categories pass-1 didn't list) reliably finds new Crits; budget 2 passes per non-trivial surface

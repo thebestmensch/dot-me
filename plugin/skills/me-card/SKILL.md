@@ -22,7 +22,7 @@ section uses its own glyph so the card scans by silhouette, not just text.
 Best-effort. Skip any file that doesn't exist or fails to parse.
 
 - `~/.me/identity.yaml` — name, preferred_name, pronouns, handle, location,
-  knows_about, work, past_work, pets, inner_circle, family
+  knows_about, work, past_work, projects, pets, inner_circle, family
 - `~/.me/preferences.yaml` — tools, aesthetics (formality, color_temperature,
   current_theme, design_principles), media
 - `~/.me/working-style.yaml` — behavioral rule groups (not rendered, but
@@ -56,6 +56,7 @@ the gutter). Pick by section:
 | location      | `◌`   | one row, in the header band             |
 | now           | `●`   | each `work[]` row (filled dot = present)|
 | then          | `○`   | each `past_work[]` row (open dot = past)|
+| projects      | `◆`   | each `projects[]` row (public/OSS work) |
 | knows         | `✦`   | each `knows_about[]` row                |
 | pack          | `◉`   | each `pets[]` row                       |
 | inner circle  | `◈`   | each `inner_circle[]` row               |
@@ -71,19 +72,24 @@ that reinforces the dot motif while encoding past/present at a glance.
 Skip any section whose data is empty.
 
 1. **Brand strip + header** — see template below.
-2. **now** — `work[]` as `● <role-padded>  <org-or-project>`.
+2. **now** — `work[]` as `● <role-padded>  <org>` then append `  ·  <url>`
+   when the row has a `url` field.
 3. **then** — `past_work[]` as `○ <role-padded>  <org-padded>  <summary-or-mission>`.
-4. **knows** — `knows_about[]`.
-5. **pack** — `pets[]` as `◉ <name-padded>  <breed>` (skip species — it's
+4. **projects** — `projects[]` as `◆ <name-padded>  <summary>`. Skip the
+   `role` and `url` fields on the card (the footer chip already carries
+   the canonical dot-me URL; project names are unique identifiers, so the
+   row name doubles as both label and reference).
+5. **knows** — `knows_about[]`.
+6. **pack** — `pets[]` as `◉ <name-padded>  <breed>` (skip species — it's
    almost always "dog" and adds no signal).
-6. **inner circle** — `inner_circle[]` as `◈ <name-padded>  <role>`.
+7. **inner circle** — `inner_circle[]` as `◈ <name-padded>  <role>`.
    Skip handles.
-7. **stack** — selected `preferences.tools` keys, two cols (label 9, value):
+8. **stack** — selected `preferences.tools` keys, two cols (label 9, value):
    editor, shell (combine `shell + shell_plugin_manager + prompt`),
    terminal (combine `terminal_mac + multiplexer`), dotfiles, runtime.
-8. **aesthetic** — `◐ <principles joined with " · ">` then
+9. **aesthetic** — `◐ <principles joined with " · ">` then
    `◐ theme: <current_theme split on first comma>`.
-9. **memory** — bar chart, no row glyph.
+10. **memory** — bar chart, no row glyph.
 
 ### Section divider
 
@@ -103,26 +109,24 @@ lowercase.
 ```
   ┃
   ┃    ‾‾‾‾‾‾‾
-  ┃   (⌐■_■)  d o t  ·  m e
-  ┃   portable user-context for AI
+  ┃   (⌐■_■)  d o t  ·  m e  ·  portable user-context for AI
   ┃
-  ┃   <NAME-SPACED-CAPS>                                       <pronouns>
+  ┃   <NAME-SPACED-CAPS>  ·  <pronouns>
   ┃   <handle>
   ┃   ◌ <city> · <timezone>
   ┃
 ```
 
-Three rows for the brand block:
+Two rows for the brand block (brim + mascot/wordmark/tagline on one line):
 
 - **Row 1 — brim** ` ‾‾‾‾‾‾‾` — overline (U+203E) chars sitting at the top
   of the row above the mascot. Reads as a flat-brim hat / brow line.
   Indented 1 space so the brim spans the inside of the parens (cols 2-8
   of the mascot below).
-- **Row 2 — mascot + wordmark** — `(⌐■_■)` 2-space gutter `d o t · m e`.
-  The middle dot carries the `.me` motif.
-- **Row 3 — tagline** — `portable user-context for AI`, anchored at the
-  same column as the mascot (col 1 of the content area). Stays a separate
-  line for readability; no indent under the wordmark.
+- **Row 2 — mascot + wordmark + tagline** — `(⌐■_■)` 2-space gutter
+  `d o t · m e` then `  ·  portable user-context for AI`. The middle dot
+  of the wordmark carries the `.me` motif; the `·` separators carry it
+  across the rest of the row.
 
 Version is omitted from the header — the footer chip `.me v<version>`
 already carries it.
@@ -147,10 +151,12 @@ left-justified together.
 
 `NAME-SPACED-CAPS` = `preferred_name` (or `name`) uppercased with one space
 between each letter — gives the name visual weight without needing a figlet
-font. Right-align pronouns to column 68.
+font. Pronouns sit inline immediately after the name, separated by
+`  ·  ` (two spaces, middle dot, two spaces) so they read as part of the
+same identifier rather than a floating right-rail label.
 
-If the name renders wider than ~30 columns (long name), drop the
-between-letter spacing and just use plain caps so it still fits.
+If the name + pronouns renders wider than ~50 columns (long name), drop
+the between-letter spacing and just use plain caps so it still fits.
 
 ### Memory bar chart
 
@@ -214,7 +220,7 @@ their last character at or before column 68.
 
 - Rail + section breaks: `┃ ┠ ─ ╴ ┤ ├`
 - Mascot brim: `‾` (U+203E OVERLINE)
-- Section glyphs: `● ○ ✦ ◉ ◈ ▣ ◐ ◌`
+- Section glyphs: `● ○ ◆ ✦ ◉ ◈ ▣ ◐ ◌`
 - Bar fill: `▇` (U+2587)
 - Brand wordmark: `d o t · m e` in the header, `.me` in the footer
 - No em dashes anywhere. Use `·` for inline separators, `+` for compound
@@ -275,23 +281,25 @@ color is decoration, never load-bearing.
 ```
   ┃
   ┃    ‾‾‾‾‾‾‾
-  ┃   (⌐■_■)  d o t  ·  m e
-  ┃   portable user-context for AI
+  ┃   (⌐■_■)  d o t  ·  m e  ·  portable user-context for AI
   ┃
-  ┃   J A M E S                                                   he/him
+  ┃   J A M E S  ·  he/him
   ┃   @thebestmensch
   ┃   ◌ Austin · America/Chicago
   ┃
   ┠──╴ now ───────────────────────────────────────────────────────
   ┃
-  ┃   ● Founder       redacted
-  ┃   ● Maintainer    home-lab
+  ┃   ● CTO & coFounder  OneOnMe  ·  oneonme.com
   ┃
   ┠──╴ then ──────────────────────────────────────────────────────
   ┃
   ┃   ○ Cofounder                Magnifai       Public-agency data
   ┃   ○ Product + frontend lead  New Knowledge  Fighting disinfo
   ┃   ○ Engineer                 Google
+  ┃
+  ┠──╴ projects ──────────────────────────────────────────────────
+  ┃
+  ┃   ◆ dot-me  portable user-context for AI
   ┃
   ┠──╴ knows ─────────────────────────────────────────────────────
   ┃

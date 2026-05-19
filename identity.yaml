@@ -19,10 +19,15 @@ knows_about:                          # Schema.org knowsAbout semantics; forward
   - data infrastructure
 
 work:
-  - role: Founder
-    org: [redacted]
-  - role: Maintainer
-    project: home-lab
+  - role: CTO & coFounder
+    org: OneOnMe
+    url: oneonme.com
+
+projects:
+  - name: dot-me
+    role: Author
+    url: github.com/thebestmensch/dot-me
+    summary: portable user-context for AI
 
 past_work:
   - role: Cofounder

@@ -214,8 +214,9 @@ the `https://` prefix.
 
 Lines have no right border, so the only hard rule is: don't let any single
 content row exceed column 68. Truncate the longest field with `…` if needed.
-The brand strip's right-aligned tokens (pronouns, version) must land with
-their last character at or before column 68.
+Header and footer rows are left-justified per their section templates
+(pronouns inline after the name, version inside a footer chip) — no
+right-anchored tokens to align.
 
 ## Characters
 
@@ -250,9 +251,9 @@ Resolve theme in this priority order, first hit wins:
 5. **OSC 11 query** — write `\033]11;?\033\\` to the controlling TTY,
    read the reply with a 100ms timeout, parse `rgb:RRRR/GGGG/BBBB`. Compute
    luminance `(0.299·R + 0.587·G + 0.114·B) / 65535`. < 0.5 → dark, ≥ 0.5
-   → light. Skip if inside tmux without `allow-passthrough on` (the query
-   will hang or get echoed as garbage); detect tmux via `$TMUX` env var
-   and bypass this step when set.
+   → light. Skip this step when inside tmux (detect via `$TMUX`), because
+   the query may hang or be echoed as garbage; rely on the lower-priority
+   fallback steps instead.
 6. **Default** — `dark` (safest assumption; most terminals ship dark).
 
 ### 256-color palettes

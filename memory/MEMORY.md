@@ -43,3 +43,5 @@
 - [Validate `.coderabbit.yaml` schema before opening PR](feedback_coderabbit_parse_validate_before_open.md) — `yaml.safe_load` only proves grammar; CR silently rejects schema-invalid configs (50-char `custom_check.name` cap caught us); use CR's hosted validator
 - [PEP 440 has no caret](reference_pep440_no_caret.md) — `^` is Poetry/Cargo, not Python; uv/pip use `~=`, `>=X,<Y`, or `==`
 - [Drift-gate bypass tokens consumed per-commit](feedback_drift_gate_tokens_per_commit.md) — multi-round CR loop on drifted branch needs `skip_commit_drift_gate` + `bypass_commit_drift_approved` re-primed each commit; first attempt after fresh prime races and fails, second succeeds
+- [ScheduleWakeup is not a polling primitive](feedback_schedulewakeup_not_for_polling.md) — `/loop`-mode only; for CI/deploy/queue polling use `timeout N bash -c 'until <check>; do sleep S; done'` with `run_in_background:true`, verify predicate in foreground first
+- [RTK caches stat output](reference_rtk_caches_stat_output.md) — bypass-mtime debugging: `/usr/bin/stat -f '%m %Sm %N'` for ground truth; RTK-proxied `stat` may return stale data and falsely suggest touch isn't working

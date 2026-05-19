@@ -1,13 +1,15 @@
 ---
 name: cr-cited-guidelines-unverified
-description: "CodeRabbit findings that cite \"coding guidelines\" or \"repo conventions\" often hallucinate the guideline from generic best-practices; survey the cited source before fixing."
+description: "Automated reviewer findings that cite \"coding guidelines\", \"repo conventions\", or \"current docs\" often hallucinate the source; survey precedent before fixing. Applies to CodeRabbit and Codex."
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: b845a7f2-95e8-4d39-abd3-0b1541e15bb0
 ---
 
-When CodeRabbit cites a "coding guideline" or "repo convention" as justification for a finding, that citation is often invented from generic best-practices, not a guideline that actually exists in the repo. Verify the cited source before applying the fix.
+When an automated reviewer (CodeRabbit, Codex, etc.) cites a "coding guideline", "repo convention", or "current documentation" as justification for a finding, that citation is often invented from generic best-practices or stale training data, not a guideline that actually exists in the repo or the platform's current schema. Verify the cited source against live precedent before applying the fix.
+
+**Codex variant (2026-05-19, oneonme-claude-plugins PR #13):** Codex flagged HIGH-severity "Plugin MCP server is declared at the wrong JSON level" citing "Claude Code's current docs show plugin `.mcp.json` files using an `mcpServers` wrapper." The existing `oneonme-database/.mcp.json` in the same marketplace ships WITHOUT the wrapper, and its tools (`mcp__plugin_oneonme-database_oom-db__*`) were demonstrably registered in the current session. Codex citing "current docs" was wrong for the Cowork plugin marketplace schema; precedent in the same repo won. Don't let HIGH severity tags rush a fix when in-repo precedent contradicts the citation.
 
 **Why:** 2026-05-17 on thebestmensch/dotfiles#27, CR flagged a missing `set -o errexit` in a new hook as **CRITICAL** with the text "As per coding guidelines: Shell scripts should use `set -o errexit -o pipefail`." Survey of 45 sibling hooks in the same dir: 14 use `set -o pipefail` only, 1 uses `set -euo pipefail`, ~30 use neither. The repo `CLAUDE.md`'s shell guidance only covers `-y` non-interactive defaults and stdout+stderr capture — no mention of `errexit`. The "coding guideline" was CR's invention; pushback was correct on that count alone.
 

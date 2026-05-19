@@ -51,3 +51,4 @@
 - [uv blocks on pre-release transitives](reference_uv_prerelease_transitive_block.md) — direct dep pulling pre-release transitive (e.g. mixpanel 5.1 → json-logic alpha) makes `uv lock` fail; hold direct floor until upstream patches
 - [Classifier bulk-ticket retry](feedback_classifier_bulk_ticket_retry.md) — auto-mode classifier can deny 1/N tickets in a session-authorized batch; retry with shorter description usually succeeds, don't re-ask the user
 - [Codex audit two-pass yield](feedback_codex_audit_two_pass_yield.md) — pass-2 with broadened-narrow scope (named-but-narrow categories pass-1 didn't list) reliably finds new Crits; budget 2 passes per non-trivial surface
+- [Codex fix-review iteration](feedback_codex_fix_review_iteration.md) — security-critical fix diffs may need 3–5 Codex rounds, each finding a new bypass; push back when a finding conflicts with documented codebase architecture, don't auto-refactor

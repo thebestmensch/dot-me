@@ -29,6 +29,7 @@
 - [OOM account naming](project_oom_account_naming.md) — `personal`=james@jamesmensch.com (jm), `oom`=james@oneonme.com (work); legacy tower file `.credentials-fallback-jm.json` is inverted (actually OOM)
 - [Sentry: Fixes trailer over MCP](feedback_sentry_fixes_trailer_over_manual.md) — commit `Fixes ISSUE-N` trailers auto-resolve on merge; skip `mcp__sentry__update_issue` (auto-mode denies inconsistently)
 - [Workspace pattern: agents session](project_workspace_pattern.md) — JM works in `agents` tmux session via Claude Agents project selector; legacy `jm` / `oom` per-workspace panes unused
+- [Workspace topology: jm vs oom](project_workspace_topology.md) — two workspaces (jm/personal, oom/oneonme); each with own Sentry org, 1Password vault, Linear team shared across all projects within; `jm-*` / `oom-*` slash-command prefixes map 1:1 to workspace
 - [James in prose, JM is shorthand](feedback_james_in_prose_not_jm.md) — `preferred_name: James` is source of truth; `JM` is for command prefixes (`jm-voice`), tag labels, account disambiguation — never the prose subject
 - [Landscape scan before bulk creative](feedback_landscape_scan_before_bulk_creative.md) — bulk-file tickets/posts/proposals → run broad audit + per-item competitor scan BEFORE filing; broad survey alone underestimates saturation
 - [Exhaustive archive scan before declaring gaps](feedback_exhaustive_archive_scan.md) — opaque archive (LinkedIn export, takeout ZIP, Slack dump) → full inventory pass FIRST; non-obvious filenames (e.g. `Ad_Targeting.csv`) often carry the goldmine

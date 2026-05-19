@@ -1,8 +1,6 @@
 - [No self-authored classifier rules](feedback_no_self_authored_classifier_rules.md) — model drafts `permissions.autoMode.*` prose for user review; never applies it itself, even on "apply that diff" directives — classifier hard-blocks (correctly)
 - [permissions.autoMode schema](reference_permissions_automode_schema.md) — `allow/soft_deny/hard_deny/environment` arrays accept user-authored classifier prose; `$defaults` sentinel preserves built-ins
 - [Use voice skill for outgoing communications](feedback_voice_for_outgoing.md) — always invoke `/jm-voice` when drafting emails, Slack, or any text sent as James; first-pass drafts default to corporate tone
-- [Enforce via hook when memory fails](feedback_enforce_via_hook_when_memory_fails.md) — memory rule that should have applied but was bypassed/not enforced = signal to build a hook, not sharpen the wording
-- [OSS post discipline](feedback_oss_post_discipline.md) — external-repo `gh issue/pr create|edit|comment` as @thebestmensch must go through `/jm-oss-post` (template + voice); enforced by oss-post-gate.sh hook
 - [CR-cited "coding guidelines" need verification](feedback_cr_cited_guidelines_unverified.md) — CodeRabbit "as per coding guidelines" citations are often hallucinated; grep the cited source before fixing, push back with survey when absent
 - [Voice register routing](feedback_voice_register_routing.md) — auto-pick `/jm-voice` register flag by audience: `--pro` for GitHub/external/strangers, default for internal, `--announcement` composes
 - [Autonomous loop default](feedback_autonomous_loop_default.md) — routine-loop workflows run end-to-end including the irreversible end action; escalate only on named ambiguity triggers

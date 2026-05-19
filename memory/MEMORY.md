@@ -40,3 +40,6 @@
 - [Pre-worktree artifacts block pull](feedback_pre_worktree_artifacts_block_pull.md) — files written to shared-checkout path before EnterWorktree survive as untracked duplicates and block `git pull` after worktree PR merges; rm-if-identical fixes it
 - [Semgrep CE vs Platform invocation](reference_semgrep_ce_vs_platform.md) — `semgrep ci` is AppSec-Platform-only; CE uses `semgrep scan --config auto`; training-data examples mixing them are stale
 - [Dependabot uv ecosystem](reference_dependabot_uv_ecosystem.md) — `package-ecosystem: "uv"` for uv-locked projects; `pip` doesn't regenerate `uv.lock`
+- [Validate `.coderabbit.yaml` schema before opening PR](feedback_coderabbit_parse_validate_before_open.md) — `yaml.safe_load` only proves grammar; CR silently rejects schema-invalid configs (50-char `custom_check.name` cap caught us); use CR's hosted validator
+- [PEP 440 has no caret](reference_pep440_no_caret.md) — `^` is Poetry/Cargo, not Python; uv/pip use `~=`, `>=X,<Y`, or `==`
+- [Drift-gate bypass tokens consumed per-commit](feedback_drift_gate_tokens_per_commit.md) — multi-round CR loop on drifted branch needs `skip_commit_drift_gate` + `bypass_commit_drift_approved` re-primed each commit; first attempt after fresh prime races and fails, second succeeds

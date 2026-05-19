@@ -134,7 +134,7 @@ Version is omitted from the header — the footer chip `.me v<version>`
 already carries it.
 
 **Width quirk.** The mascot uses two East-Asian-Ambiguous-width chars
-(`⌐` U+00AC, `■` U+25A0). In terminals that resolve ambiguous-width to 2
+(`⌐` U+2310, `■` U+25A0). In terminals that resolve ambiguous-width to 2
 (Ghostty default, modern iTerm2, kitty, etc.) these render as 2 cells each;
 in terminals that resolve to 1 they render as 1 cell. Pure codepoint count
 is 6 but **display width is 9** in the 2-cell case.

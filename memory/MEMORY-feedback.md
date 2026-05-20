@@ -1,0 +1,1 @@
+- [Credential trust boundary = vault grant + env var, not field layout](feedback_credential_trust_boundary_is_vault_plus_envvar.md) — splitting by field/item in same vault is theater; both SA-vault-grant AND env-var-name must split

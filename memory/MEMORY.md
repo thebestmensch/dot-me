@@ -62,3 +62,5 @@
 - [Concrete code evidence beats inference in reviewer arbitration](feedback_concrete_code_evidence_beats_inference.md) — when reviewers diverge on the same point, defer to the one citing file:line; the inferential one's prior may not match codebase
 - [Half-done layout? grep un-merged branches before declaring abandoned](feedback_partial_state_grep_adjacent_branches.md) — restructures often mid-flight with adjacent chezmoi/memory branches encoding destination; inventory un-merged work before re-doing
 - [OP token routing: chpwd hook + workspace-prefix](project_op_token_routing.md) — chpwd routes `OP_SERVICE_ACCOUNT_TOKEN` by `$PWD`, fails closed on lookup miss; scripts crossing vaults must use explicit `op-personal`/`op-oneonme` wrappers
+- [`rg` aliased to grep-shim in CC sessions](reference_rg_aliased_in_cc_shell.md) — `rg --no-config 'pat'` errors with `grep: unrecognized option`; use plain `grep -r --exclude-dir=...` or `unset -f rg` first
+- [Bash tool is not zsh — wrap zsh-hook smoke tests](feedback_bash_tool_is_not_zsh.md) — CC's Bash tool runs `bash`; chpwd/precmd/preexec only fire inside `zsh -ic '<cmd>'`

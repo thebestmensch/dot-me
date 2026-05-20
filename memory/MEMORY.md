@@ -64,3 +64,6 @@
 - [OP token routing: chpwd hook + workspace-prefix](project_op_token_routing.md) — chpwd routes `OP_SERVICE_ACCOUNT_TOKEN` by `$PWD`, fails closed on lookup miss; scripts crossing vaults must use explicit `op-personal`/`op-oneonme` wrappers
 - [`rg` aliased to grep-shim in CC sessions](reference_rg_aliased_in_cc_shell.md) — `rg --no-config 'pat'` errors with `grep: unrecognized option`; use plain `grep -r --exclude-dir=...` or `unset -f rg` first
 - [Bash tool is not zsh — wrap zsh-hook smoke tests](feedback_bash_tool_is_not_zsh.md) — CC's Bash tool runs `bash`; chpwd/precmd/preexec only fire inside `zsh -ic '<cmd>'`
+- [Credential migration: audit consumers of source AND target](feedback_credential_migration_audit_consumers.md) — mechanical `s|op://old|op://new|` can fold trust boundaries when target ref already in use at a different scope; grep target consumers BEFORE rewrite
+- [`tickets` CLI OOM repo path is stale](reference_tickets_cli_oom_repo_path.md) — default `_OOM_REPO_PATH=/Users/jm/Documents/local/oneonme` doesn't match actual repo (`oneonme-platform`); export `ONEONME_REPO_PATH` before `tickets work OOM-N`
+- [Credential trust boundary = vault grant + env var, not field layout](feedback_credential_trust_boundary_is_vault_plus_envvar.md) — splitting by field/item in same vault is theater; both SA-vault-grant AND env-var-name must split

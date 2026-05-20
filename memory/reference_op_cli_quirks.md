@@ -1,9 +1,10 @@
 ---
 name: op-cli-quirks
-description: "1Password CLI gotchas — `OP_SERVICE_ACCOUNT_TOKEN` silently overrides `--account` (so code calling `op --account X` must `unset OP_SERVICE_ACCOUNT_TOKEN` first); `op signin` output must be `eval`-ed; `op account add` registers but doesn't create a session — `op signin --account X` then `eval $(op signin --account X)` required."
-metadata:
+description: "1Password CLI gotchas — `OP_SERVICE_ACCOUNT_TOKEN` silently overrides `--account` (so code calling `op --account X` must `unset OP_SERVICE_ACCOUNT_TOKEN` first); `op signin` output must be `eval`-ed; `op account add` registers but doesn't create a session — `eval $(op signin --account X)` required. SA tokens are read-only on vault grants by default — write ops fail with generic 'Couldn't update the item.' Use interactive `eval $(op signin)` for one-off writes. `op inject` errors on bare `op://` in input files (including in comments)."
+metadata: 
   node_type: memory
   type: reference
+  originSessionId: 725539cb-afaf-43ef-ba16-733eef009fe9
 ---
 
 Three behaviors of the `op` CLI that bite if not known. All verified live on 1P CLI v3.14.3 (2026-05-19).
@@ -42,9 +43,35 @@ You can use the '-f' flag to override this warning.
 
 Adding an account with `op account add` writes the shorthand+URL+account-key to `~/.config/op/config` but does NOT create a session token. Subsequent `op --account <new-shorthand>` calls fail with `could not find session token for account <shorthand>` until `eval $(op signin --account <new-shorthand>)` runs.
 
+## 4. SA tokens are read-only on vault grants by default
+
+A 1P service-account token's vault grants confer **read** by default. `op item edit`, `op item create`, `op item delete` under an SA token fail with a generic and unhelpful error: `[ERROR] ... Couldn't update the item.` — no mention of permissions.
+
+To grant write: 1P admin → Settings → Developer → Infrastructure Secrets Management → edit the SA → toggle write on the specific vault. (Cannot be done via CLI.)
+
+**Workaround for one-off writes without granting permanent write:** drop to interactive user auth. `unset OP_SERVICE_ACCOUNT_TOKEN; eval $(op signin --account X); op item edit ...`. The user account writes; SA stays read-only.
+
+**Live demo (2026-05-20):** `op item edit machine_linear_oneonme --vault machine --account oneonme "credential=$(...)"` with SA token in env → "Couldn't update the item." After `unset OP_SERVICE_ACCOUNT_TOKEN; eval $(op signin --account oneonme)` (Touch ID), same command succeeded.
+
+## 5. `op inject` errors on bare `op://` in input
+
+`op inject` scans the input file for any occurrence of `op://...` and tries to resolve it — including inside comments. A bare literal `op://` (e.g. in documentation text describing the schema) trips it with:
+
+```
+[ERROR] invalid secret reference 'op://': too few '/': secret references should have at least vault, item and field specified
+```
+
+The whole `op inject` invocation fails before reaching the real refs. Common in `.env.template` files that have an inline comment like `# inject silently writes literal \`op://\` strings into .env`.
+
+**Fix:** rewrite the comment to avoid the bare token. "literal references", "unresolved references", "the \`op:\` scheme" all work. Don't try to escape — `op inject` ignores common escape conventions (it doesn't parse shell or markdown syntax, just regex-scans for `op://`).
+
+**Live verified 2026-05-20** on `services/linear-agent/.env.template` in oneonme-platform.
+
 ## How to apply
 
 - Before debugging "why is `op --account X` returning the wrong account's data," check `env | grep OP_SERVICE_ACCOUNT_TOKEN`.
 - Before adding new code paths that mix SA-token and `--account`-mode auth in the same shell session, plan the unset boundary.
 - After `op account add ...`, follow immediately with `eval $(op signin --account ...)` or the next probe will look broken.
+- For write operations on a vault where you only have an SA: use interactive signin, don't try to grant write to the SA just for a one-off (or do, then revoke).
+- For `.env.template` files driving `op inject`: lint inputs for bare `op://` substrings — failing fast at template-author time beats failing late during deploy.
 - Related: [[project_op_account_topology]] for which accounts/UUIDs exist.

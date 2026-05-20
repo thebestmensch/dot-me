@@ -53,7 +53,21 @@ To grant write: 1P admin → Settings → Developer → Infrastructure Secrets M
 
 **Live demo (2026-05-20):** `op item edit machine_linear_oneonme --vault machine --account oneonme "credential=$(...)"` with SA token in env → "Couldn't update the item." After `unset OP_SERVICE_ACCOUNT_TOKEN; eval $(op signin --account oneonme)` (Touch ID), same command succeeded.
 
-## 5. `op inject` errors on bare `op://` in input
+## 5. Vault-level admin ops (rename, create) are SA-blocked
+
+Service-account tokens have **vault-level read/write grants only** — vault-level admin ops (`op vault edit --name`, `op vault create`, `op vault delete`) require user-account auth with admin/owner privileges. SA returns `(403) Forbidden: You aren't authorized to access this resource.` Distinct from #4 (item-level write block) — even granting the SA write on the vault won't help; rename is a different permission class.
+
+**Recovery:** user-shell session required. `OP_SERVICE_ACCOUNT_TOKEN= eval $(op signin --account my); op vault edit homelab --name machine` (Touch ID fires). Or do it in the 1P desktop app (right-click vault → Rename). Cannot be triggered from CC's Bash tool — Touch ID needs interactive TTY; `op signin` without TTY returns "operation not supported by device".
+
+**Live verified 2026-05-20** on JM-287 during attempt to rename `homelab` → `machine`.
+
+## 6. Post-rename multi-account `--vault` collision
+
+After JM-287 (2026-05-20), the vault name `machine` exists in **both** `my` (JM personal, JM-287 cutover) **and** `oneonme` (OneOnMe NEW, OOM-117). Any `op item get`/`op read` call against `--vault machine` without `--account` pin resolves against whichever account's session/SA token the shell happens to have active — silently wrong, no warning.
+
+**Defensive pattern:** always pin `--account` alongside `--vault machine`. The chezmoi `zshrc.tmpl` helpers already do this via the SA-token routing layer (`op-personal`/`op-oneonme`/`op-oneonme-host` wrappers). Setup scripts and preflight checks must also pin — Codex flagged this as P2 in chezmoi `bin/setup-linear-agent` during JM-287 review; fixed by adding `--account my` to the preflight `op item get machine_linear --vault machine`.
+
+## 7. `op inject` errors on bare `op://` in input
 
 `op inject` scans the input file for any occurrence of `op://...` and tries to resolve it — including inside comments. A bare literal `op://` (e.g. in documentation text describing the schema) trips it with:
 
@@ -74,4 +88,6 @@ The whole `op inject` invocation fails before reaching the real refs. Common in 
 - After `op account add ...`, follow immediately with `eval $(op signin --account ...)` or the next probe will look broken.
 - For write operations on a vault where you only have an SA: use interactive signin, don't try to grant write to the SA just for a one-off (or do, then revoke).
 - For `.env.template` files driving `op inject`: lint inputs for bare `op://` substrings — failing fast at template-author time beats failing late during deploy.
+- For vault-level admin ops (rename/create/delete): never attempt from CC — Touch ID needs interactive TTY; surface the `op vault edit ...` command for JM to run in his shell, or do via the 1P desktop app.
+- For any new code/script touching `--vault machine`: always pin `--account my` or `--account oneonme` — the name collision is silent.
 - Related: [[project_op_account_topology]] for which accounts/UUIDs exist.

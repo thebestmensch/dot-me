@@ -8,7 +8,7 @@ metadata:
 
 When `rg --some-flag` errors with `grep: unrecognized option`, you're hitting the CC shell snapshot's `rg` function, not the ripgrep binary. The function re-execs `$CLAUDE_CODE_EXECPATH` (or `/Users/jm/.local/bin/claude`), which routes to a grep-shaped fallback when no ripgrep is available in the resolved env.
 
-```
+```bash
 $ type rg
 rg () { local _cc_bin="${CLAUDE_CODE_EXECPATH:-}"; ... }
 ```

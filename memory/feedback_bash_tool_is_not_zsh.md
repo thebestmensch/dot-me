@@ -15,7 +15,7 @@ The Bash tool's persistent shell is `bash`, which does NOT source `~/.zshrc`, do
 - Smoke-tests for zsh hooks (chpwd, precmd, preexec, periodic, zshaddhistory) must use `zsh -ic '<cmd>'`. The `-i` flag forces interactive mode so `~/.zshrc` is sourced; the `-c` runs the command and exits.
 - Pattern that works (verified 2026-05-20 on `jm/workspace-aware-op-token`):
 
-  ```
+  ```bash
   zsh -ic 'cd ~/Documents/local/oneonme-platform; op vault list 2>&1 | head -5'
   ```
 

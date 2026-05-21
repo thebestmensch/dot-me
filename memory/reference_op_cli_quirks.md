@@ -71,7 +71,7 @@ After JM-287 (2026-05-20), the vault name `machine` exists in **both** `my` (JM 
 
 `op inject` scans the input file for any occurrence of `op://...` and tries to resolve it — including inside comments. A bare literal `op://` (e.g. in documentation text describing the schema) trips it with:
 
-```
+```text
 [ERROR] invalid secret reference 'op://': too few '/': secret references should have at least vault, item and field specified
 ```
 

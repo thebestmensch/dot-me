@@ -1,3 +1,4 @@
+- [dot-me public vs AI surface](feedback_dot_me_public_vs_ai_surface.md) — identity.yaml blurb is canonical for AI consumers, NOT automatically safe for public crawler-indexable pages; strip partner+pet names before publishing
 - [No self-authored classifier rules](feedback_no_self_authored_classifier_rules.md) — model drafts `permissions.autoMode.*` prose for user review; never applies it itself, even on "apply that diff" directives — classifier hard-blocks (correctly)
 - [permissions.autoMode schema](reference_permissions_automode_schema.md) — `allow/soft_deny/hard_deny/environment` arrays accept user-authored classifier prose; `$defaults` sentinel preserves built-ins
 - [Use voice skill for outgoing communications](feedback_voice_for_outgoing.md) — always invoke `/jm-voice` when drafting emails, Slack, or any text sent as James; first-pass drafts default to corporate tone

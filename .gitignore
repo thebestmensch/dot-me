@@ -1,1 +1,6 @@
 # Reserved for future encrypted-vault dirs (sops/age). Empty in v0.
+
+# Personal-local devmarketing skill symlinks (clones of jonathimer/devmarketing-skills)
+.claude/skills/dev-tool-directory-listings
+.claude/skills/developer-seo
+.claude/skills/github-presence

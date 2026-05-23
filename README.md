@@ -1,5 +1,7 @@
 # dot-me
 
+![dot-me — the personal-context card AI tools read at the door](.github/social-preview.png)
+
 > the personal-context card AI tools read at the door: your name, your voice, your working agreement.
 
 every new agent forgets you. twice.

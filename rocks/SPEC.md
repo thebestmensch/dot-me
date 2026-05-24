@@ -138,7 +138,7 @@ LLM model: default to a cost-efficient tier (e.g. Sonnet-class); escalate if jud
 | Skip morning ritual | No rocks file today; SessionStart inject is no-op; `<workspace>-rocks` reports "no rocks set" |
 | LLM mis-attributes work | User edits rocks file directly; next eval pass picks up corrections |
 | Two simultaneous evals (e.g. `<workspace>-wrap` in session A + `<workspace>-rocks` in session B) | Last-writer-wins; activity sources unchanged between runs; conflict is harmless |
-| Eval lib slow | `--no-rocks` flag on the wrap command; rocks-status command runs only on explicit invocation |
+| Eval lib slow | `--no-rocks` flag on the wrap command; `<workspace>-rocks` runs only on explicit invocation |
 
 ## Build Order (reference sequence)
 

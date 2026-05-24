@@ -67,18 +67,20 @@ Location: `~/.claude/settings.json` hooks block.
 
 Purpose: every session knows the rocks, so Claude can narrate "this commit lands part of Rock 2" in user-facing text without each session having to write to the rocks file.
 
-### 2. `/jm-rocks-new` (morning skill)
+### 2. `/jm-standup` (morning skill)
 
-Location: `~/.claude/commands/jm-rocks-new.md`
+Location: `~/.claude/commands/jm-standup.md` (chezmoi-managed at `~/.local/share/chezmoi/dot_claude/commands/jm-standup.md`)
 
 Behavior:
-- Finds most recent `~/.me/rocks/*.md` (yesterday or earlier)
+- Reads yesterday's rocks from the dashboard `/api/rocks` mirror (falls back to local file walk if unreachable)
 - Surfaces rocks with status != done as carryover candidates
 - Surfaces promotion candidates: rocks carrying 3+ days with 2+ Linear refs are flagged as Linear Project candidates per the guidance above (prompt only, never auto-promoted)
-- Optional pre-fill: scans Linear `In Progress` issues + open PRs across home-lab and oneonme for rock-shaped candidates
+- Pulls cross-workspace active work via Linear + GitHub MCPs (In Progress + In Review for `@me`, open PRs, recent git) as suggestion list
 - Prompts JM to confirm, edit, add
-- Writes today's file
-- Calls eval lib once, prints initial status
+- Writes today's file AND POSTs to dashboard `/api/rocks` (file + dashboard mirror; Claude is the single writer)
+- On dashboard failure: file write succeeds, payload buffered to `~/.claude/scratch/rocks-pending/<date>.json` for `/jm-wrap` retry
+
+Replaces the unbuilt `/jm-rocks-new` stub. Initial eval pass moves to `/jm-wrap` (per § 4 below) so morning ritual stays fast.
 
 ### 3. `/jm-rocks` (anytime status skill)
 

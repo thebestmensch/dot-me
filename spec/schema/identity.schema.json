@@ -1,0 +1,216 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/thebestmensch/dot-me/main/spec/schema/identity.schema.json",
+  "title": "dot-me identity.yaml",
+  "description": "Schema for ~/.me/identity.yaml. Tracks SPEC.md §5.A. Required: name. location.timezone is required when location is present. additionalProperties is true everywhere per SPEC §5.6 (unknown keys MUST be tolerated by consumers).",
+  "type": "object",
+  "required": ["name"],
+  "additionalProperties": true,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Required. The user's full name as they want it referenced. SPEC §5.1."
+    },
+    "preferred_name": {
+      "type": "string",
+      "description": "How to address the user in prose."
+    },
+    "nickname": {
+      "type": "string",
+      "description": "Informal short label. vCard NICKNAME / FOAF foaf:nick."
+    },
+    "pronouns": {
+      "type": "string",
+      "description": "e.g. 'he/him', 'she/her', 'they/them'."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Primary contact email. vCard EMAIL / Schema.org email."
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Canonical homepage URI. vCard URL / Schema.org url."
+    },
+    "avatar": {
+      "type": "string",
+      "format": "uri",
+      "description": "Profile image URI. vCard PHOTO / Schema.org image / OIDC picture."
+    },
+    "handle": {
+      "type": "string",
+      "pattern": "^@.+",
+      "description": "Legacy single-handle field (v0.1). New producers SHOULD use social_profiles instead. When both are present, social_profiles is authoritative (SPEC §5.1)."
+    },
+    "social_profiles": {
+      "type": "array",
+      "description": "List of social accounts. JSON Resume basics.profiles shape.",
+      "items": {
+        "type": "object",
+        "required": ["network", "url"],
+        "additionalProperties": true,
+        "properties": {
+          "network": { "type": "string", "minLength": 1, "description": "e.g. 'GitHub', 'Mastodon', 'Bluesky', 'LinkedIn'." },
+          "url": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "blurb": {
+      "type": "string",
+      "description": "One-line self-description / bio."
+    },
+    "headline": {
+      "type": "string",
+      "description": "Professional label. JSON Resume basics.label / Schema.org jobTitle."
+    },
+    "spec_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$",
+      "description": "Optional but recommended. Pins the dot-me spec version this file targets."
+    },
+    "location": {
+      "type": "object",
+      "required": ["timezone"],
+      "additionalProperties": true,
+      "description": "When location is present, timezone is required. SPEC §5.1.",
+      "properties": {
+        "timezone": {
+          "type": "string",
+          "format": "iana-time-zone",
+          "pattern": "^[A-Z][A-Za-z0-9_+\\-]*/[A-Za-z0-9_+\\-/]+$|^UTC$|^GMT$",
+          "description": "IANA timezone identifier (e.g. 'America/Chicago'). Validators that support the 'iana-time-zone' format SHOULD check against tzdata; the pattern is a structural fallback."
+        },
+        "city": {
+          "type": "string",
+          "description": "Free-text city / locality."
+        },
+        "country": {
+          "type": "string",
+          "description": "SPEC §5.1 SHOULD: ISO 3166-1 alpha-2 country code (e.g. 'US', 'GB'). Left unconstrained at the schema layer so SHOULD-level guidance isn't hardened into install-time rejection."
+        }
+      }
+    },
+    "languages": {
+      "type": "array",
+      "description": "SPEC §5.1 SHOULD: BCP 47 language tags (Schema.org knowsLanguage). Item pattern is left unconstrained at the schema layer so SHOULD-level guidance isn't hardened into install-time rejection.",
+      "items": { "type": "string" }
+    },
+    "knows_about": {
+      "type": "array",
+      "description": "Schema.org knowsAbout. Domain expertise topics. NOT spoken languages — use 'languages' for those.",
+      "items": { "type": "string" }
+    },
+    "work": {
+      "type": "array",
+      "description": "Current roles only (v0.3). Use past_work for history.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "role": { "type": "string" },
+          "org": { "type": "string" },
+          "project": { "type": "string", "description": "Use instead of org for OSS / personal work." },
+          "url": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "past_work": {
+      "type": "array",
+      "description": "Historical roles (v0.3+). Different update cadence + field set than current work.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "role": { "type": "string" },
+          "org": { "type": "string" },
+          "start": {
+            "type": ["string", "integer"],
+            "description": "Four-digit year as string or integer. Optional; omit if unknown.",
+            "anyOf": [
+              { "type": "integer", "minimum": 1900, "maximum": 2200 },
+              { "type": "string", "pattern": "^[0-9]{4}$" }
+            ]
+          },
+          "end": {
+            "type": ["string", "integer"],
+            "description": "Four-digit year or the literal 'present'. Optional.",
+            "anyOf": [
+              { "type": "integer", "minimum": 1900, "maximum": 2200 },
+              { "type": "string", "pattern": "^([0-9]{4}|present)$" }
+            ]
+          },
+          "summary": { "type": "string", "description": "One-line scope-of-role." },
+          "mission": { "type": "string", "description": "One-line stance-led mission statement." }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Personal / OSS projects worth surfacing. Not in §5.1 but common in adopter files.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "url": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "pets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "species": { "type": "string" },
+          "breed": { "type": "string" }
+        }
+      }
+    },
+    "family": {
+      "type": "array",
+      "description": "May be deferred to v1 (encrypted-vault story). Schema permits the field today.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" }
+        }
+      }
+    },
+    "inner_circle": {
+      "type": "array",
+      "description": "May be deferred to v1 for free-text notes; v0.3 carries name + role + optional handles map.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "handles": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Platform-key -> handle map. Known keys SHOULD be lowercase platform names. Values for social-platform keys SHOULD be bare handles (no '@', no full URL); website is the URI exception; email is the address exception.",
+            "properties": {
+              "instagram": { "type": "string" },
+              "linkedin": { "type": "string" },
+              "bluesky": { "type": "string" },
+              "twitter": { "type": "string" },
+              "github": { "type": "string" },
+              "mastodon": { "type": "string" },
+              "website": { "type": "string", "format": "uri" },
+              "email": { "type": "string", "format": "email" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

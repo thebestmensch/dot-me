@@ -58,6 +58,8 @@ The four content files split across two layers:
 
 Schemas are intentionally loose: most fields are optional, and consumers MUST ignore unknown fields (forward-compat). Conformance at the layer level is addressed in §6.1. Consumers MUST disclose which layers they load so adopters can tell layer-aware adoption from layer-skipping adoption.
 
+**Machine-readable schemas.** JSON Schema 2020-12 files for `identity.yaml` and `preferences.yaml` live under [`spec/schema/`](spec/schema/) and track this section. Tool implementers SHOULD validate user-supplied files against them at install time. The schemas cover structural shape only; the IANA-timezone MUST in §5.1 requires a runtime tzdata check on top because generic JSON Schema validators treat `format` as annotation-only by default — the bundled `spec/schema/validate-examples.py` does both checks and is the reference implementation. `voice.md` is intentionally unstructured (§5.2) and not schema'd; `working-style.yaml`'s value is in the imperative rule strings inside, which a schema can't enforce (see [`spec/schema/README.md`](spec/schema/README.md) for the deferral reasoning).
+
 ### 5.A. Identity layer
 
 The identity layer is one file: `identity.yaml`. It carries durable, low-velocity facts about the user (name, timezone, pronouns, what they know about, the family/pets/work surface tools use for rapport and contextual cues). v0.2 aligned this layer with canonical identity specs (vCard RFC 6350, Schema.org Person, JSON Resume, FOAF) so tool implementers can reuse existing schemas instead of inventing a new one.

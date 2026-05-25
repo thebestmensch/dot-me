@@ -4,3 +4,7 @@
 .claude/skills/dev-tool-directory-listings
 .claude/skills/developer-seo
 .claude/skills/github-presence
+
+# Python bytecode (validate-examples.py)
+__pycache__/
+*.pyc

@@ -39,6 +39,8 @@ four files. thats the format. anything else you keep at `~/.me/` (integrity hash
 
 required: `name` in `identity.yaml`. everything else is optional. unknown keys are ignored silently. additive-only, forward-compatible.
 
+machine-readable JSON Schemas for `identity.yaml` and `preferences.yaml` live in [`spec/schema/`](spec/schema/) — tool implementers can validate user-supplied files against them. **Caveat:** the schema covers structural shape; the one strict spec invariant beyond `name` (`location.timezone` MUST be a real IANA zone) needs a runtime tzdata check on top, because most generic JSON Schema validators treat `format` as annotation-only. The bundled `spec/schema/validate-examples.py` does both checks — implementers wiring their own validator should layer a `zoneinfo` check (or equivalent) for the timezone field.
+
 ## Status
 
 v0.3, solo-maintained, RFC-stage. four reference consumers ship in this repo: the Claude Code plugin (auto-loads `identity.yaml`, drops in `/me`), plus install scripts for Codex CLI, Cursor, and Gemini CLI. a Claude Cowork beta cohort is being invited now; until that loop closes, the maintainer dogfoods every surface against this content daily. [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`. the format will evolve based on what real implementers hit.

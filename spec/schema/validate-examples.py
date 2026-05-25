@@ -71,6 +71,9 @@ def main() -> int:
         for filename, validator in validators.items():
             target = example_dir / filename
             if not target.exists():
+                failures.append(
+                    f"{example_dir.relative_to(REPO_ROOT)} :: missing required example file: {filename}"
+                )
                 continue
             checked += 1
             data = yaml.safe_load(target.read_text())

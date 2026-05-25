@@ -26,18 +26,15 @@
     },
     "email": {
       "type": "string",
-      "format": "email",
-      "description": "Primary contact email. vCard EMAIL / Schema.org email."
+      "description": "Primary contact email. vCard EMAIL / Schema.org email. SHOULD parse as RFC 5322; not pattern-enforced (see spec/schema/README.md SHOULD-stays-loose)."
     },
     "website": {
       "type": "string",
-      "format": "uri",
-      "description": "Canonical homepage URI. vCard URL / Schema.org url."
+      "description": "Canonical homepage URI. vCard URL / Schema.org url. SHOULD be a URI; not pattern-enforced."
     },
     "avatar": {
       "type": "string",
-      "format": "uri",
-      "description": "Profile image URI. vCard PHOTO / Schema.org image / OIDC picture."
+      "description": "Profile image URI. vCard PHOTO / Schema.org image / OIDC picture. SHOULD be a URI; not pattern-enforced."
     },
     "handle": {
       "type": "string",
@@ -53,7 +50,7 @@
         "additionalProperties": true,
         "properties": {
           "network": { "type": "string", "minLength": 1, "description": "e.g. 'GitHub', 'Mastodon', 'Bluesky', 'LinkedIn'." },
-          "url": { "type": "string", "format": "uri" }
+          "url": { "type": "string", "description": "SHOULD be a URI; not pattern-enforced." }
         }
       }
     },
@@ -205,8 +202,8 @@
               "twitter": { "type": "string" },
               "github": { "type": "string" },
               "mastodon": { "type": "string" },
-              "website": { "type": "string", "format": "uri" },
-              "email": { "type": "string", "format": "email" }
+              "website": { "type": "string", "description": "SHOULD be a URI; not pattern-enforced." },
+              "email": { "type": "string", "description": "SHOULD be an email; not pattern-enforced." }
             }
           }
         }

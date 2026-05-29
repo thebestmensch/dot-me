@@ -97,10 +97,12 @@ filesystem-aware tools that support `@`-includes can reference `~/.me/identity.y
 ### Bootstrap from a template
 
 ```
-dot-me init
+/me init
 ```
 
-drops a working starter into `~/.me/`: identity scaffold, blank voice profile with section headers, preferences skeleton, and a working-style file with the recommended dimensions. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
+run inside Claude Code after installing the plugin above. drops a working starter into `~/.me/`: identity scaffold, blank voice profile with section headers, preferences skeleton, and a working-style file with the recommended dimensions. fill in the parts that matter to you, leave the rest empty. consumers ignore what isnt there.
+
+no standalone `dot-me` CLI ships today — `/me init` is the only bootstrap path. without Claude Code, follow [Other tools (manual)](#other-tools-manual) above and copy `examples/` by hand.
 
 ## Why this shape
 

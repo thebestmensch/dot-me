@@ -500,7 +500,7 @@ Optional flag: `--from <path>` copies from a local clone instead of fetching fro
    > `~/.me/` seeded from examples. Four files to personalize:
    >
    > - `identity.yaml`: name, timezone, work, pets
-   > - `voice.md`: how you sound (or delete and rebuild)
+   > - `voice.md`: how you sound — the **highest-leverage file**. Author it with the guide at `examples/VOICE-AUTHORING.md` (six introspection questions, one worked example), or delete and rebuild later.
    > - `preferences.yaml`: likes / favorites / avoid triads
    > - `working-style.yaml`: imperative rules. autonomy, scope discipline, irreversibility
    >

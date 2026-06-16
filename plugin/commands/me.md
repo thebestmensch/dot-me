@@ -433,13 +433,13 @@ Optional flag: `--from <path>` copies from a local clone instead of fetching fro
    If the check fails, print the message and stop. Don't proceed.
 
 2. **Acquire the repo.**
-   - **Default path (no `--from`):** clone over SSH to `~/.me/`:
-     ```bash
-     git clone git@github.com:thebestmensch/dot-me.git "$HOME/.me"
-     ```
-     If SSH auth fails, fall back to HTTPS:
+   - **Default path (no `--from`):** clone over HTTPS to `~/.me/`. HTTPS works on a fresh machine with no SSH key configured, and dot-me is a public repo so no auth is needed:
      ```bash
      git clone https://github.com/thebestmensch/dot-me.git "$HOME/.me"
+     ```
+     If you maintain the repo and want push access over SSH, use this instead:
+     ```bash
+     git clone git@github.com:thebestmensch/dot-me.git "$HOME/.me"
      ```
    - **Offline path (`--from <path>`):** copy from the named local clone:
      ```bash

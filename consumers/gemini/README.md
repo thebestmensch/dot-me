@@ -6,7 +6,7 @@ Native integration for [Gemini CLI](https://github.com/google-gemini/gemini-cli)
 
 ```bash
 # clone (or fork) dot-me into your home directory first
-git clone git@github.com:thebestmensch/dot-me.git ~/.me
+git clone https://github.com/thebestmensch/dot-me.git ~/.me
 
 # install the Gemini consumer
 bash ~/.me/consumers/gemini/install.sh

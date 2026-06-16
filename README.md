@@ -88,7 +88,7 @@ inlines `identity.yaml` (and `preferences.yaml`) into `~/.gemini/GEMINI.md` betw
 
 for tools without a native consumer yet (Cowork, raw OpenAI / Anthropic API calls), the path:
 
-1. `git clone git@github.com:thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
+1. `git clone https://github.com/thebestmensch/dot-me.git ~/.me` (or copy `examples/` as a starting template)
 2. paste `identity.yaml`, `voice.md`, `preferences.yaml`, and `working-style.yaml` into the tool's highest-priority instruction surface (Cursor Rules, Cowork Global Instructions, etc.)
 3. re-paste when the files change
 

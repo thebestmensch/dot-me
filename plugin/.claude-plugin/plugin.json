@@ -1,6 +1,6 @@
 {
   "name": "dot-me",
-  "description": "Portable user-context for AI tools. Read identity, voice, and preferences from ~/.me/ at session start. The /me slash command manages content. Reference implementation of the dot-me v0.1 spec.",
+  "description": "Portable user-context for AI tools. Read identity, voice, and preferences from ~/.me/ at session start. The /me slash command manages content. Reference implementation of the dot-me v0.3 spec.",
   "version": "0.1.1",
   "author": {
     "name": "James Mensch",

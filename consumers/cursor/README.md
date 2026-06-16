@@ -6,7 +6,7 @@ Native integration for [Cursor](https://cursor.com). Pipes your `~/.me/` content
 
 ```bash
 # clone dot-me into your home directory first
-git clone git@github.com:thebestmensch/dot-me.git ~/.me
+git clone https://github.com/thebestmensch/dot-me.git ~/.me
 
 # global personal context (paste once into Cursor Settings)
 bash ~/.me/consumers/cursor/install.sh

@@ -30,7 +30,7 @@ The `me-integrity.sh` hook fires on SessionStart and warns when `~/.me/` files d
 
 ## Install: Claude Cowork
 
-Skill / command surface works the same. **The SessionStart hook does NOT fire** because of an open Cowork plugin-hook bug ([`anthropics/claude-code#16288`](https://github.com/anthropics/claude-code/issues/16288), open as of May 2026; the Cowork VM spawns `claude --setting-sources user` which excludes plugin-scoped hooks).
+Skill / command surface works the same. **The SessionStart hook does NOT fire** because of an open Cowork plugin-hook bug ([`anthropics/claude-code#16288`](https://github.com/anthropics/claude-code/issues/16288), still open as of June 2026; the Cowork VM spawns `claude --setting-sources user` which excludes plugin-scoped hooks).
 
 For Cowork's missing auto-load + missing integrity hook, paste the contents of `~/.me/identity.yaml` into **Settings → Cowork → Global Instructions** after running `/me init`. Re-paste when the file changes. The `/me show identity` command renders the current content for easy copying.
 

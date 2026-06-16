@@ -6,7 +6,7 @@ Native integration for [Codex CLI](https://github.com/openai/codex). Inlines you
 
 ```bash
 # clone (or fork) dot-me into your home directory first
-git clone git@github.com:thebestmensch/dot-me.git ~/.me
+git clone https://github.com/thebestmensch/dot-me.git ~/.me
 
 # install the Codex consumer
 bash ~/.me/consumers/codex/install.sh

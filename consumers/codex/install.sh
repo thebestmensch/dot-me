@@ -30,8 +30,8 @@ MARKER_END="<!-- dot-me:end -->"
 # (WSL / Windows-edited files). [[:space:]] covers \r per POSIX.
 MARKER_BEGIN_RE="^<!-- dot-me:begin -->[[:space:]]*\$"
 MARKER_END_RE="^<!-- dot-me:end -->[[:space:]]*\$"
-SUPPORTED_SPEC="0.4"           # current spec version (recommended in warning when spec_version is absent; fallback value is "0.1" legacy per SPEC §5.A)
-SUPPORTED_SPECS_RE='^(0\.1|0\.2|0\.3|0\.4)$'   # known additive versions (SPEC §"Implementation history"). 0.4 adds voice.compact.md (no identity.yaml field change), so a 0.4 identity is structurally a 0.3 identity — accepted without new handling.
+SUPPORTED_SPEC="0.5"           # current spec version (recommended in warning when spec_version is absent; fallback value is "0.1" legacy per SPEC §5.A)
+SUPPORTED_SPECS_RE='^(0\.1|0\.2|0\.3|0\.4|0\.5)$'   # known additive versions (SPEC §"Implementation history"). 0.4 adds voice.compact.md (no identity.yaml field change), so a 0.4 identity is structurally a 0.3 identity — accepted without new handling.
 
 MODE="standard"   # minimal | standard | full
 DRY_RUN=0
@@ -131,7 +131,7 @@ if [ -z "$spec_version" ]; then
 fi
 if ! printf '%s\n' "$spec_version" | grep -Eq "$SUPPORTED_SPECS_RE"; then
   # Refuse only on versions we don't recognize (future or malformed).
-  err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3, 0.4); upgrade consumers/codex/install.sh first"
+  err "identity.yaml spec_version=$spec_version is unknown to this installer (supports 0.1, 0.2, 0.3, 0.4, 0.5); upgrade consumers/codex/install.sh first"
 fi
 # Known-but-behind: nudge without blocking. The file is valid as-is (every prior
 # spec is file-level additive), so install still proceeds; just surface that

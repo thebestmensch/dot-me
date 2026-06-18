@@ -1,4 +1,4 @@
-# dot-me: Personal Context Spec (v0.4)
+# dot-me: Personal Context Spec (v0.5)
 
 **Date:** 2026-06-18
 **Status:** RFC, solo-maintained
@@ -101,6 +101,12 @@ past_work:                        # optional, historical roles (v0.3)
     end: <YYYY | "present">       #   optional, four-digit year or literal "present"; omit if unknown
     summary: <one-line string>    #   optional, what you did / scope of role
     mission: <one-line string>    #   optional, stance-led one-liner (e.g. "fighting disinformation")
+education:                        # optional, schooling history (v0.5; JSON Resume education[] shape)
+  - institution: <string>         #   school / university name
+    degree: <string>              #   optional, degree or credential (JSON Resume studyType)
+    area: <string>                #   optional, field of study
+    start: <YYYY>                 #   optional, four-digit year
+    end: <YYYY>                   #   optional, four-digit year
 pets: []                          # optional
 family: []                        # optional, may be deferred to v1
 inner_circle:                     # optional, may be deferred to v1
@@ -126,6 +132,10 @@ Required: `name`. The single strictness elsewhere is `location.timezone`: when `
 **`work` vs `past_work` (v0.3):** v0.1/v0.2 carried a single `work[]` block conflating current and past roles. v0.3 narrows `work[]` to *current* roles only and introduces a sibling `past_work[]` block for historical employment. Reasoning: the two have different update cadences and different field sets (history wants `start`, `end`, `summary`, `mission`; current rarely needs them). Consumers that want a complete career timeline SHOULD read both. Consumers reading a v0.3 file that only want "what is this user doing now" SHOULD read only `work[]`. **For v0.1/v0.2 files, `work[]` semantics remain mixed** — consumers SHOULD branch on `spec_version` (per §5.6) and treat `work[]` as "all roles, mixed" when `spec_version` is `0.1` or `0.2` (or absent). Producers maintaining `spec_version: "0.2"` files MAY upgrade to `0.3` and then migrate past roles into `past_work[]`, but are not required to migrate while remaining on `0.2`. A file with `spec_version: "0.2"` MUST retain the mixed `work[]` semantics until it is rebumped to `0.3`; `past_work[]` is a v0.3-only field.
 
 **`inner_circle[].handles` (v0.3):** Each `inner_circle` entry MAY carry an optional `handles:` map of platform-key → handle. Known keys (`instagram`, `linkedin`, `bluesky`, `twitter`, `github`, `mastodon`, `website`, `email`) SHOULD be lowercase platform names. Per §5.6 (unknown-keys), consumers MUST tolerate additional unrecognised keys. Values for social-platform keys SHOULD be the bare handle (no leading `@`, no full URL) so a consumer can interpolate the right URL shape per platform. `website` and `email` are the exceptions: full URI / email address.
+
+**`education[]` (v0.5):** Optional schooling history, mirroring JSON Resume's `education[]` shape (`institution`, `studyType`→`degree`, `area`, `startDate`→`start`, `endDate`→`end`). Added as the sibling to `past_work[]` that v0.3 deferred. Like `past_work[]`, it carries low-velocity historical facts a bio or "about me" output draws on; consumers wanting a full background read `work[]` + `past_work[]` + `education[]`. All fields except `institution` are optional; years are four-digit.
+
+**Importing from LinkedIn (v0.5, producer guidance).** A LinkedIn data export maps cleanly onto the *existing* identity schema, so producers SHOULD reuse fields rather than invent parallel ones: `Profile.csv` → `location.city` / `website` / `social_profiles[]` (gap-fill); `Positions.csv` → `work[]` (current roles) + `past_work[]` (ended roles, with `start`/`end`/`summary`); `Education.csv` → `education[]`. Note the tiering: `Positions.csv` and `Education.csv` are **Full-export-only** (a Basic export carries `Profile.csv` but no dated job/school history), so chronology requires a Full export. The reference `/me` producer ships `linkedin-import` for this (idempotent, non-destructive, dry-run capable); it is a producer convenience, not part of the format. The format contract is only the fields above.
 
 > **⚠ Privacy note — third-party identifiers in the always-loaded tier.** `identity.yaml` is loaded into every session by every conforming consumer (see §6.1). Adding handles for someone other than yourself means *their* public identifiers will appear in every agent context the file reaches: unrelated coding sessions, generated outputs, copied global configs, shared screenshots. Free-text relationship *notes* are deferred to v1 conditional on encrypted-vault availability (see §"Out of scope") for the same containment reason. Producers SHOULD: (a) include third-party handles only with that person's consent; (b) keep the set minimal (one platform is usually enough for rapport-shaped context); (c) prefer `website` (already public per the contact's own choice) over per-platform handles when both are options; (d) treat the `family[]` block as off-limits for handles until v1's encrypted-vault story lands. Consumers MAY surface a per-installation warning when `inner_circle[].handles` is present so adopters notice the always-loaded propagation. A future spec version may move third-party identifiers behind an encrypted/lazy-loaded tier.
 

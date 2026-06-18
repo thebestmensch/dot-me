@@ -47,7 +47,7 @@ else
 fi
 
 [ -n "$prompt" ] || exit 0
-printf '%s' "$prompt" | grep -qiE "\\b(${TRIGGERS})\\b" || exit 0
+printf '%s' "$prompt" | grep -qiE "(^|[^[:alnum:]_])(${TRIGGERS})([^[:alnum:]_]|$)" || exit 0
 [ -f "$VOICE_FILE" ] || exit 0
 
 # Match. Inject the full voice profile for this turn.

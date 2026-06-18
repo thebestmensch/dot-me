@@ -171,7 +171,7 @@ The 11-step write protocol. The fact is everything in `$ARGUMENTS` after the `ad
 3. **Read state and capture hashes.**
    ```bash
    cd ~/.me
-   shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml
+   shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml $([ -f voice.compact.md ] && echo voice.compact.md)
    ```
    Remember the four hashes: they're the conflict-detection guard.
 
@@ -204,17 +204,19 @@ The 11-step write protocol. The fact is everything in `$ARGUMENTS` after the `ad
      >> ~/.me/.updates.log
    ```
 
-10. **Regenerate `.integrity`.** Recompute SHA-256 for all four files and rewrite. `shasum -a 256 <files>` already prints `<hash>  <filename>`, which `me-integrity.sh` parses via `read -r expected file`:
+10. **Regenerate `.integrity`.** Recompute SHA-256 for all core files (plus `voice.compact.md` when it exists) and rewrite. `shasum -a 256 <files>` already prints `<hash>  <filename>`, which `me-integrity.sh` parses via `read -r expected file`:
     ```bash
     cd ~/.me
-    shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml > .integrity
+    shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml $([ -f voice.compact.md ] && echo voice.compact.md) > .integrity
     ```
     (Don't reintroduce an `awk`-based extractor here: dollar-N field refs collide with the slash-command preprocessor's positional-arg expansion. See `feedback_slash_command_dollar_collision`.)
 
 11. **Signed commit + push.**
     ```bash
     cd ~/.me
-    git add <file> .updates.log .integrity
+    git add <file> .updates.log .integrity $([ -f voice.compact.md ] && echo voice.compact.md)
+    # voice.compact.md is staged in the SAME transaction whenever it's hashed into
+    # .integrity above — never bless a baseline for bytes the commit won't carry.
     git commit -m "context: <one-line summary> (via <source>)"
     git push
     ```
@@ -465,7 +467,7 @@ Optional flag: `--from <path>` copies from a local clone instead of fetching fro
 4. **Generate fresh `.integrity` baseline.**
    ```bash
    cd "$HOME/.me"
-   shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml > .integrity
+   shasum -a 256 identity.yaml voice.md preferences.yaml working-style.yaml $([ -f voice.compact.md ] && echo voice.compact.md) > .integrity
    ```
 
 5. **Append `@-import` to `~/.claude/CLAUDE.md` (idempotent).** Only add the import if it isn't already there: grep first, append only on miss. Ensure the parent `~/.claude/` directory exists on a truly-fresh machine before appending; otherwise the redirect fails AFTER `~/.me/` is already seeded, leaving the preflight check refusing the retry:

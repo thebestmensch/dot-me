@@ -68,6 +68,13 @@ def main() -> int:
         return 2
 
     for example_dir in example_dirs:
+        # examples/ holds persona dirs (identity.yaml + preferences.yaml) AND
+        # non-persona example dirs (e.g. voice-enforcement-hook/). A persona is
+        # identified by carrying at least one schema'd file; a dir with neither is
+        # a non-persona example and is skipped. A dir with one but not the other is
+        # still flagged below as an incomplete persona.
+        if not any((example_dir / name).exists() for name, _ in PAIRS):
+            continue
         for filename, validator in validators.items():
             target = example_dir / filename
             if not target.exists():

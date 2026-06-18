@@ -38,7 +38,7 @@ When the upstream bug is fixed, this plugin's hook will start firing automatical
 
 ## Auto-load contract
 
-On Claude Code, the plugin makes `~/.me/identity.yaml` available at session start via the `me-integrity.sh` hook (which both verifies the baseline AND surfaces the content). It does NOT modify `~/.claude/CLAUDE.md`; that wiring is the `/me init` subcommand's job, and only on first-run.
+On Claude Code, `~/.me/identity.yaml` is loaded at session start by the `@~/.me/identity.yaml` import line that `/me init` writes into `~/.claude/CLAUDE.md` (only on first-run). The `me-integrity.sh` SessionStart hook is a separate concern: it verifies the `.integrity` baseline and warns on tamper drift — it does not itself load file content into context.
 
 The plugin is **opt-in**: nothing reads `~/.me/` until you explicitly install it, run `/me init`, and edit the seeded content.
 

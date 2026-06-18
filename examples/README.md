@@ -6,6 +6,8 @@ For a standalone annotated `working-style.yaml` (the newest dot-me file) with in
 
 Writing your own `voice.md` from scratch? Read [`VOICE-AUTHORING.md`](VOICE-AUTHORING.md) first. Six introspection questions, each mapped to a file section, with one worked end-to-end example. `voice.md` is the highest-leverage file in `~/.me/`; the guide is the difference between a weak and a strong one.
 
+The v0.4 `voice.compact.md` derived companion (the always-loaded voice floor, SPEC §5.2.1) is shown in [`maya-okonkwo/voice.compact.md`](maya-okonkwo/voice.compact.md) — a ~15-line extract of her `voice.md`. The Claude Code reference enforcement hook that injects the *full* `voice.md` on prose triggers lives in [`voice-enforcement-hook/`](voice-enforcement-hook/) (not a persona; a consumer-integration example).
+
 | Persona | Shape | Demonstrates |
 |---|---|---|
 | [`sam-patel/`](sam-patel/) | full, English | Senior writer at a tech company. Fully-populated schema, the "everything filled in" reference. |

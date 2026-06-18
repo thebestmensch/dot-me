@@ -7,7 +7,7 @@ preferred_name: Sam
 pronouns: they/them
 handle: "@sampatel"
 blurb: Senior writer at Acme Corp. Coffee, books, design systems.
-spec_version: "0.3"
+spec_version: "0.5"
 
 location:
   timezone: America/Los_Angeles
@@ -33,6 +33,13 @@ past_work:                           # historical roles (v0.3 addition)
     start: 2016
     end: 2019
     summary: Freelance editing for indie nonfiction publishers.
+
+education:                           # schooling history (v0.5 addition)
+  - institution: Oberlin College
+    degree: BA
+    area: Comparative Literature
+    start: 2012
+    end: 2016
 
 # Free-text relationship notes are deferred to v1 (conditional on encrypted-vault
 # availability). For names + roles only, use the shape below. To surface social

@@ -144,6 +144,35 @@
         }
       }
     },
+    "education": {
+      "type": "array",
+      "description": "Schooling history (v0.5+). JSON Resume education[] shape.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "institution": { "type": "string" },
+          "degree": { "type": "string", "description": "Degree or credential (JSON Resume studyType)." },
+          "area": { "type": "string", "description": "Field of study." },
+          "start": {
+            "type": ["string", "integer"],
+            "description": "Four-digit year as string or integer. Optional.",
+            "anyOf": [
+              { "type": "integer", "minimum": 1900, "maximum": 2200 },
+              { "type": "string", "pattern": "^[0-9]{4}$" }
+            ]
+          },
+          "end": {
+            "type": ["string", "integer"],
+            "description": "Four-digit year as string or integer. Optional.",
+            "anyOf": [
+              { "type": "integer", "minimum": 1900, "maximum": 2200 },
+              { "type": "string", "pattern": "^[0-9]{4}$" }
+            ]
+          }
+        }
+      }
+    },
     "projects": {
       "type": "array",
       "description": "Personal / OSS projects worth surfacing. Not in §5.1 but common in adopter files.",

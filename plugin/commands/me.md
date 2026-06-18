@@ -27,6 +27,7 @@ Parse the first whitespace-delimited token of `$ARGUMENTS`:
 - `check` → run **check**
 - `status` → run **status** (second token may be `--remote`, optional)
 - `init` → run **init**
+- `linkedin-import` → run **linkedin-import** (second token is the path to the LinkedIn export `.zip` or its unzipped dir, required)
 - anything else (looks like a fact, e.g. quoted string or freeform text) → treat as legacy invocation, route to **add** with the full `$ARGUMENTS` as the fact and source defaulting to `me-legacy`
 
 If the chosen subcommand is marked **stub** below, print the stub message and stop. Do not improvise an implementation.
@@ -509,6 +510,44 @@ Optional flag: `--from <path>` copies from a local clone instead of fetching fro
    > Optional: enable signed commits for tamper detection: `git -C ~/.me config commit.gpgsign true` after setting your signing key.
 
 Do not commit on init. The user-edited content will get committed by the first `/me add` or `/me edit` after they fill in real data.
+
+---
+
+## linkedin-import `<export.zip | export-dir>`
+
+Ingest a LinkedIn data export into `~/.me/identity.yaml`. Maps onto the EXISTING identity schema (no new files): `Profile.csv` → `location.city` / `website` / `social_profiles[]` (gap-fill), `Positions.csv` → `work[]` + `past_work[]`, `Education.csv` → `education[]` (v0.5). The deterministic parse + merge lives in `scripts/linkedin-import.py`; this subcommand drives it dry-run-first.
+
+**Tier note.** `Positions.csv` and `Education.csv` are **Full-export-only**. A Basic export (`Profile.csv` only, instant) imports location/website/headline but reports that job + school chronology need a Full export (LinkedIn emails it ~24h after request). Don't infer dates from a Basic export.
+
+### Steps
+
+1. **Resolve the path** from the second token of `$ARGUMENTS`. If empty, print `usage: /me linkedin-import <path-to-export.zip-or-dir>` and stop. Expand `~`.
+2. **Dry-run first** — never write blind:
+
+   ```bash
+   uv run --with ruamel.yaml python "$CLAUDE_PLUGIN_ROOT/scripts/linkedin-import.py" "<path>" --dry-run
+   ```
+
+   The script prints the detected tier, per-section notes (what a Basic export is missing), a change list, and the merged `identity.yaml` to stdout. Show the user the change list and the diff against current content.
+3. **Confirm, then write.** On user approval, run without `--dry-run`:
+
+   ```bash
+   uv run --with ruamel.yaml python "$CLAUDE_PLUGIN_ROOT/scripts/linkedin-import.py" "<path>"
+   ```
+
+   The write is atomic (write-then-rename) and refreshes `~/.me/.integrity` so the SessionStart hook doesn't false-positive on the change.
+4. **Commit** the result (the importer writes the file but does not commit): `git -C ~/.me add identity.yaml .integrity && git -C ~/.me commit -m "chore: import LinkedIn export"`.
+
+### Merge semantics (what to tell the user)
+
+- **Non-destructive.** Curated scalar fields (`headline`, `website`) are gap-filled only — an existing value is kept unless the user passes `--force`. `work[]` / `past_work[]` / `education[]` merge BY KEY (org+role / institution+degree): matched entries update their dates/summary from LinkedIn but keep manual-only sub-fields like `mission`. Manual entries LinkedIn lacks are preserved.
+- **Idempotent.** Re-running with a fresher export updates in place — it does not append duplicates.
+
+### Failure modes
+
+- **ruamel.yaml missing** → the script self-reports; the `uv run --with ruamel.yaml` invocation above installs it on the fly.
+- **Path not a zip or dir** → exit 2 with a clear message; re-prompt for the path.
+- **Basic export when the user wanted history** → the script reports it and imports what it can; suggest requesting a Full export.
 
 ---
 

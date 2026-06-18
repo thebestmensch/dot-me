@@ -45,7 +45,7 @@ machine-readable JSON Schemas for `identity.yaml` and `preferences.yaml` live in
 
 ## Status
 
-v0.4, solo-maintained, RFC-stage. four reference consumers ship in this repo: the Claude Code plugin (auto-loads `identity.yaml`, drops in `/me`; the v0.4 voice floor wires in via a `@~/.me/voice.compact.md` import), plus install scripts for Codex CLI, Cursor, and Gemini CLI. a Claude Cowork beta cohort is being invited now; until that loop closes, the maintainer dogfoods every surface against this content daily. [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`. the format will evolve based on what real implementers hit.
+v0.5, solo-maintained, RFC-stage. four reference consumers ship in this repo: the Claude Code plugin (auto-loads `identity.yaml`, drops in `/me`; the v0.4 voice floor wires in via a `@~/.me/voice.compact.md` import; v0.5 adds `/me linkedin-import <export.zip>` to populate `work[]` / `past_work[]` / `education[]` from a LinkedIn export, idempotent and non-destructive), plus install scripts for Codex CLI, Cursor, and Gemini CLI. a Claude Cowork beta cohort is being invited now; until that loop closes, the maintainer dogfoods every surface against this content daily. [file an integration issue](https://github.com/thebestmensch/dot-me/issues/new) if youre building a tool that loads `~/.me/`. the format will evolve based on what real implementers hit.
 
 friction reports welcome in [`feedback.md`](feedback.md) (PRs that just append are merged without ceremony) or as a [spec-clarification issue](https://github.com/thebestmensch/dot-me/issues/new). beta-cohort notes shape the next spec revision.
 

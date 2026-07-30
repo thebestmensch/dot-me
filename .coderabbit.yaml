@@ -1,0 +1,82 @@
+# CodeRabbit configuration for thebestmensch/dot-me.
+#
+# Deliberately minimal. It does two things:
+#
+#   1. Skips AUTOMATIC review of draft pull requests. Reviewing a draft and then
+#      its ready-flip spends two reviews on one diff, and a draft is by
+#      definition still moving.
+#   2. Pins a consistent review profile, so feedback reads the same on a
+#      maintainer PR and on a drive-by contribution.
+#
+# What it deliberately does NOT do is suppress review of markdown. In most repos
+# "it's docs" implies "no logic". Here it does not: SPEC.md is the normative
+# spec this project ships, plugin/commands/*.md and plugin/skills/**/SKILL.md are
+# procedures an agent executes, and examples/ are artifacts people copy verbatim.
+# Markdown is the product, so it gets the same automatic review as code does.
+
+language: en-US
+early_access: false
+
+tone_instructions: "Be concise and specific. Cite file and line. Don't restate the diff."
+
+reviews:
+  profile: assertive
+
+  # Never block a contributor's PR on a bot verdict — findings are advisory.
+  request_changes_workflow: false
+
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+
+  auto_review:
+    enabled: true
+
+    # Drafts are not auto-reviewed. To get a pass on one anyway, comment
+    # `@coderabbitai review` on the PR — the setting suppresses the automatic
+    # review, never your ability to ask for one.
+    #
+    # Free to set HERE, and not free everywhere — check before copying this line
+    # into another repo. This repo has no GitHub Actions workflows at all. In a
+    # repo where a workflow flips a PR ready in response to CodeRabbit's own
+    # `pull_request_review` event, turning off draft review strands every such PR
+    # in draft forever, with no error surfaced anywhere.
+    drafts: false
+
+    base_branches:
+      - main
+
+    # SHAPE-based suppression of automatic review only; files stay visible, so
+    # on-demand review still reaches them. Held to the two keywords that mean
+    # "not ready to read". Not extended to `docs:` / `chore:` — see the header,
+    # and note that title conventions on outside contributions aren't ours to
+    # rely on in the first place.
+    ignore_title_keywords:
+      - "WIP"
+      - "DO NOT MERGE"
+
+  # Signal-poor here: these diffs are spec prose, YAML, and small scripts rather
+  # than call graphs.
+  sequence_diagrams: false
+
+# ── Three things to know before extending this file ──────────────────────────
+#
+# 1. A `custom_checks` entry whose `name` exceeds 50 characters is a FATAL parse
+#    error that silently reverts this ENTIRE file to CodeRabbit's defaults. Those
+#    defaults review drafts and apply no filter, so the failure mode presents as
+#    "config is present, none of it applies." None are defined here.
+#
+# 2. Do NOT reach for `path_filters` to exclude paths. Its patterns drive
+#    CodeRabbit's `git sparse-checkout`, so excluded files are never cloned and
+#    become invisible to on-demand review TOO — coverage on a filtered path
+#    cannot be recovered by asking. `ignore_title_keywords` is the recoverable
+#    lane; that is why it is the one used above.
+#
+# 3. Verify a config change actually took effect before trusting it. A green
+#    `CodeRabbit` commit status proves nothing on its own: its `state` is
+#    `success` for "Review completed", "Review rate limited", AND "Review
+#    skipped". The `description` is the only discriminator:
+#
+#      gh api repos/{owner}/{repo}/commits/<sha>/status \
+#        --jq '.statuses[]|select(.context=="CodeRabbit")|"\(.state) | \(.description)"'
